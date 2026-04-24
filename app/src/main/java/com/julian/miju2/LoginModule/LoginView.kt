@@ -2,10 +2,11 @@ package com.julian.miju2.LoginModule
 
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowForward
-import androidx.compose.material.icons.filled.Email
 import androidx.compose.material.icons.filled.Lock
+import androidx.compose.material.icons.filled.Person
 import androidx.compose.material.icons.filled.Visibility
 import androidx.compose.material.icons.filled.VisibilityOff
 import androidx.compose.material3.*
@@ -13,8 +14,8 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.tooling.preview.Preview
@@ -61,27 +62,34 @@ fun LoginScreen(viewModel: LoginViewModel = viewModel()) {
             Spacer(modifier = Modifier.height(40.dp))
 
             Text(
-                text = "Correo Electrónico",
+                text = "Número de documento de identidad",
                 color = OnSurface,
                 fontSize = 14.sp,
                 fontWeight = FontWeight.Bold
             )
             Spacer(modifier = Modifier.height(8.dp))
             TextField(
-                value = viewModel.email,
-                onValueChange = { nuevoEmail -> viewModel.onEmailChange(nuevoEmail) },
+                value = viewModel.documentId,
+                onValueChange = { viewModel.onDocumentIdChange(it) },
                 modifier = Modifier.fillMaxWidth(),
-                placeholder = { Text("tu@ejemplo.com", color = OnSurfaceVariant) },
+                placeholder = { Text("1000000000", color = OnSurfaceVariant) },
                 leadingIcon = {
-                    Icon(Icons.Default.Email, contentDescription = null, tint = OnSurfaceVariant)
+                    Icon(Icons.Default.Person, contentDescription = null, tint = OnSurfaceVariant)
                 },
                 shape = RoundedCornerShape(12.dp),
+                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
                 colors = TextFieldDefaults.colors(
                     focusedContainerColor = Neutral,
                     unfocusedContainerColor = Neutral,
                     focusedIndicatorColor = Color.Transparent,
                     unfocusedIndicatorColor = Color.Transparent
-                )
+                ),
+                isError = viewModel.documentIdError != null,
+                supportingText = {
+                    viewModel.documentIdError?.let { message ->
+                        Text(text = message, color = MaterialTheme.colorScheme.error)
+                    }
+                }
             )
 
             Spacer(modifier = Modifier.height(24.dp))
@@ -107,29 +115,43 @@ fun LoginScreen(viewModel: LoginViewModel = viewModel()) {
             Spacer(modifier = Modifier.height(8.dp))
             TextField(
                 value = viewModel.password,
-                onValueChange = { nuevoPassword -> viewModel.onPasswordChange(nuevoPassword) },
+                onValueChange = { viewModel.onPasswordChange(it) },
                 modifier = Modifier.fillMaxWidth(),
                 placeholder = { Text("••••••••", color = OnSurfaceVariant) },
                 leadingIcon = {
                     Icon(Icons.Default.Lock, contentDescription = null, tint = OnSurfaceVariant)
                 },
                 shape = RoundedCornerShape(12.dp),
+                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.NumberPassword),
+                visualTransformation = if (viewModel.passwordVisible)
+                    VisualTransformation.None
+                else
+                    PasswordVisualTransformation(),
+                trailingIcon = {
+                    IconButton(onClick = { viewModel.togglePasswordVisibility() }) {
+                        Icon(
+                            imageVector = if (viewModel.passwordVisible)
+                                Icons.Default.VisibilityOff
+                            else
+                                Icons.Default.Visibility,
+                            contentDescription = if (viewModel.passwordVisible)
+                                "Ocultar contraseña"
+                            else
+                                "Mostrar contraseña",
+                            tint = OnSurfaceVariant
+                        )
+                    }
+                },
                 colors = TextFieldDefaults.colors(
                     focusedContainerColor = Neutral,
                     unfocusedContainerColor = Neutral,
                     focusedIndicatorColor = Color.Transparent,
                     unfocusedIndicatorColor = Color.Transparent
                 ),
-                visualTransformation = if (viewModel.passwordVisible) VisualTransformation.None else PasswordVisualTransformation(),
-                trailingIcon = {
-                    IconButton(
-                        onClick = { viewModel.togglePasswordVisibility() }
-                    ) {
-                        Icon(
-                            imageVector = if (viewModel.passwordVisible) Icons.Default.VisibilityOff else Icons.Default.Visibility,
-                            contentDescription = if (viewModel.passwordVisible) "Ocultar contraseña" else "Mostrar contraseña",
-                            tint = OnSurfaceVariant
-                        )
+                isError = viewModel.passwordError != null,
+                supportingText = {
+                    viewModel.passwordError?.let { message ->
+                        Text(text = message, color = MaterialTheme.colorScheme.error)
                     }
                 }
             )
@@ -139,7 +161,7 @@ fun LoginScreen(viewModel: LoginViewModel = viewModel()) {
             Row(verticalAlignment = Alignment.CenterVertically) {
                 Checkbox(
                     checked = viewModel.rememberMe,
-                    onCheckedChange = { nuevoValor -> viewModel.onRememberChange(nuevoValor) }
+                    onCheckedChange = { viewModel.onRememberChange(it) }
                 )
                 Text(
                     text = "Recordar sesión en este dispositivo",
@@ -151,21 +173,30 @@ fun LoginScreen(viewModel: LoginViewModel = viewModel()) {
             Spacer(modifier = Modifier.height(32.dp))
 
             Button(
-                onClick = { },
+                onClick = { viewModel.onLoginClick() },
                 modifier = Modifier
                     .fillMaxWidth()
                     .height(56.dp),
                 shape = RoundedCornerShape(28.dp),
-                colors = ButtonDefaults.buttonColors(containerColor = Primary)
+                colors = ButtonDefaults.buttonColors(containerColor = Primary),
+                enabled = !viewModel.isLoading
             ) {
-                Row(verticalAlignment = Alignment.CenterVertically) {
-                    Text("Ingresar", fontSize = 16.sp, fontWeight = FontWeight.Bold)
-                    Spacer(modifier = Modifier.width(8.dp))
-                    Icon(
-                        imageVector = Icons.AutoMirrored.Filled.ArrowForward,
-                        contentDescription = null,
-                        modifier = Modifier.size(20.dp)
+                if (viewModel.isLoading) {
+                    CircularProgressIndicator(
+                        modifier = Modifier.size(24.dp),
+                        color = Color.White,
+                        strokeWidth = 2.dp
                     )
+                } else {
+                    Row(verticalAlignment = Alignment.CenterVertically) {
+                        Text("Ingresar", fontSize = 16.sp, fontWeight = FontWeight.Bold)
+                        Spacer(modifier = Modifier.width(8.dp))
+                        Icon(
+                            imageVector = Icons.AutoMirrored.Filled.ArrowForward,
+                            contentDescription = null,
+                            modifier = Modifier.size(20.dp)
+                        )
+                    }
                 }
             }
 
