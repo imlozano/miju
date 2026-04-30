@@ -14,6 +14,8 @@ class SignUpViewModel : ViewModel() {
     // Estados de los campos
     var fullName by mutableStateOf("")
         private set
+    var documentId by mutableStateOf("")
+        private set
     var email by mutableStateOf("")
         private set
     var password by mutableStateOf("")
@@ -25,6 +27,8 @@ class SignUpViewModel : ViewModel() {
 
     // Estados de error
     var fullNameError by mutableStateOf<String?>(null)
+        private set
+    var documentIdError by mutableStateOf<String?>(null)
         private set
     var emailError by mutableStateOf<String?>(null)
         private set
@@ -43,6 +47,13 @@ class SignUpViewModel : ViewModel() {
     fun onFullNameChange(newValue: String) {
         fullName = newValue
         fullNameError = null
+    }
+
+    fun onDocumentIdChange(newValue: String) {
+        if (newValue.all { it.isDigit() }) {
+            documentId = newValue
+            documentIdError = null
+        }
     }
 
     fun onEmailChange(newValue: String) {
@@ -68,28 +79,44 @@ class SignUpViewModel : ViewModel() {
         if (validateFields()) {
             isLoading = true
             
-            // Creamos un objeto con la información del usuario
-            val user = mapOf(
-                "fullName" to fullName,
-                "email" to email,
-                "password" to password // Nota: En producción usar Firebase Auth para seguridad
-            )
+            // 1. Verificar si el email ya existe en algún usuario
+            database.orderByChild("email").equalTo(email).get()
+                .addOnSuccessListener { snapshot ->
+                    if (snapshot.exists()) {
 
-            // Usamos el email (reemplazando puntos por comas ya que Firebase no permite puntos en keys)
-            // O podrías usar un ID único generado con .push()
-            val userId = email.replace(".", ",")
+                        isLoading = false
+                        emailError = "El correo ya existe, usa uno nuevo"
+                    } else {
 
-            database.child(userId).setValue(user)
-                .addOnSuccessListener {
-                    isLoading = false
-                    signUpSuccess = true
-                    println("Registro exitoso para: $email")
+                        registerUser()
+                    }
                 }
                 .addOnFailureListener {
                     isLoading = false
-                    emailError = "Error al registrar: ${it.message}"
+                    emailError = "Error al verificar correo: ${it.message}"
                 }
         }
+    }
+
+    private fun registerUser() {
+        val user = mapOf(
+            "fullName" to fullName,
+            "documentId" to documentId,
+            "email" to email,
+            "password" to password
+        )
+
+        // documentId como llave
+        database.child(documentId).setValue(user)
+            .addOnSuccessListener {
+                isLoading = false
+                signUpSuccess = true
+                println("Registro exitoso para: $documentId")
+            }
+            .addOnFailureListener {
+                isLoading = false
+                documentIdError = "Error al registrar: ${it.message}"
+            }
     }
 
     fun onOpenCamera() {
@@ -102,6 +129,11 @@ class SignUpViewModel : ViewModel() {
         
         if (fullName.isBlank()) {
             fullNameError = "El nombre es obligatorio"
+            isValid = false
+        }
+
+        if (documentId.length < 6) {
+            documentIdError = "El documento debe tener al menos 6 dígitos"
             isValid = false
         }
         
@@ -121,7 +153,6 @@ class SignUpViewModel : ViewModel() {
         }
         
         if (!acceptedTerms) {
-            // Se podría añadir un error específico para el checkbox si fuera necesario
             isValid = false
         }
 

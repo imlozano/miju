@@ -4,6 +4,7 @@ import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.CameraAlt
@@ -15,6 +16,9 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.input.KeyboardType
+import androidx.compose.ui.text.input.PasswordVisualTransformation
+import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.tooling.preview.Preview
@@ -27,7 +31,7 @@ import com.julian.miju2.ui.theme.*
 fun SignUpScreen(viewModel: SignUpViewModel = viewModel()) {
     Surface(
         modifier = Modifier.fillMaxSize(),
-        color = Neutral // Usando el color Neutral del tema para el fondo claro
+        color = Neutral
     ) {
         Column(
             modifier = Modifier
@@ -42,14 +46,14 @@ fun SignUpScreen(viewModel: SignUpViewModel = viewModel()) {
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 Text(
-                    text = "FinFlow",
-                    color = Primary, // Usando Primary del tema
+                    text = "MiJu",
+                    color = Primary,
                     fontSize = 20.sp,
                     fontWeight = FontWeight.ExtraBold
                 )
                 Text(
                     text = "REGISTRO SEGURO",
-                    color = OnSurfaceVariant, // Usando OnSurfaceVariant para el gris
+                    color = OnSurfaceVariant,
                     fontSize = 12.sp,
                     fontWeight = FontWeight.Bold
                 )
@@ -58,17 +62,7 @@ fun SignUpScreen(viewModel: SignUpViewModel = viewModel()) {
             Spacer(modifier = Modifier.height(32.dp))
 
             Text(
-                text = "Comienza tu viaje\nfinanciero",
-                color = Primary,
-                fontSize = 28.sp,
-                lineHeight = 34.sp,
-                fontWeight = FontWeight.Bold
-            )
-
-            Spacer(modifier = Modifier.height(16.dp))
-
-            Text(
-                text = "Únete a la nueva era de la banca digital personalizada. Solo unos pasos para activar tu cuenta.",
+                text = "Solo unos pasos para activar tu cuenta.",
                 color = OnSurfaceVariant,
                 fontSize = 14.sp
             )
@@ -78,7 +72,7 @@ fun SignUpScreen(viewModel: SignUpViewModel = viewModel()) {
             // Form Card
             Card(
                 modifier = Modifier.fillMaxWidth(),
-                colors = CardDefaults.cardColors(containerColor = Background), // Blanco del tema
+                colors = CardDefaults.cardColors(containerColor = Background),
                 shape = RoundedCornerShape(24.dp),
                 elevation = CardDefaults.cardElevation(defaultElevation = 2.dp)
             ) {
@@ -93,8 +87,20 @@ fun SignUpScreen(viewModel: SignUpViewModel = viewModel()) {
 
                     Spacer(modifier = Modifier.height(16.dp))
 
+
                     SignUpTextField(
-                        label = "EMAIL INSTITUCIONAL O PERSONAL",
+                        label = "NÚMERO DE DOCUMENTO",
+                        value = viewModel.documentId,
+                        onValueChange = { viewModel.onDocumentIdChange(it) },
+                        placeholder = "1000000000",
+                        keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
+                        error = viewModel.documentIdError
+                    )
+
+                    Spacer(modifier = Modifier.height(16.dp))
+
+                    SignUpTextField(
+                        label = "EMAIL",
                         value = viewModel.email,
                         onValueChange = { viewModel.onEmailChange(it) },
                         placeholder = "nombre@ejemplo.com",
@@ -255,6 +261,7 @@ fun SignUpTextField(
     onValueChange: (String) -> Unit,
     placeholder: String,
     isPassword: Boolean = false,
+    keyboardOptions: KeyboardOptions = KeyboardOptions.Default,
     error: String? = null
 ) {
     Column {
@@ -271,6 +278,8 @@ fun SignUpTextField(
             modifier = Modifier.fillMaxWidth(),
             placeholder = { Text(placeholder, color = OnSurfaceVariant.copy(alpha = 0.5f), fontSize = 14.sp) },
             singleLine = true,
+            visualTransformation = if (isPassword) PasswordVisualTransformation() else VisualTransformation.None,
+            keyboardOptions = keyboardOptions,
             colors = TextFieldDefaults.colors(
                 focusedContainerColor = Neutral,
                 unfocusedContainerColor = Neutral,
