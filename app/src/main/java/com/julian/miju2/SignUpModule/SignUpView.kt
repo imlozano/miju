@@ -1,6 +1,7 @@
 package com.julian.miju2.SignUpModule
 
 import androidx.compose.foundation.BorderStroke
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -10,6 +11,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.CameraAlt
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -21,14 +23,71 @@ import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.withStyle
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.navigation.NavController
 import com.julian.miju2.ui.theme.*
 
 @Composable
-fun SignUpScreen(viewModel: SignUpViewModel = viewModel()) {
+fun SignUpTextField(
+    label: String,
+    value: String,
+    onValueChange: (String) -> Unit,
+    placeholder: String,
+    isPassword: Boolean = false,
+    keyboardOptions: KeyboardOptions = KeyboardOptions.Default,
+    error: String? = null
+) {
+    Column {
+        Text(
+            text = label,
+            fontSize = 11.sp,
+            fontWeight = FontWeight.Bold,
+            color = Primary
+        )
+        Spacer(modifier = Modifier.height(4.dp))
+        TextField(
+            value = value,
+            onValueChange = onValueChange,
+            modifier = Modifier.fillMaxWidth(),
+            placeholder = { Text(placeholder, color = OnSurfaceVariant.copy(alpha = 0.5f), fontSize = 14.sp) },
+            singleLine = true,
+            visualTransformation = if (isPassword) PasswordVisualTransformation() else VisualTransformation.None,
+            keyboardOptions = keyboardOptions,
+            colors = TextFieldDefaults.colors(
+                focusedContainerColor = Neutral,
+                unfocusedContainerColor = Neutral,
+                disabledContainerColor = Neutral,
+                focusedIndicatorColor = Color.Transparent,
+                unfocusedIndicatorColor = Color.Transparent,
+            ),
+            shape = RoundedCornerShape(8.dp),
+            isError = error != null,
+            supportingText = {
+                if (error != null) {
+                    Text(text = error, color = MaterialTheme.colorScheme.error, fontSize = 10.sp)
+                }
+            }
+        )
+    }
+}
+
+@Composable
+fun SignUpScreen(
+    navController: NavController,
+    viewModel: SignUpViewModel = viewModel()
+) {
+    // Escuchar el estado de éxito para navegar
+    LaunchedEffect(viewModel.signUpSuccess) {
+        if (viewModel.signUpSuccess) {
+            navController.navigate("login") {
+                // Limpiar el historial para que no pueda volver al registro dándole atrás
+                popUpTo("signup") { inclusive = true }
+            }
+        }
+    }
+
     Surface(
         modifier = Modifier.fillMaxSize(),
         color = Neutral
@@ -147,7 +206,7 @@ fun SignUpScreen(viewModel: SignUpViewModel = viewModel()) {
                                 withStyle(style = SpanStyle(color = Primary, fontWeight = FontWeight.Bold)) {
                                     append("Política de Privacidad")
                                 }
-                                append(". Entiendo que FinFlow procesará mis datos para la gestión de mi cuenta.")
+                                append(". Entiendo que MiJu procesará mis datos para la gestión de mi cuenta.")
                             },
                             fontSize = 11.sp,
                             lineHeight = 16.sp,
@@ -243,7 +302,9 @@ fun SignUpScreen(viewModel: SignUpViewModel = viewModel()) {
                         append("Inicia Sesión aquí")
                     }
                 },
-                modifier = Modifier.fillMaxWidth(),
+                modifier = Modifier.fillMaxWidth().clickable {
+                   navController.navigate("login")
+                },
                 textAlign = TextAlign.Center,
                 fontSize = 14.sp,
                 color = OnSurfaceVariant
@@ -251,57 +312,5 @@ fun SignUpScreen(viewModel: SignUpViewModel = viewModel()) {
 
             Spacer(modifier = Modifier.height(24.dp))
         }
-    }
-}
-
-@Composable
-fun SignUpTextField(
-    label: String,
-    value: String,
-    onValueChange: (String) -> Unit,
-    placeholder: String,
-    isPassword: Boolean = false,
-    keyboardOptions: KeyboardOptions = KeyboardOptions.Default,
-    error: String? = null
-) {
-    Column {
-        Text(
-            text = label,
-            fontSize = 11.sp,
-            fontWeight = FontWeight.Bold,
-            color = Primary
-        )
-        Spacer(modifier = Modifier.height(4.dp))
-        TextField(
-            value = value,
-            onValueChange = onValueChange,
-            modifier = Modifier.fillMaxWidth(),
-            placeholder = { Text(placeholder, color = OnSurfaceVariant.copy(alpha = 0.5f), fontSize = 14.sp) },
-            singleLine = true,
-            visualTransformation = if (isPassword) PasswordVisualTransformation() else VisualTransformation.None,
-            keyboardOptions = keyboardOptions,
-            colors = TextFieldDefaults.colors(
-                focusedContainerColor = Neutral,
-                unfocusedContainerColor = Neutral,
-                disabledContainerColor = Neutral,
-                focusedIndicatorColor = Color.Transparent,
-                unfocusedIndicatorColor = Color.Transparent,
-            ),
-            shape = RoundedCornerShape(8.dp),
-            isError = error != null,
-            supportingText = {
-                if (error != null) {
-                    Text(text = error, color = MaterialTheme.colorScheme.error, fontSize = 10.sp)
-                }
-            }
-        )
-    }
-}
-
-@Preview(showBackground = true, showSystemUi = true)
-@Composable
-fun SignUpPreview() {
-    Miju2Theme {
-        SignUpScreen()
     }
 }

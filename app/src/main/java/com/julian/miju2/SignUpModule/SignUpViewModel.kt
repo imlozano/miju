@@ -126,6 +126,8 @@ class SignUpViewModel : ViewModel() {
 
     private fun validateFields(): Boolean {
         var isValid = true
+
+        val emailPattern = "^[A-Za-z0-9+_.-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,6}$".toRegex()
         
         if (fullName.isBlank()) {
             fullNameError = "El nombre es obligatorio"
@@ -136,8 +138,8 @@ class SignUpViewModel : ViewModel() {
             documentIdError = "El documento debe tener al menos 6 dígitos"
             isValid = false
         }
-        
-        if (!android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
+
+        if (!email.matches(emailPattern)) {
             emailError = "Email no válido"
             isValid = false
         }
