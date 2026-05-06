@@ -1,3 +1,37 @@
 <resources>
-    <string name="app_name">Miju2</string>
+    <!-- App General -->
+    <string name="app_name">MiJu</string>
+
+    <!-- SignUp Screen -->
+    <string name="signup_tittle_secure">REGISTRO SEGURO</string>
+    <string name="signup_subtitle_step">Solo unos pasos para activar tu cuenta.</string>
+
+    <!-- SignUp Form Labels and Placeholders -->
+    <string name="signup_label_fullname">NOMBRE COMPLETO</string>
+    <string name="signup_placeholder_fullname">Ej. Alejandro Valdivia</string>
+    <string name="signup_label_document">NÚMERO DE DOCUMENTO</string>
+    <string name="signup_placeholder_document">1000000000</string>
+    <string name="signup_label_email">EMAIL</string>
+    <string name="signup_placeholder_email">nombre@ejemplo.com</string>
+    <string name="signup_label_password">CONTRASEÑA</string>
+    <string name="signup_placeholder_password">••••••••</string>
+    <string name="signup_label_confirm_password">CONFIRMAR</string>
+
+    <!-- SignUp Terms -->
+    <string name="signup_terms_accept">Acepto los </string>
+    <string name="signup_terms_service">Términos de Servicio</string>
+    <string name="signup_terms_and"> y la </string>
+    <string name="signup_terms_privacy">Política de Privacidad</string>
+    <string name="signup_terms_process">. Entiendo que MiJu procesará mis datos para la gestión de mi cuenta.</string>
+
+    <string name="signup_btn_create_account">Crear Cuenta</string>
+
+    <!-- ID Verification -->
+    <string name="signup_id_verification_tittle">Verificación de identidad</string>
+    <string name="signup_id_verification_label_instruction">Captura una foto clara de tu Cédula de Identidad para activar las funciones de transferencia.</string>
+    <string name="signup_btn_open_camera">ABRIR CÁMARA</string>
+
+    <!-- Footer -->
+    <string name="signup_account_created">¿Ya tienes cuenta? </string>
+    <string name="signup_login_link">Inicia Sesión aquí</string>
 </resources>

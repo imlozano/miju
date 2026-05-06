@@ -15,6 +15,7 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.font.FontWeight
@@ -28,6 +29,7 @@ import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import com.julian.miju2.ui.theme.*
+import com.julian.miju2.R
 
 @Composable
 fun SignUpTextField(
@@ -51,7 +53,8 @@ fun SignUpTextField(
             value = value,
             onValueChange = onValueChange,
             modifier = Modifier.fillMaxWidth(),
-            placeholder = { Text(placeholder, color = OnSurfaceVariant.copy(alpha = 0.5f), fontSize = 14.sp) },
+            placeholder = { Text(placeholder,
+                color = OnSurfaceVariant.copy(alpha = 0.5f), fontSize = 14.sp) },
             singleLine = true,
             visualTransformation = if (isPassword) PasswordVisualTransformation() else VisualTransformation.None,
             keyboardOptions = keyboardOptions,
@@ -105,13 +108,13 @@ fun SignUpScreen(
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 Text(
-                    text = "MiJu",
+                    text = stringResource(id = R.string.app_name),
                     color = Primary,
                     fontSize = 20.sp,
                     fontWeight = FontWeight.ExtraBold
                 )
                 Text(
-                    text = "REGISTRO SEGURO",
+                    text = stringResource(id = R.string.signup_tittle_secure),
                     color = OnSurfaceVariant,
                     fontSize = 12.sp,
                     fontWeight = FontWeight.Bold
@@ -121,7 +124,7 @@ fun SignUpScreen(
             Spacer(modifier = Modifier.height(32.dp))
 
             Text(
-                text = "Solo unos pasos para activar tu cuenta.",
+                text = stringResource(id = R.string.signup_subtitle_step),
                 color = OnSurfaceVariant,
                 fontSize = 14.sp
             )
@@ -137,10 +140,10 @@ fun SignUpScreen(
             ) {
                 Column(modifier = Modifier.padding(20.dp)) {
                     SignUpTextField(
-                        label = "NOMBRE COMPLETO",
+                        label = stringResource(id = R.string.signup_label_fullname),
                         value = viewModel.fullName,
                         onValueChange = { viewModel.onFullNameChange(it) },
-                        placeholder = "Ej. Alejandro Valdivia",
+                        placeholder = stringResource(id = R.string.signup_placeholder_fullname),
                         error = viewModel.fullNameError
                     )
 
@@ -148,10 +151,10 @@ fun SignUpScreen(
 
 
                     SignUpTextField(
-                        label = "NÚMERO DE DOCUMENTO",
+                        label = stringResource(id = R.string.signup_label_document),
                         value = viewModel.documentId,
                         onValueChange = { viewModel.onDocumentIdChange(it) },
-                        placeholder = "1000000000",
+                        placeholder = stringResource(id = R.string.signup_placeholder_document),
                         keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
                         error = viewModel.documentIdError
                     )
@@ -159,20 +162,20 @@ fun SignUpScreen(
                     Spacer(modifier = Modifier.height(16.dp))
 
                     SignUpTextField(
-                        label = "EMAIL",
+                        label = stringResource(id = R.string.signup_label_email),
                         value = viewModel.email,
                         onValueChange = { viewModel.onEmailChange(it) },
-                        placeholder = "nombre@ejemplo.com",
+                        placeholder = stringResource(id = R.string.signup_placeholder_email),
                         error = viewModel.emailError
                     )
 
                     Spacer(modifier = Modifier.height(16.dp))
 
                     SignUpTextField(
-                        label = "CONTRASEÑA",
+                        label = stringResource(id = R.string.signup_label_password),
                         value = viewModel.password,
                         onValueChange = { viewModel.onPasswordChange(it) },
-                        placeholder = "••••••••",
+                        placeholder = stringResource(id = R.string.signup_placeholder_password),
                         isPassword = true,
                         error = viewModel.passwordError
                     )
@@ -180,10 +183,10 @@ fun SignUpScreen(
                     Spacer(modifier = Modifier.height(16.dp))
 
                     SignUpTextField(
-                        label = "CONFIRMAR",
+                        label = stringResource(id = R.string.signup_label_confirm_password),
                         value = viewModel.confirmPassword,
                         onValueChange = { viewModel.onConfirmPasswordChange(it) },
-                        placeholder = "••••••••",
+                        placeholder = stringResource(id = R.string.signup_placeholder_password),
                         isPassword = true,
                         error = viewModel.confirmPasswordError
                     )
@@ -198,15 +201,15 @@ fun SignUpScreen(
                         )
                         Text(
                             text = buildAnnotatedString {
-                                append("Acepto los ")
+                                append(stringResource(id = R.string.signup_terms_accept))
                                 withStyle(style = SpanStyle(color = Primary, fontWeight = FontWeight.Bold)) {
-                                    append("Términos de Servicio")
+                                    append(stringResource(id = R.string.signup_terms_service))
                                 }
-                                append(" y la ")
+                                append(stringResource(id = R.string.signup_terms_and))
                                 withStyle(style = SpanStyle(color = Primary, fontWeight = FontWeight.Bold)) {
-                                    append("Política de Privacidad")
+                                    append(stringResource(id = R.string.signup_terms_privacy))
                                 }
-                                append(". Entiendo que MiJu procesará mis datos para la gestión de mi cuenta.")
+                                append(stringResource(id = R.string.signup_terms_process))
                             },
                             fontSize = 11.sp,
                             lineHeight = 16.sp,
@@ -225,9 +228,11 @@ fun SignUpScreen(
                         colors = ButtonDefaults.buttonColors(containerColor = Primary)
                     ) {
                         if (viewModel.isLoading) {
-                            CircularProgressIndicator(color = Background, modifier = Modifier.size(24.dp))
+                            CircularProgressIndicator(color = Background,
+                                modifier = Modifier.size(24.dp))
                         } else {
-                            Text("Crear Cuenta", fontWeight = FontWeight.Bold, fontSize = 16.sp)
+                            Text(stringResource(id = R.string.signup_btn_create_account),
+                                fontWeight = FontWeight.Bold, fontSize = 16.sp)
                         }
                     }
                 }
@@ -243,14 +248,14 @@ fun SignUpScreen(
             ) {
                 Column(modifier = Modifier.padding(20.dp)) {
                     Text(
-                        text = "Verificación de Identidad",
+                        text = stringResource(id = R.string.signup_id_verification_tittle),
                         color = Primary,
                         fontWeight = FontWeight.Bold,
                         fontSize = 16.sp
                     )
                     Spacer(modifier = Modifier.height(8.dp))
                     Text(
-                        text = "Captura una foto clara de tu Cédula de Identidad para activar las funciones de transferencia.",
+                        text = stringResource(id = R.string.signup_id_verification_label_instruction),
                         color = OnSurfaceVariant,
                         fontSize = 13.sp
                     )
@@ -281,7 +286,7 @@ fun SignUpScreen(
                                 }
                                 Spacer(modifier = Modifier.height(8.dp))
                                 Text(
-                                    "ABRIR CÁMARA",
+                                    stringResource(id = R.string.signup_btn_open_camera),
                                     fontSize = 12.sp,
                                     fontWeight = FontWeight.Bold,
                                     color = Primary,
@@ -297,9 +302,9 @@ fun SignUpScreen(
 
             Text(
                 text = buildAnnotatedString {
-                    append("¿Ya tienes cuenta? ")
+                    append(stringResource(id = R.string.signup_account_created))
                     withStyle(style = SpanStyle(color = Secondary, fontWeight = FontWeight.Bold)) {
-                        append("Inicia Sesión aquí")
+                        append(stringResource(id = R.string.signup_login_link))
                     }
                 },
                 modifier = Modifier.fillMaxWidth().clickable {
