@@ -89,7 +89,6 @@ private val database = FirebaseDatabase.getInstance().getReference("users")
 
                 if (dbPassword == password) {
                     loginSuccess = true
-//                    Log.d(null, "Login exitoso: documentId=$documentId")
                     println("Login exitoso: documentId=$documentId")
                 } else {
                     passwordError = "Contraseña incorrecta"
