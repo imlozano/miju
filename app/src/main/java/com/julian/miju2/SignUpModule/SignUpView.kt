@@ -172,6 +172,17 @@ fun SignUpScreen(
                     Spacer(modifier = Modifier.height(16.dp))
 
                     SignUpTextField(
+                        label = stringResource(id = R.string.signup_label_cellphone_number),
+                        value = viewModel.cellphoneNumber,
+                        onValueChange = { viewModel.onCellphoneNumberChange(it) },
+                        placeholder = stringResource(id = R.string.signup_placeholder_cellphone_number),
+                        keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
+                        error = viewModel.cellphoneNumberError
+                    )
+
+                    Spacer(modifier = Modifier.height(16.dp))
+
+                    SignUpTextField(
                         label = stringResource(id = R.string.signup_label_password),
                         value = viewModel.password,
                         onValueChange = { viewModel.onPasswordChange(it) },
@@ -202,11 +213,13 @@ fun SignUpScreen(
                         Text(
                             text = buildAnnotatedString {
                                 append(stringResource(id = R.string.signup_terms_accept))
-                                withStyle(style = SpanStyle(color = Primary, fontWeight = FontWeight.Bold)) {
+                                withStyle(style = SpanStyle(color = Primary,
+                                    fontWeight = FontWeight.Bold)) {
                                     append(stringResource(id = R.string.signup_terms_service))
                                 }
                                 append(stringResource(id = R.string.signup_terms_and))
-                                withStyle(style = SpanStyle(color = Primary, fontWeight = FontWeight.Bold)) {
+                                withStyle(style = SpanStyle(color = Primary,
+                                    fontWeight = FontWeight.Bold)) {
                                     append(stringResource(id = R.string.signup_terms_privacy))
                                 }
                                 append(stringResource(id = R.string.signup_terms_process))

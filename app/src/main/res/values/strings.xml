@@ -13,6 +13,8 @@
     <string name="signup_placeholder_document">1000000000</string>
     <string name="signup_label_email">EMAIL</string>
     <string name="signup_placeholder_email">nombre@ejemplo.com</string>
+    <string name="signup_label_cellphone_number">NUMERO DE CELULAR</string>
+    <string name="signup_placeholder_cellphone_number">3212311231</string>
     <string name="signup_label_password">CONTRASEÑA</string>
     <string name="signup_placeholder_password">••••••••</string>
     <string name="signup_label_confirm_password">CONFIRMAR</string>

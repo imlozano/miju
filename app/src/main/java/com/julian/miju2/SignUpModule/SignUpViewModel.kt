@@ -18,6 +18,8 @@ class SignUpViewModel : ViewModel() {
         private set
     var email by mutableStateOf("")
         private set
+    var cellphoneNumber by mutableStateOf("")
+        private set
     var password by mutableStateOf("")
         private set
     var confirmPassword by mutableStateOf("")
@@ -31,6 +33,8 @@ class SignUpViewModel : ViewModel() {
     var documentIdError by mutableStateOf<String?>(null)
         private set
     var emailError by mutableStateOf<String?>(null)
+        private set
+    var cellphoneNumberError by mutableStateOf<String?>(null)
         private set
     var passwordError by mutableStateOf<String?>(null)
         private set
@@ -59,6 +63,14 @@ class SignUpViewModel : ViewModel() {
     fun onEmailChange(newValue: String) {
         email = newValue
         emailError = null
+    }
+
+    fun onCellphoneNumberChange(newValue: String) {
+        // Solo permitir números
+        if (newValue.all { it.isDigit() }) {
+            cellphoneNumber = newValue
+            cellphoneNumberError = null
+        }
     }
 
     fun onPasswordChange(newValue: String) {
@@ -103,6 +115,7 @@ class SignUpViewModel : ViewModel() {
             "fullName" to fullName,
             "documentId" to documentId,
             "email" to email,
+            "cellphoneNumber" to cellphoneNumber,
             "password" to password
         )
 
@@ -141,6 +154,11 @@ class SignUpViewModel : ViewModel() {
 
         if (!email.matches(emailPattern)) {
             emailError = "Email no válido"
+            isValid = false
+        }
+
+        if (cellphoneNumber.length < 10) {
+            cellphoneNumberError = "El número debe tener al menos 10 digitos"
             isValid = false
         }
 
