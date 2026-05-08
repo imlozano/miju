@@ -15,10 +15,14 @@ val PrimaryDark = Color(0xFF15157D)         // Índigo más oscuro para gradient
 val Secondary = Color(0xFF00A99D)           // Teal para enlaces
 val Tertiary = Color(0xFF6C2A00)            // Acento cálido (reservado)
 val Neutral = Color(0xFFF8F9FA)             // Fondos de TextField
-val Background = Color(0xFFFFFFFF)             // Fondo de pantalla
+val Background = Color(0xFFFFFFFF)          // Fondo de pantalla
 val OnSurface = Color(0xFF1A1A1A)           // Texto principal
 val OnSurfaceVariant = Color(0xFF667085)    // Texto secundario/gris
 
 //== Degrado de fondo
 val GradientStart = Color(0xFFD8DCFA)  // Un poco más saturado que morado muy claro, casi blanco
 val GradientEnd = Color(0xFFB8BFF2)    // morado más definido
+
+// Feedback & Actions
+val Error = Color(0xFFD32F2F)               // Rojo para acciones críticas
+val ErrorLight = Color(0xFFE57373)
