@@ -13,7 +13,7 @@
     <string name="signup_placeholder_document">1000000000</string>
     <string name="signup_label_email">EMAIL</string>
     <string name="signup_placeholder_email">nombre@ejemplo.com</string>
-    <string name="signup_label_cellphone_number">NUMERO DE CELULAR</string>
+    <string name="signup_label_cellphone_number">NÚMERO DE CELULAR</string>
     <string name="signup_placeholder_cellphone_number">3212311231</string>
     <string name="signup_label_password">CONTRASEÑA</string>
     <string name="signup_placeholder_password">••••••••</string>
@@ -36,4 +36,15 @@
     <!-- Footer -->
     <string name="signup_account_created">¿Ya tienes cuenta? </string>
     <string name="signup_login_link">Inicia Sesión aquí</string>
+
+    <!-- Profile Screen -->
+    <string name="profile_title_personal_data">Datos Personales</string>
+    <string name="profile_label_email">CORREO ELECTRÓNICO</string>
+    <string name="profile_title_security">Seguridad y Acceso</string>
+    <string name="profile_btn_change_password">Cambio de Clave</string>
+    <string name="profile_btn_logout">Cerrar Sesión</string>
+    <string name="profile_footer_version">MiJu V1 — 2026</string>
+    <string name="profile_nav_home">HOME</string>
+    <string name="profile_nav_transactions">TRANSACTIONS</string>
+    <string name="profile_nav_profile">PROFILE</string>
 </resources>

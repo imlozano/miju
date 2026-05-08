@@ -69,7 +69,7 @@ fun SignUpTextField(
             isError = error != null,
             supportingText = {
                 if (error != null) {
-                    Text(text = error, color = MaterialTheme.colorScheme.error, fontSize = 10.sp)
+                    Text(text = error, color = Error, fontSize = 10.sp)
                 }
             }
         )

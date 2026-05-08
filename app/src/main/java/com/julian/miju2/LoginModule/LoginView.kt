@@ -1,5 +1,6 @@
 package com.julian.miju2.LoginModule
 
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
@@ -11,6 +12,7 @@ import androidx.compose.material.icons.filled.Visibility
 import androidx.compose.material.icons.filled.VisibilityOff
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -22,11 +24,26 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.navigation.NavController
+import androidx.navigation.compose.rememberNavController
 import com.julian.miju2.ui.theme.*
 
 @Composable
-fun LoginScreen(viewModel: LoginViewModel = viewModel()) {
-    androidx.compose.material3.Surface(
+fun LoginScreen(
+    navController: NavController,
+    viewModel: LoginViewModel = viewModel()
+) {
+    // Escuchar el éxito del login para navegar al perfil
+    LaunchedEffect(viewModel.loginSuccess) {
+        if (viewModel.loginSuccess) {
+            navController.navigate("profile/${viewModel.documentId}") {
+                // Limpiar el historial para que el usuario no regrese al login al dar atrás
+                popUpTo("login") { inclusive = true }
+            }
+        }
+    }
+
+    Surface(
         modifier = Modifier.fillMaxSize(),
         color = Background
     ) {
@@ -217,17 +234,22 @@ fun LoginScreen(viewModel: LoginViewModel = viewModel()) {
                     text = "Regístrate ahora",
                     color = Primary,
                     fontSize = 14.sp,
-                    fontWeight = FontWeight.Bold
+                    fontWeight = FontWeight.Bold,
+                    modifier = Modifier.clickable {
+                        navController.navigate("signup")
+                    }
                 )
             }
         }
     }
 }
 
+/*
 @Preview(showBackground = true, showSystemUi = true)
 @Composable
 fun LoginPreview() {
     Miju2Theme {
-        LoginScreen()
+        LoginScreen(rememberNavController())
     }
 }
+*/
