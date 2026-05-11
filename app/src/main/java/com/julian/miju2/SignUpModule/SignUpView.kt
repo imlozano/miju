@@ -10,8 +10,7 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.CameraAlt
 import androidx.compose.material3.*
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -30,6 +29,8 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import com.julian.miju2.ui.theme.*
 import com.julian.miju2.R
+import com.julian.miju2.components.ShowLoadingAlertDialog
+import com.julian.miju2.components.ShowMessageAlertDialog
 
 @Composable
 fun SignUpTextField(
@@ -39,7 +40,7 @@ fun SignUpTextField(
     placeholder: String,
     isPassword: Boolean = false,
     keyboardOptions: KeyboardOptions = KeyboardOptions.Default,
-    error: String? = null
+    error: Int? = null
 ) {
     Column {
         Text(
@@ -69,7 +70,7 @@ fun SignUpTextField(
             isError = error != null,
             supportingText = {
                 if (error != null) {
-                    Text(text = error, color = Error, fontSize = 10.sp)
+                    Text(text = stringResource(id = error), color = Error, fontSize = 10.sp)
                 }
             }
         )
@@ -81,14 +82,30 @@ fun SignUpScreen(
     navController: NavController,
     viewModel: SignUpViewModel = viewModel()
 ) {
-    // Escuchar el estado de éxito para navegar
-    LaunchedEffect(viewModel.signUpSuccess) {
-        if (viewModel.signUpSuccess) {
-            navController.navigate("login") {
-                // Limpiar el historial para que no pueda volver al registro dándole atrás
-                popUpTo("signup") { inclusive = true }
-            }
-        }
+    // Estados para los diálogos
+    var showResultDialog by remember { mutableStateOf(false) }
+    var dialogTitle by remember { mutableIntStateOf(R.string.error_title) }
+    var dialogMessage by remember { mutableIntStateOf(0) }
+    var isSuccess by remember { mutableStateOf(false) }
+
+    // Diálogos
+    if (viewModel.isLoading) {
+        ShowLoadingAlertDialog()
+    }
+
+    if (showResultDialog) {
+        ShowMessageAlertDialog(
+            onConfirmation = {
+                showResultDialog = false
+                if (isSuccess) {
+                    navController.navigate("login") {
+                        popUpTo("signup") { inclusive = true }
+                    }
+                }
+            },
+            dialogTitle = dialogTitle,
+            dialogText = dialogMessage
+        )
     }
 
     Surface(
@@ -233,20 +250,23 @@ fun SignUpScreen(
                     Spacer(modifier = Modifier.height(24.dp))
 
                     Button(
-                        onClick = { viewModel.onSignUpClick() },
+                        onClick = { 
+                            viewModel.onSignUpClick { success, messageResId ->
+                                isSuccess = success
+                                dialogTitle = if (success) R.string.success_title else R.string.error_title
+                                dialogMessage = messageResId
+                                showResultDialog = true
+                            }
+                        },
                         modifier = Modifier
                             .fillMaxWidth()
                             .height(56.dp),
                         shape = RoundedCornerShape(16.dp),
-                        colors = ButtonDefaults.buttonColors(containerColor = Primary)
+                        colors = ButtonDefaults.buttonColors(containerColor = Primary),
+                        enabled = !viewModel.isLoading
                     ) {
-                        if (viewModel.isLoading) {
-                            CircularProgressIndicator(color = Background,
-                                modifier = Modifier.size(24.dp))
-                        } else {
-                            Text(stringResource(id = R.string.signup_btn_create_account),
-                                fontWeight = FontWeight.Bold, fontSize = 16.sp)
-                        }
+                        Text(stringResource(id = R.string.signup_btn_create_account),
+                            fontWeight = FontWeight.Bold, fontSize = 16.sp)
                     }
                 }
             }
