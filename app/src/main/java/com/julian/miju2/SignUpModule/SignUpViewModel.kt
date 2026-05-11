@@ -5,6 +5,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import com.google.firebase.database.FirebaseDatabase
+import com.julian.miju2.R
 
 class SignUpViewModel : ViewModel() {
 
@@ -27,24 +28,22 @@ class SignUpViewModel : ViewModel() {
     var acceptedTerms by mutableStateOf(false)
         private set
 
-    // Estados de error
-    var fullNameError by mutableStateOf<String?>(null)
+    // Estados de error (Cambiados a Int? para manejar R.string)
+    var fullNameError by mutableStateOf<Int?>(null)
         private set
-    var documentIdError by mutableStateOf<String?>(null)
+    var documentIdError by mutableStateOf<Int?>(null)
         private set
-    var emailError by mutableStateOf<String?>(null)
+    var emailError by mutableStateOf<Int?>(null)
         private set
-    var cellphoneNumberError by mutableStateOf<String?>(null)
+    var cellphoneNumberError by mutableStateOf<Int?>(null)
         private set
-    var passwordError by mutableStateOf<String?>(null)
+    var passwordError by mutableStateOf<Int?>(null)
         private set
-    var confirmPasswordError by mutableStateOf<String?>(null)
+    var confirmPasswordError by mutableStateOf<Int?>(null)
         private set
 
     // Estado de UI
     var isLoading by mutableStateOf(false)
-        private set
-    var signUpSuccess by mutableStateOf(false)
         private set
 
     // Eventos
@@ -66,7 +65,6 @@ class SignUpViewModel : ViewModel() {
     }
 
     fun onCellphoneNumberChange(newValue: String) {
-        // Solo permitir números
         if (newValue.all { it.isDigit() }) {
             cellphoneNumber = newValue
             cellphoneNumberError = null
@@ -87,30 +85,33 @@ class SignUpViewModel : ViewModel() {
         acceptedTerms = newValue
     }
 
-    fun onSignUpClick() {
+    /**
+     * Intento de registro. 
+     * @param onResult Callback que devuelve (éxito: Boolean, mensajeResId: Int)
+     */
+    fun onSignUpClick(onResult: (Boolean, Int) -> Unit) {
         if (validateFields()) {
             isLoading = true
             
-            // 1. Verificar si el email ya existe en algún usuario
+            // 1. Verificar si el email ya existe
             database.orderByChild("email").equalTo(email).get()
                 .addOnSuccessListener { snapshot ->
                     if (snapshot.exists()) {
-
                         isLoading = false
-                        emailError = "El correo ya existe, usa uno nuevo"
+                        emailError = R.string.error_email_exists
+                        onResult(false, R.string.error_email_exists)
                     } else {
-
-                        registerUser()
+                        registerUser(onResult)
                     }
                 }
                 .addOnFailureListener {
                     isLoading = false
-                    emailError = "Error al verificar correo: ${it.message}"
+                    onResult(false, R.string.error_connection_failed)
                 }
         }
     }
 
-    private fun registerUser() {
+    private fun registerUser(onResult: (Boolean, Int) -> Unit) {
         val user = mapOf(
             "fullName" to fullName,
             "documentId" to documentId,
@@ -119,16 +120,14 @@ class SignUpViewModel : ViewModel() {
             "password" to password
         )
 
-        // documentId como llave
         database.child(documentId).setValue(user)
             .addOnSuccessListener {
                 isLoading = false
-                signUpSuccess = true
-                println("Registro exitoso para: $documentId")
+                onResult(true, R.string.signup_success)
             }
             .addOnFailureListener {
                 isLoading = false
-                documentIdError = "Error al registrar: ${it.message}"
+                onResult(false, R.string.error_register_failed)
             }
     }
 
@@ -139,36 +138,35 @@ class SignUpViewModel : ViewModel() {
 
     private fun validateFields(): Boolean {
         var isValid = true
-
         val emailPattern = "^[A-Za-z0-9+_.-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,6}$".toRegex()
         
         if (fullName.isBlank()) {
-            fullNameError = "El nombre es obligatorio"
+            fullNameError = R.string.error_name_required
             isValid = false
         }
 
         if (documentId.length < 6) {
-            documentIdError = "El documento debe tener al menos 6 dígitos"
+            documentIdError = R.string.error_document_short
             isValid = false
         }
 
         if (!email.matches(emailPattern)) {
-            emailError = "Email no válido"
+            emailError = R.string.error_invalid_email
             isValid = false
         }
 
         if (cellphoneNumber.length < 10) {
-            cellphoneNumberError = "El número debe tener al menos 10 digitos"
+            cellphoneNumberError = R.string.error_cellphone_short
             isValid = false
         }
 
         if (password.length < 6) {
-            passwordError = "Mínimo 6 caracteres"
+            passwordError = R.string.error_password_short
             isValid = false
         }
 
         if (password != confirmPassword) {
-            confirmPasswordError = "Las contraseñas no coinciden"
+            confirmPasswordError = R.string.error_passwords_not_match
             isValid = false
         }
         
