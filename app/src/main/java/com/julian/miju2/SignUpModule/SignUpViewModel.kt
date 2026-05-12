@@ -171,7 +171,7 @@ class SignUpViewModel : ViewModel() {
             }
             documentId.length == 10 -> {
                 val nuipValue = documentId.toLongOrNull() ?: 0L
-                if (nuipValue <= 1000000000L) { 
+                if (nuipValue <= 1000000000L) {
                     documentIdError = R.string.error_document_nuip_range
                     isValid = false
                 }
@@ -188,9 +188,30 @@ class SignUpViewModel : ViewModel() {
             isValid = false
         }
 
-        if (password.length < 6) {
-            passwordError = R.string.error_password_short
-            isValid = false
+        // --- Nuevas validaciones de contraseña ---
+        val hasUpperCase = password.any { it.isUpperCase() }
+        val hasLowerCase = password.any { it.isLowerCase() }
+        val hasDigit = password.any { it.isDigit() }
+        val forbiddenSequences = listOf("12345", "qwerty", "password", "abcde", "123456")
+
+        when {
+            password.length < 12 -> {
+                passwordError = R.string.error_password_min_length
+                isValid = false
+            }
+            !hasUpperCase || !hasLowerCase || !hasDigit -> {
+                passwordError = R.string.error_password_complexity
+                isValid = false
+            }
+            (documentId.isNotEmpty() && password.contains(documentId, ignoreCase = true)) || 
+            (fullName.isNotEmpty() && password.contains(fullName, ignoreCase = true)) -> {
+                passwordError = R.string.error_password_personal_info
+                isValid = false
+            }
+            forbiddenSequences.any { password.contains(it, ignoreCase = true) } -> {
+                passwordError = R.string.error_password_forbidden_sequence
+                isValid = false
+            }
         }
 
         if (password != confirmPassword) {
