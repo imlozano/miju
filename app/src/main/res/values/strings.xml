@@ -43,6 +43,7 @@
     <string name="error_document_invalid">Documento inválido</string>
     <string name="error_invalid_email">Email no válido</string>
     <string name="error_cellphone_short">El número debe tener al menos 10 dígitos</string>
+    <string name="error_terms_required">Se deben aceptar los términos y condiciones</string>
 
     <!-- Password Validation Errors -->
     <string name="error_password_min_length">La contraseña debe cumplir con los requisitos: Mínimo 12 caracteres</string>
