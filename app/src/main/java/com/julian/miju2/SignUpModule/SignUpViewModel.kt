@@ -53,7 +53,7 @@ class SignUpViewModel : ViewModel() {
     }
 
     fun onDocumentIdChange(newValue: String) {
-        if (newValue.all { it.isDigit() }) {
+        if (newValue.all { it.isDigit() } && newValue.length <= 10) {
             documentId = newValue
             documentIdError = null
         }
@@ -159,22 +159,15 @@ class SignUpViewModel : ViewModel() {
             isValid = false
         }
 
-        // Validaciones de documento de identidad
-        when {
-            documentId.length < 3 -> {
-                documentIdError = R.string.error_document_min_length
+        // Validacion de documento de identidad
+        if (documentId.length != 10) {
+            documentIdError = R.string.error_document_length_10
+            isValid = false
+        } else {
+            val nuipValue = documentId.toLongOrNull() ?: 0L
+            if (nuipValue <= 1000000000L) {
+                documentIdError = R.string.error_document_nuip_range
                 isValid = false
-            }
-            documentId.length > 10 -> {
-                documentIdError = R.string.error_document_max_length
-                isValid = false
-            }
-            documentId.length == 10 -> {
-                val nuipValue = documentId.toLongOrNull() ?: 0L
-                if (nuipValue <= 1000000000L) {
-                    documentIdError = R.string.error_document_nuip_range
-                    isValid = false
-                }
             }
         }
 
@@ -188,7 +181,7 @@ class SignUpViewModel : ViewModel() {
             isValid = false
         }
 
-        // --- Nuevas validaciones de contraseña ---
+        // Validaciones de contraseña
         val hasUpperCase = password.any { it.isUpperCase() }
         val hasLowerCase = password.any { it.isLowerCase() }
         val hasDigit = password.any { it.isDigit() }
