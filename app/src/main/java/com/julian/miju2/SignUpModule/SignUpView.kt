@@ -247,6 +247,15 @@ fun SignUpScreen(
                         )
                     }
 
+                    viewModel.termsError?.let { errorRes ->
+                        Text(
+                            text = stringResource(id = errorRes),
+                            color = Error,
+                            fontSize = 10.sp,
+                            modifier = Modifier.padding(start = 12.dp)
+                        )
+                    }
+
                     Spacer(modifier = Modifier.height(24.dp))
 
                     Button(

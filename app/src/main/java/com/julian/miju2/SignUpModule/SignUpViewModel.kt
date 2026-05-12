@@ -41,6 +41,8 @@ class SignUpViewModel : ViewModel() {
         private set
     var confirmPasswordError by mutableStateOf<Int?>(null)
         private set
+    var termsError by mutableStateOf<Int?>(null)
+        private set
 
     // Estado de UI
     var isLoading by mutableStateOf(false)
@@ -83,6 +85,7 @@ class SignUpViewModel : ViewModel() {
 
     fun onTermsChange(newValue: Boolean) {
         acceptedTerms = newValue
+        termsError = null
     }
 
     /**
@@ -213,6 +216,7 @@ class SignUpViewModel : ViewModel() {
         }
         
         if (!acceptedTerms) {
+            termsError = R.string.error_terms_required
             isValid = false
         }
 
