@@ -28,7 +28,7 @@ class SignUpViewModel : ViewModel() {
     var acceptedTerms by mutableStateOf(false)
         private set
 
-    // Estados de error (Cambiados a Int? para manejar R.string)
+    // Estados de error (Int? para mostrar los textos del xml)
     var fullNameError by mutableStateOf<Int?>(null)
         private set
     var documentIdError by mutableStateOf<Int?>(null)
@@ -86,22 +86,36 @@ class SignUpViewModel : ViewModel() {
     }
 
     /**
-     * Intento de registro. 
+     * Intento de registro con doble verificación de duplicados.
      * @param onResult Callback que devuelve (éxito: Boolean, mensajeResId: Int)
      */
     fun onSignUpClick(onResult: (Boolean, Int) -> Unit) {
         if (validateFields()) {
             isLoading = true
             
-            // 1. Verificar si el email ya existe
-            database.orderByChild("email").equalTo(email).get()
-                .addOnSuccessListener { snapshot ->
-                    if (snapshot.exists()) {
+            // 1. Verificar si el documento ya existe
+            database.child(documentId).get()
+                .addOnSuccessListener { docSnapshot ->
+                    if (docSnapshot.exists()) {
                         isLoading = false
-                        emailError = R.string.error_email_exists
-                        onResult(false, R.string.error_email_exists)
+                        documentIdError = R.string.error_document_invalid
+                        onResult(false, R.string.error_document_invalid)
                     } else {
-                        registerUser(onResult)
+                        // 2. Si el documento es nuevo, verificar el email
+                        database.orderByChild("email").equalTo(email).get()
+                            .addOnSuccessListener { emailSnapshot ->
+                                if (emailSnapshot.exists()) {
+                                    isLoading = false
+                                    emailError = R.string.error_email_exists
+                                    onResult(false, R.string.error_email_exists)
+                                } else {
+                                    registerUser(onResult)
+                                }
+                            }
+                            .addOnFailureListener {
+                                isLoading = false
+                                onResult(false, R.string.error_connection_failed)
+                            }
                     }
                 }
                 .addOnFailureListener {
@@ -145,9 +159,23 @@ class SignUpViewModel : ViewModel() {
             isValid = false
         }
 
-        if (documentId.length < 6) {
-            documentIdError = R.string.error_document_short
-            isValid = false
+        // Validaciones de documento de identidad
+        when {
+            documentId.length < 3 -> {
+                documentIdError = R.string.error_document_min_length
+                isValid = false
+            }
+            documentId.length > 10 -> {
+                documentIdError = R.string.error_document_max_length
+                isValid = false
+            }
+            documentId.length == 10 -> {
+                val nuipValue = documentId.toLongOrNull() ?: 0L
+                if (nuipValue <= 1000000000L) { 
+                    documentIdError = R.string.error_document_nuip_range
+                    isValid = false
+                }
+            }
         }
 
         if (!email.matches(emailPattern)) {
