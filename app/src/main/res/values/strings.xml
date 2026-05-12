@@ -40,11 +40,16 @@
     <string name="error_name_required">El nombre es obligatorio</string>
     <string name="error_document_min_length">Mínimo 3 dígitos</string>
     <string name="error_document_max_length">Máximo 10 dígitos</string>
-    <string name="error_document_nuip_range">Debe ser igual o mayor a 1.000.000.000</string>
+    <string name="error_document_nuip_range">Debe ser superior a 1.000.000.000</string>
     <string name="error_document_invalid">Documento inválido</string>
     <string name="error_invalid_email">Email no válido</string>
     <string name="error_cellphone_short">El número debe tener al menos 10 dígitos</string>
-    <string name="error_password_short">Mínimo 6 caracteres</string>
+
+    <!-- Password Validation Errors -->
+    <string name="error_password_min_length">La contraseña debe cumplir con los requisitos: Mínimo 12 caracteres</string>
+    <string name="error_password_complexity">La contraseña debe cumplir con los requisitos: Incluir mayúscula, minúscula y número</string>
+    <string name="error_password_personal_info">La contraseña debe cumplir con los requisitos: No incluir nombre o documento</string>
+    <string name="error_password_forbidden_sequence">La contraseña debe cumplir con los requisitos: Evitar secuencias comunes (12345, qwerty, etc.)</string>
     <string name="error_passwords_not_match">Las contraseñas no coinciden</string>
 
     <!-- ID Verification -->
