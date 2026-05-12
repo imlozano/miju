@@ -38,7 +38,10 @@
     <string name="signup_success">¡Registro exitoso!</string>
     <string name="error_register_failed">Error al registrar el usuario</string>
     <string name="error_name_required">El nombre es obligatorio</string>
-    <string name="error_document_short">El documento debe tener al menos 6 dígitos</string>
+    <string name="error_document_min_length">Mínimo 3 dígitos</string>
+    <string name="error_document_max_length">Máximo 10 dígitos</string>
+    <string name="error_document_nuip_range">Debe ser igual o mayor a 1.000.000.000</string>
+    <string name="error_document_invalid">Documento inválido</string>
     <string name="error_invalid_email">Email no válido</string>
     <string name="error_cellphone_short">El número debe tener al menos 10 dígitos</string>
     <string name="error_password_short">Mínimo 6 caracteres</string>
