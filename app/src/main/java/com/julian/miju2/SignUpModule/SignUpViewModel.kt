@@ -74,13 +74,17 @@ class SignUpViewModel : ViewModel() {
     }
 
     fun onPasswordChange(newValue: String) {
-        password = newValue
-        passwordError = null
+        if (newValue.all { it.isDigit() } && newValue.length <= 6) {
+            password = newValue
+            passwordError = null
+        }
     }
 
     fun onConfirmPasswordChange(newValue: String) {
-        confirmPassword = newValue
-        confirmPasswordError = null
+        if (newValue.all { it.isDigit() } && newValue.length <= 6) {
+            confirmPassword = newValue
+            confirmPasswordError = null
+        }
     }
 
     fun onTermsChange(newValue: Boolean) {
@@ -184,28 +188,52 @@ class SignUpViewModel : ViewModel() {
             isValid = false
         }
 
-        // Validaciones de contraseña
-        val hasUpperCase = password.any { it.isUpperCase() }
-        val hasLowerCase = password.any { it.isLowerCase() }
-        val hasDigit = password.any { it.isDigit() }
-        val forbiddenSequences = listOf("12345", "qwerty", "password", "abcde", "123456")
+        val isAllDigits = password.all { it.isDigit() }
+        val isIdentical = password.length == 6 && password.toSet().size == 1
+        val isAscending = password == "012345" || password == "123456" || password == "234567" || password == "345678" || password == "456789"
+        val isDescending = password == "987654" || password == "876543" || password == "765432" || password == "654321" || password == "543210"
+        
+        // Patrón espejo/alterno (ej. 121212)
+        val isAlternating = password.length == 6 && password.substring(0, 2).repeat(3) == password
+        // Bloques repetidos (ej. 123123)
+        val isRepeatedBlock = password.length == 6 && password.substring(0, 3).repeat(2) == password
+
+
+        val matchesId = documentId.length >= 6 && (documentId.take(6) == password || documentId.takeLast(6) == password)
+
+        val matchesPhone = cellphoneNumber.length >= 6 && cellphoneNumber.takeLast(6) == password
 
         when {
-            password.length < 12 -> {
-                passwordError = R.string.error_password_min_length
+            password.length != 6 -> {
+                passwordError = R.string.error_password_length_6
                 isValid = false
             }
-            !hasUpperCase || !hasLowerCase || !hasDigit -> {
-                passwordError = R.string.error_password_complexity
+            !isAllDigits -> {
+                passwordError = R.string.error_password_only_digits
                 isValid = false
             }
-            (documentId.isNotEmpty() && password.contains(documentId, ignoreCase = true)) || 
-            (fullName.isNotEmpty() && password.contains(fullName, ignoreCase = true)) -> {
-                passwordError = R.string.error_password_personal_info
+            isIdentical -> {
+                passwordError = R.string.error_password_identical_digits
                 isValid = false
             }
-            forbiddenSequences.any { password.contains(it, ignoreCase = true) } -> {
-                passwordError = R.string.error_password_forbidden_sequence
+            isAscending || isDescending -> {
+                passwordError = R.string.error_password_consecutive
+                isValid = false
+            }
+            isAlternating -> {
+                passwordError = R.string.error_password_alternating_pattern
+                isValid = false
+            }
+            isRepeatedBlock -> {
+                passwordError = R.string.error_password_repeated_blocks
+                isValid = false
+            }
+            matchesId -> {
+                passwordError = R.string.error_password_id_match
+                isValid = false
+            }
+            matchesPhone -> {
+                passwordError = R.string.error_password_phone_match
                 isValid = false
             }
         }
