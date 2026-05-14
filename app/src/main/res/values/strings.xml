@@ -20,7 +20,7 @@
     <string name="signup_label_cellphone_number">NÚMERO DE CELULAR</string>
     <string name="signup_placeholder_cellphone_number">3212311231</string>
     <string name="signup_label_password">CONTRASEÑA</string>
-    <string name="signup_placeholder_password">••••••••</string>
+    <string name="signup_placeholder_password">••••••</string>
     <string name="signup_label_confirm_password">CONFIRMAR</string>
 
     <!-- SignUp Terms -->
@@ -46,10 +46,14 @@
     <string name="error_terms_required">Se deben aceptar los términos y condiciones</string>
 
     <!-- Password Validation Errors -->
-    <string name="error_password_min_length">La contraseña debe cumplir con los requisitos: Mínimo 12 caracteres</string>
-    <string name="error_password_complexity">La contraseña debe cumplir con los requisitos: Incluir mayúscula, minúscula y número</string>
-    <string name="error_password_personal_info">La contraseña debe cumplir con los requisitos: No incluir nombre o documento</string>
-    <string name="error_password_forbidden_sequence">La contraseña debe cumplir con los requisitos: Evitar secuencias comunes (12345, qwerty, etc.)</string>
+    <string name="error_password_length_6">La contraseña debe tener exactamente 6 dígitos</string>
+    <string name="error_password_only_digits">La contraseña solo debe contener números</string>
+    <string name="error_password_identical_digits">No se permiten todos los dígitos iguales</string>
+    <string name="error_password_consecutive">No se permiten secuencias consecutivas</string>
+    <string name="error_password_alternating_pattern">No se permiten patrones repetitivos (ej. 121212)</string>
+    <string name="error_password_repeated_blocks">No se permiten bloques repetidos (ej. 123123)</string>
+    <string name="error_password_id_match">La contraseña coincide con datos de su documento</string>
+    <string name="error_password_phone_match">La contraseña coincide con su número de celular</string>
     <string name="error_passwords_not_match">Las contraseñas no coinciden</string>
 
     <!-- ID Verification -->
