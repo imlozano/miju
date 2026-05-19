@@ -18,6 +18,9 @@ class ProfileViewModel : ViewModel() {
     var isLoading by mutableStateOf(false)
         private set
 
+    var navigateToLogin by mutableStateOf(false)
+        private set
+
     fun loadUserData(documentId: String) {
         if (documentId.isEmpty()) return
         
@@ -35,7 +38,14 @@ class ProfileViewModel : ViewModel() {
     }
     
     fun onLogoutClick() {
-        // TODO: Lógica para cerrar sesión
+        fullName = ""
+        email = ""
+        cellphoneNumber = ""
+        navigateToLogin = true
+    }
+
+    fun onNavigationHandled() {
+        navigateToLogin = false
     }
     
     fun onChangePasswordClick() {

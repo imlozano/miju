@@ -105,6 +105,15 @@ fun ProfileScreen(
     LaunchedEffect(documentId) {
         viewModel.loadUserData(documentId)
     }
+    //Regresar al login al cerrar sesion
+    if (viewModel.navigateToLogin) {
+        LaunchedEffect(Unit) {
+            navController.navigate("login") {
+                popUpTo(0) { inclusive = true }
+            }
+            viewModel.onNavigationHandled()
+        }
+    }
 
     Scaffold(
         bottomBar = {
