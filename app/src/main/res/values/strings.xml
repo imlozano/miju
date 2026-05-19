@@ -1,3 +1,78 @@
 <resources>
-    <string name="app_name">Miju2</string>
+    <!-- App General -->
+    <string name="app_name">MiJu</string>
+    <string name="btn_accept">Aceptar</string>
+    <string name="text_loading">Cargando...</string>
+    <string name="success_title">¡Éxito!</string>
+    <string name="error_title">Atención</string>
+
+    <!-- SignUp Screen -->
+    <string name="signup_tittle_secure">REGISTRO SEGURO</string>
+    <string name="signup_subtitle_step">Solo unos pasos para activar tu cuenta.</string>
+
+    <!-- SignUp Form Labels and Placeholders -->
+    <string name="signup_label_fullname">NOMBRE COMPLETO</string>
+    <string name="signup_placeholder_fullname">Ej. Alejandro Valdivia</string>
+    <string name="signup_label_document">NÚMERO DE DOCUMENTO</string>
+    <string name="signup_placeholder_document">1000000000</string>
+    <string name="signup_label_email">EMAIL</string>
+    <string name="signup_placeholder_email">nombre@ejemplo.com</string>
+    <string name="signup_label_cellphone_number">NÚMERO DE CELULAR</string>
+    <string name="signup_placeholder_cellphone_number">3212311231</string>
+    <string name="signup_label_password">CONTRASEÑA</string>
+    <string name="signup_placeholder_password">••••••</string>
+    <string name="signup_label_confirm_password">CONFIRMAR</string>
+
+    <!-- SignUp Terms -->
+    <string name="signup_terms_accept">Acepto los </string>
+    <string name="signup_terms_service">Términos de Servicio</string>
+    <string name="signup_terms_and"> y la </string>
+    <string name="signup_terms_privacy">Política de Privacidad</string>
+    <string name="signup_terms_process">. Entiendo que MiJu procesará mis datos para la gestión de mi cuenta.</string>
+
+    <string name="signup_btn_create_account">Crear Cuenta</string>
+
+    <!-- SignUp Errors and Results -->
+    <string name="error_email_exists">El correo ya existe, usa uno nuevo</string>
+    <string name="error_connection_failed">Error de conexión. Intenta de nuevo.</string>
+    <string name="signup_success">¡Registro exitoso!</string>
+    <string name="error_register_failed">Error al registrar el usuario</string>
+    <string name="error_name_required">El nombre es obligatorio</string>
+    <string name="error_document_length_10">El documento debe tener 10 dígitos</string>
+    <string name="error_document_nuip_range">Debe ser superior a 1.000.000.000</string>
+    <string name="error_document_invalid">Documento inválido</string>
+    <string name="error_invalid_email">Email no válido</string>
+    <string name="error_cellphone_short">El número debe tener al menos 10 dígitos</string>
+    <string name="error_terms_required">Se deben aceptar los términos y condiciones</string>
+
+    <!-- Password Validation Errors -->
+    <string name="error_password_length_6">La contraseña debe tener exactamente 6 dígitos</string>
+    <string name="error_password_only_digits">La contraseña solo debe contener números</string>
+    <string name="error_password_identical_digits">No se permiten todos los dígitos iguales</string>
+    <string name="error_password_consecutive">No se permiten secuencias consecutivas</string>
+    <string name="error_password_alternating_pattern">No se permiten patrones repetitivos (ej. 121212)</string>
+    <string name="error_password_repeated_blocks">No se permiten bloques repetidos (ej. 123123)</string>
+    <string name="error_password_id_match">La contraseña coincide con datos de su documento</string>
+    <string name="error_password_phone_match">La contraseña coincide con su número de celular</string>
+    <string name="error_passwords_not_match">Las contraseñas no coinciden</string>
+
+    <!-- ID Verification -->
+    <string name="signup_id_verification_tittle">Verificación de identidad</string>
+    <string name="signup_id_verification_label_instruction">Captura una foto clara de tu Cédula de Identidad para activar las funciones de transferencia.</string>
+    <string name="signup_btn_open_camera">ABRIR CÁMARA</string>
+
+    <!-- Footer -->
+    <string name="signup_account_created">¿Ya tienes cuenta? </string>
+    <string name="signup_login_link">Inicia Sesión aquí</string>
+
+    <!-- Profile Screen -->
+    <string name="profile_title_personal_data">Datos Personales</string>
+    <string name="profile_label_email">CORREO ELECTRÓNICO</string>
+    <string name="profile_title_security">Seguridad y Acceso</string>
+    <string name="profile_btn_change_password">Cambio de Clave</string>
+    <string name="profile_btn_logout">Cerrar Sesión</string>
+    <string name="profile_footer_version">MiJu V1 — 2026</string>
+    <string name="profile_nav_home">HOME</string>
+    <string name="profile_nav_transactions">TRANSACTIONS</string>
+    <string name="profile_nav_profile">PROFILE</string>
 </resources>
