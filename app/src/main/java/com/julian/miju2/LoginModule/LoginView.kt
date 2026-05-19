@@ -38,7 +38,7 @@ fun LoginScreen(
     // Escuchar el éxito del login para navegar al perfil
     LaunchedEffect(viewModel.loginSuccess) {
         if (viewModel.loginSuccess) {
-            navController.navigate("profile/${viewModel.documentId}") {
+            navController.navigate("dashboard/${viewModel.documentId}") {
                 // Limpiar el historial para que el usuario no regrese al login al dar atrás
                 popUpTo("login") { inclusive = true }
             }
