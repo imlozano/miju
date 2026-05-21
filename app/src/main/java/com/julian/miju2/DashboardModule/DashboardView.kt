@@ -114,7 +114,7 @@ fun DashboardScreen(
                     Text(
                         text = stringResource(
                             id = R.string.dashboard_greeting,
-                            viewModel.fullName
+                            viewModel.displayName
                         ),
                         fontSize = 28.sp,
                         fontWeight = FontWeight.ExtraBold,

@@ -10,17 +10,25 @@ class DashboardViewModel : ViewModel() {
     private val database = FirebaseDatabase.getInstance().getReference("users")
 
     val initial: String
-        get()= fullName.firstOrNull()
+        get() = fullName.trim()
+            .firstOrNull { it.isLetterOrDigit() }
             ?.uppercaseChar()
             ?.toString()
             ?: "?"
     var fullName by mutableStateOf("")
         private set
+
+    val displayName: String
+        get() = fullName.trim().ifBlank { "Usuario" }
     var isLoading by mutableStateOf(false)
         private set
 
     fun loadUserData(documentId: String) {
-        if (documentId.isEmpty()) return
+        if (documentId.isEmpty()) {
+            fullName = ""
+            isLoading = false
+            return
+        }
 
         isLoading = true
         database.child(documentId).get().addOnSuccessListener { snapshot ->
