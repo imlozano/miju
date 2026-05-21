@@ -68,6 +68,7 @@
     <!-- Dashboard Screen -->
     <string name="dashboard_welcome_back">BIENVENIDO DE NUEVO,</string>
     <string name="dashboard_greeting">Hola, %1$s</string>
+    <string name="dashboard_notifications">Notificaciones</string>
 
     <!-- Profile Screen -->
     <string name="profile_title_personal_data">Datos Personales</string>

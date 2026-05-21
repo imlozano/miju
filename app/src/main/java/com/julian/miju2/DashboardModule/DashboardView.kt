@@ -83,10 +83,12 @@ fun DashboardScreen(
                     )
                 }
 
-                IconButton(onClick = {}) {
+                IconButton(onClick = {
+                    // TODO: navegar a la pantalla de notificaciones cuando esté implementada
+                }) {
                     Icon(
                         imageVector = Icons.Outlined.Notifications,
-                        contentDescription = null,
+                        contentDescription = stringResource(id = R.string.dashboard_notifications),
                         tint = Primary
                     )
                 }
