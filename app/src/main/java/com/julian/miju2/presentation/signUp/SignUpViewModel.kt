@@ -13,13 +13,11 @@ import com.julian.miju2.domain.usecase.ValidatePasswordUseCase
 
 class SignUpViewModel : ViewModel() {
 
-    // Inyectamos (manualmente de momento) las dependencias
     private val repository = UserRepositoryImpl()
     private val registerUserUseCase = RegisterUserUseCase(repository)
     private val checkEmailUseCase = CheckEmailUseCase(repository)
     private val validatePasswordUseCase = ValidatePasswordUseCase()
 
-    // Estados de los campos
     var fullName by mutableStateOf("")
         private set
     var documentId by mutableStateOf("")
@@ -35,7 +33,6 @@ class SignUpViewModel : ViewModel() {
     var acceptedTerms by mutableStateOf(false)
         private set
 
-    // Estados de error
     var fullNameError by mutableStateOf<Int?>(null)
         private set
     var documentIdError by mutableStateOf<Int?>(null)
@@ -54,7 +51,6 @@ class SignUpViewModel : ViewModel() {
     var isLoading by mutableStateOf(false)
         private set
 
-    // Eventos
     fun onFullNameChange(newValue: String) { fullName = newValue; fullNameError = null }
     fun onDocumentIdChange(newValue: String) {
         if (newValue.all { it.isDigit() } && newValue.length <= 10) {
@@ -76,8 +72,6 @@ class SignUpViewModel : ViewModel() {
     fun onSignUpClick(onResult: (Boolean, Int) -> Unit) {
         if (validateFields()) {
             isLoading = true
-            
-            // Usamos el UseCase para verificar el email
             checkEmailUseCase(email) { exists ->
                 if (exists) {
                     isLoading = false
@@ -91,11 +85,14 @@ class SignUpViewModel : ViewModel() {
                         cellphoneNumber = cellphoneNumber,
                         password = password
                     )
-                    // Usamos el UseCase para registrar
                     registerUserUseCase(newUser, onResult)
                 }
             }
         }
+    }
+
+    fun onOpenCamera() {
+        println("Abriendo cámara para verificación de ID (Logcat)")
     }
 
     private fun validateFields(): Boolean {
@@ -103,17 +100,10 @@ class SignUpViewModel : ViewModel() {
         val emailPattern = "^[A-Za-z0-9+_.-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,6}$".toRegex()
         
         if (fullName.isBlank()) { fullNameError = R.string.error_name_required; isValid = false }
-
-        if (documentId.length != 10) {
-            documentIdError = R.string.error_document_length_10
-            isValid = false
-        }
-
+        if (documentId.length != 10) { documentIdError = R.string.error_document_length_10; isValid = false }
         if (!email.matches(emailPattern)) { emailError = R.string.error_invalid_email; isValid = false }
-        
         if (cellphoneNumber.length < 10) { cellphoneNumberError = R.string.error_cellphone_short; isValid = false }
 
-        // AQUÍ ESTÁ LA MAGIA: Usamos el validador reutilizable de Domain
         passwordError = validatePasswordUseCase(password, documentId, cellphoneNumber)
         if (passwordError != null) isValid = false
 
@@ -121,7 +111,6 @@ class SignUpViewModel : ViewModel() {
             confirmPasswordError = R.string.error_passwords_not_match
             isValid = false
         }
-        
         if (!acceptedTerms) { termsError = R.string.error_terms_required; isValid = false }
 
         return isValid
