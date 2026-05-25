@@ -1,4 +1,4 @@
-package com.julian.miju2.navigation
+package com.julian.miju2.presentation.navigation
 
 import androidx.compose.runtime.Composable
 import androidx.navigation.NavType

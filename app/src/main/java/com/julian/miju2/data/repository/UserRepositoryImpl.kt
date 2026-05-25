@@ -42,7 +42,7 @@ class UserRepositoryImpl : UserRepository {
     override fun updatePassword(documentId: String, newPassword: String, onResult: (Boolean, Int) -> Unit) {
         database.child(documentId).child("password").setValue(newPassword)
             .addOnSuccessListener {
-                onResult(true, R.string.success_title) // O el string que prefieras
+                onResult(true, R.string.success_title)
             }
             .addOnFailureListener {
                 onResult(false, R.string.error_connection_failed)
@@ -72,6 +72,16 @@ class UserRepositoryImpl : UserRepository {
             }
             .addOnFailureListener {
                 onResult(false, R.string.error_connection_failed, null)
+            }
+    }
+
+    override fun isEmailRegistered(email: String, onResult: (Boolean) -> Unit) {
+        database.orderByChild("email").equalTo(email).get()
+            .addOnSuccessListener { snapshot ->
+                onResult(snapshot.exists())
+            }
+            .addOnFailureListener {
+                onResult(false)
             }
     }
 }
