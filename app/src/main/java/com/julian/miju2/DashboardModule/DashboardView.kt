@@ -52,6 +52,7 @@ fun DashboardScreen(
 ) {
     LaunchedEffect(documentId) {
         viewModel.loadUserData(documentId)
+        viewModel.loadTransactions(documentId)
     }
 
     Scaffold(

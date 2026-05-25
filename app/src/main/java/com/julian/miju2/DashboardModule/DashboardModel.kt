@@ -8,3 +8,11 @@ data class Transaction(
     val date: Long = 0L,
     val status: String = ""
 )
+
+data class TransactionUi(
+    val transactionId: String,
+    val counterparty: String,
+    val subtitle: String,
+    val amountText: String,
+    val isIncoming: Boolean
+)
