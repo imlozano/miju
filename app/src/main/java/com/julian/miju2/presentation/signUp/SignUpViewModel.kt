@@ -51,23 +51,33 @@ class SignUpViewModel : ViewModel() {
     var isLoading by mutableStateOf(false)
         private set
 
-    fun onFullNameChange(newValue: String) { fullName = newValue; fullNameError = null }
+    fun onFullNameChange(newValue: String) {
+        fullName = newValue; fullNameError = null
+    }
     fun onDocumentIdChange(newValue: String) {
         if (newValue.all { it.isDigit() } && newValue.length <= 10) {
             documentId = newValue
             documentIdError = null
         }
     }
-    fun onEmailChange(newValue: String) { email = newValue; emailError = null }
+    fun onEmailChange(newValue: String) {
+        email = newValue; emailError = null
+    }
     fun onCellphoneNumberChange(newValue: String) {
         if (newValue.all { it.isDigit() }) {
             cellphoneNumber = newValue
             cellphoneNumberError = null
         }
     }
-    fun onPasswordChange(newValue: String) { password = newValue; passwordError = null }
-    fun onConfirmPasswordChange(newValue: String) { confirmPassword = newValue; confirmPasswordError = null }
-    fun onTermsChange(newValue: Boolean) { acceptedTerms = newValue; termsError = null }
+    fun onPasswordChange(newValue: String) {
+        password = newValue; passwordError = null
+    }
+    fun onConfirmPasswordChange(newValue: String) {
+        confirmPassword = newValue; confirmPasswordError = null
+    }
+    fun onTermsChange(newValue: Boolean) {
+        acceptedTerms = newValue; termsError = null
+    }
 
     fun onSignUpClick(onResult: (Boolean, Int) -> Unit) {
         if (validateFields()) {
@@ -99,10 +109,21 @@ class SignUpViewModel : ViewModel() {
         var isValid = true
         val emailPattern = "^[A-Za-z0-9+_.-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,6}$".toRegex()
         
-        if (fullName.isBlank()) { fullNameError = R.string.error_name_required; isValid = false }
-        if (documentId.length != 10) { documentIdError = R.string.error_document_length_10; isValid = false }
-        if (!email.matches(emailPattern)) { emailError = R.string.error_invalid_email; isValid = false }
-        if (cellphoneNumber.length < 10) { cellphoneNumberError = R.string.error_cellphone_short; isValid = false }
+        if (fullName.isBlank()) {
+            fullNameError = R.string.error_name_required; isValid = false
+        }
+
+        if (documentId.length != 10) {
+            documentIdError = R.string.error_document_length_10; isValid = false
+        }
+
+        if (!email.matches(emailPattern)) {
+            emailError = R.string.error_invalid_email; isValid = false
+        }
+
+        if (cellphoneNumber.length < 10) {
+            cellphoneNumberError = R.string.error_cellphone_short; isValid = false
+        }
 
         passwordError = validatePasswordUseCase(password, documentId, cellphoneNumber)
         if (passwordError != null) isValid = false
@@ -111,7 +132,9 @@ class SignUpViewModel : ViewModel() {
             confirmPasswordError = R.string.error_passwords_not_match
             isValid = false
         }
-        if (!acceptedTerms) { termsError = R.string.error_terms_required; isValid = false }
+        if (!acceptedTerms) {
+            termsError = R.string.error_terms_required; isValid = false
+        }
 
         return isValid
     }
