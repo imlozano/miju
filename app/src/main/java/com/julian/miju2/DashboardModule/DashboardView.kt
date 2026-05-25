@@ -14,6 +14,7 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.AccountBalanceWallet
 import androidx.compose.material.icons.filled.Send
 import androidx.compose.material.icons.outlined.Notifications
 import androidx.compose.material3.Card
@@ -23,6 +24,7 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
@@ -148,6 +150,103 @@ fun DashboardScreen(
             SendMoneyButton(onClick = {
                 // TODO: navegar a la pantalla de envío de dinero cuando esté implementada
             })
+
+            Spacer(modifier = Modifier.height(32.dp))
+
+            RecentActivitySection(
+                items = viewModel.transactionsUi,
+                onSeeAll = {
+                    // TODO: navegar a la pantalla de Transactions cuando esté implementada
+                }
+            )
+        }
+    }
+}
+
+@Composable
+private fun TransactionItem(item: TransactionUi, modifier: Modifier = Modifier) {
+    Row(
+        modifier = modifier
+            .fillMaxWidth()
+            .padding(vertical = 8.dp),
+        verticalAlignment = Alignment.CenterVertically,
+        horizontalArrangement = Arrangement.SpaceBetween
+    ) {
+        Row(
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.spacedBy(12.dp)
+        ) {
+            Box(
+                modifier = Modifier
+                    .size(48.dp)
+                    .background(Primary.copy(alpha = 0.1f), CircleShape),
+                contentAlignment = Alignment.Center
+            ) {
+                Icon(
+                    imageVector = Icons.Default.AccountBalanceWallet,
+                    contentDescription = stringResource(id = R.string.dashboard_tx_icon_desc),
+                    tint = Primary,
+                    modifier = Modifier.size(24.dp)
+                )
+            }
+            Column {
+                val title = if (item.isIncoming) {
+                    stringResource(id = R.string.dashboard_tx_received_from, item.counterparty)
+                } else {
+                    stringResource(id = R.string.dashboard_tx_sent_to, item.counterparty)
+                }
+                Text(
+                    text = title,
+                    color = Primary,
+                    fontSize = 14.sp,
+                    fontWeight = FontWeight.Bold
+                )
+                Text(
+                    text = item.subtitle,
+                    color = OnSurfaceVariant,
+                    fontSize = 12.sp
+                )
+            }
+        }
+        Text(
+            text = item.amountText,
+            color = if (item.isIncoming) Secondary else Primary,
+            fontSize = 14.sp,
+            fontWeight = FontWeight.Bold
+        )
+    }
+}
+
+@Composable
+private fun RecentActivitySection(
+    items: List<TransactionUi>,
+    onSeeAll: () -> Unit,
+    modifier: Modifier = Modifier
+) {
+    Column(modifier.fillMaxWidth()) {
+        Row(
+            modifier = Modifier.fillMaxWidth(),
+            horizontalArrangement = Arrangement.SpaceBetween,
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            Text(
+                text = stringResource(id = R.string.dashboard_recent_activity),
+                color = Primary,
+                fontSize = 18.sp,
+                fontWeight = FontWeight.Bold
+            )
+            TextButton(onClick = onSeeAll) {
+                Text(
+                    text = stringResource(id = R.string.dashboard_see_all),
+                    color = Secondary,
+                    fontSize = 12.sp,
+                    fontWeight = FontWeight.Bold
+                )
+            }
+        }
+        Spacer(Modifier.height(8.dp))
+        items.take(4).forEach { tx ->
+            TransactionItem(item = tx)
         }
     }
 }

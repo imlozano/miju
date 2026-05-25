@@ -74,6 +74,11 @@
     <string name="dashboard_monthly_change">%1$s este mes</string>
     <string name="dashboard_membership">Miembro MiJu</string>
     <string name="dashboard_send_money">Enviar Dinero</string>
+    <string name="dashboard_recent_activity">Actividad reciente</string>
+    <string name="dashboard_see_all">Ver todo</string>
+    <string name="dashboard_tx_received_from">Transferencia de %1$s</string>
+    <string name="dashboard_tx_sent_to">Transferencia para %1$s</string>
+    <string name="dashboard_tx_icon_desc">Transacción</string>
 
     <!-- Profile Screen -->
     <string name="profile_title_personal_data">Datos Personales</string>
