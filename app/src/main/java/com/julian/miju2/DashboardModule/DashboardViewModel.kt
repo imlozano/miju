@@ -8,6 +8,7 @@ import com.google.firebase.database.FirebaseDatabase
 
 class DashboardViewModel : ViewModel() {
     private val database = FirebaseDatabase.getInstance().getReference("users")
+    private val accountsRef = FirebaseDatabase.getInstance().getReference("accounts")
 
     val initial: String
         get() = fullName.trim()
@@ -21,8 +22,8 @@ class DashboardViewModel : ViewModel() {
     var isLoading by mutableStateOf(false)
         private set
 
-    // TODO: reemplazar mock por lectura de la tabla 'accounts' (campo balance)
-    var balance by mutableStateOf(12450.80)
+    // Saldo leído desde el nodo 'accounts' en Firebase
+    var balance by mutableStateOf(0.0)
         private set
 
     var monthlyChangePercent by mutableStateOf(2.4)
@@ -43,6 +44,7 @@ class DashboardViewModel : ViewModel() {
     fun loadUserData(documentId: String) {
         if (documentId.isEmpty()) {
             fullName = ""
+            balance = 0.0
             isLoading = false
             return
         }
@@ -54,6 +56,12 @@ class DashboardViewModel : ViewModel() {
         }.addOnFailureListener {
             fullName = ""
             isLoading = false
+        }
+
+        accountsRef.child(documentId).child("balance").get().addOnSuccessListener { snapshot ->
+            balance = snapshot.getValue(Double::class.java) ?: 0.0
+        }.addOnFailureListener {
+            balance = 0.0
         }
     }
 
