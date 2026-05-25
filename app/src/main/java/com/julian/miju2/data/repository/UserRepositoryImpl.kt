@@ -1,16 +1,16 @@
 package com.julian.miju2.data.repository
 
-import com.google.firebase.database.FirebaseDatabase
 import com.julian.miju2.R
+import com.julian.miju2.data.datasource.FirebaseUserDataSource
 import com.julian.miju2.domain.model.User
 import com.julian.miju2.domain.repository.UserRepository
 
-class UserRepositoryImpl : UserRepository {
-    
-    private val database = FirebaseDatabase.getInstance().getReference("users")
+class UserRepositoryImpl(
+    private val dataSource: FirebaseUserDataSource = FirebaseUserDataSource()
+) : UserRepository {
 
     override fun getUserData(documentId: String, onResult: (User?) -> Unit) {
-        database.child(documentId).get()
+        dataSource.getUser(documentId)
             .addOnSuccessListener { snapshot ->
                 if (snapshot.exists()) {
                     val user = User(
@@ -30,7 +30,15 @@ class UserRepositoryImpl : UserRepository {
     }
 
     override fun registerUser(user: User, onResult: (Boolean, Int) -> Unit) {
-        database.child(user.documentId).setValue(user)
+        val userData = mapOf(
+            "documentId" to user.documentId,
+            "fullName" to user.fullName,
+            "email" to user.email,
+            "cellphoneNumber" to user.cellphoneNumber,
+            "password" to user.password
+        )
+
+        dataSource.saveUser(user.documentId, userData)
             .addOnSuccessListener {
                 onResult(true, R.string.signup_success)
             }
@@ -40,7 +48,7 @@ class UserRepositoryImpl : UserRepository {
     }
 
     override fun updatePassword(documentId: String, newPassword: String, onResult: (Boolean, Int) -> Unit) {
-        database.child(documentId).child("password").setValue(newPassword)
+        dataSource.updateField(documentId, "password", newPassword)
             .addOnSuccessListener {
                 onResult(true, R.string.success_title)
             }
@@ -50,7 +58,7 @@ class UserRepositoryImpl : UserRepository {
     }
 
     override fun login(documentId: String, password: String, onResult: (Boolean, Int, User?) -> Unit) {
-        database.child(documentId).get()
+        dataSource.getUser(documentId)
             .addOnSuccessListener { snapshot ->
                 if (!snapshot.exists()) {
                     onResult(false, R.string.error_document_invalid, null)
@@ -76,7 +84,7 @@ class UserRepositoryImpl : UserRepository {
     }
 
     override fun isEmailRegistered(email: String, onResult: (Boolean) -> Unit) {
-        database.orderByChild("email").equalTo(email).get()
+        dataSource.getUserByEmail(email)
             .addOnSuccessListener { snapshot ->
                 onResult(snapshot.exists())
             }

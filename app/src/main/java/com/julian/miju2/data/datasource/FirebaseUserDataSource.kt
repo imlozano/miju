@@ -12,7 +12,15 @@ class FirebaseUserDataSource {
         return database.child(documentNumber).get()
     }
 
-    fun saveUser(documentNumber: String, userData: Map<String, String>): Task<Void> {
+    fun saveUser(documentNumber: String, userData: Map<String, Any?>): Task<Void> {
         return database.child(documentNumber).setValue(userData)
+    }
+
+    fun updateField(documentNumber: String, field: String, value: Any): Task<Void> {
+        return database.child(documentNumber).child(field).setValue(value)
+    }
+
+    fun getUserByEmail(email: String): Task<DataSnapshot> {
+        return database.orderByChild("email").equalTo(email).get()
     }
 }
