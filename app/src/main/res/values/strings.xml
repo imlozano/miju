@@ -73,6 +73,7 @@
     <string name="dashboard_balance_label">SALDO DISPONIBLE</string>
     <string name="dashboard_monthly_change">%1$s este mes</string>
     <string name="dashboard_membership">Miembro MiJu</string>
+    <string name="dashboard_send_money">Enviar Dinero</string>
 
     <!-- Profile Screen -->
     <string name="profile_title_personal_data">Datos Personales</string>
