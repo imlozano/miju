@@ -11,6 +11,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.Notifications
 import androidx.compose.material3.CircularProgressIndicator
@@ -22,8 +23,11 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -33,6 +37,8 @@ import com.julian.miju2.R
 import com.julian.miju2.ui.theme.Background
 import com.julian.miju2.ui.theme.OnSurfaceVariant
 import com.julian.miju2.ui.theme.Primary
+import com.julian.miju2.ui.theme.PrimaryDark
+import com.julian.miju2.ui.theme.Secondary
 
 @Composable
 fun DashboardScreen(
@@ -111,16 +117,86 @@ fun DashboardScreen(
                         color = Primary
                     )
                 } else {
+                    val greeting = if (viewModel.fullName.isBlank()) {
+                        stringResource(id = R.string.dashboard_greeting_generic)
+                    } else {
+                        stringResource(id = R.string.dashboard_greeting, viewModel.fullName)
+                    }
                     Text(
-                        text = stringResource(
-                            id = R.string.dashboard_greeting,
-                            viewModel.displayName
-                        ),
+                        text = greeting,
                         fontSize = 28.sp,
                         fontWeight = FontWeight.ExtraBold,
                         color = Primary
                     )
                 }
+            }
+
+            Spacer(modifier = Modifier.height(24.dp))
+
+            BalanceCard(
+                formattedBalance = viewModel.formattedBalance,
+                monthlyChangeText = viewModel.monthlyChangeText
+            )
+        }
+    }
+}
+
+@Composable
+private fun BalanceCard(
+    formattedBalance: String,
+    monthlyChangeText: String,
+    modifier: Modifier = Modifier
+) {
+    Box(
+        modifier = modifier
+            .fillMaxWidth()
+            .clip(RoundedCornerShape(24.dp))
+            .background(Brush.linearGradient(colors = listOf(PrimaryDark, Primary)))
+            .padding(24.dp)
+    ) {
+        Column(modifier = Modifier.fillMaxWidth()) {
+            Text(
+                text = stringResource(id = R.string.dashboard_balance_label),
+                color = Color.White.copy(alpha = 0.7f),
+                fontSize = 12.sp,
+                fontWeight = FontWeight.SemiBold,
+                letterSpacing = 1.5.sp
+            )
+            Spacer(modifier = Modifier.height(8.dp))
+            Row(
+                verticalAlignment = Alignment.Bottom,
+                horizontalArrangement = Arrangement.spacedBy(8.dp)
+            ) {
+                Text(
+                    text = formattedBalance,
+                    color = Color.White,
+                    fontSize = 32.sp,
+                    fontWeight = FontWeight.ExtraBold
+                )
+                Text(
+                    text = stringResource(
+                        id = R.string.dashboard_monthly_change,
+                        monthlyChangeText
+                    ),
+                    color = Secondary,
+                    fontSize = 13.sp,
+                    fontWeight = FontWeight.Bold,
+                    modifier = Modifier.padding(bottom = 4.dp)
+                )
+            }
+            Spacer(modifier = Modifier.height(24.dp))
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.End
+            ) {
+                Text(
+                    text = stringResource(id = R.string.dashboard_membership),
+                    color = Color.White.copy(alpha = 0.6f),
+                    fontSize = 11.sp,
+                    fontWeight = FontWeight.Medium,
+                    fontStyle = FontStyle.Italic,
+                    letterSpacing = 1.sp
+                )
             }
         }
     }

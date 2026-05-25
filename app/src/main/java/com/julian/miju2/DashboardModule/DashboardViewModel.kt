@@ -18,10 +18,27 @@ class DashboardViewModel : ViewModel() {
     var fullName by mutableStateOf("")
         private set
 
-    val displayName: String
-        get() = fullName.trim().ifBlank { "Usuario" }
     var isLoading by mutableStateOf(false)
         private set
+
+    // TODO: reemplazar mock por lectura de la tabla 'accounts' (campo balance)
+    var balance by mutableStateOf(12450.80)
+        private set
+
+    var monthlyChangePercent by mutableStateOf(2.4)
+        private set
+
+    val formattedBalance: String
+        get() = java.text.NumberFormat
+            .getCurrencyInstance(java.util.Locale("es", "CO"))
+            .format(balance)
+
+    val monthlyChangeText: String
+        get() = if (monthlyChangePercent >= 0) {
+            "+$monthlyChangePercent%"
+        } else {
+            "$monthlyChangePercent%"
+        }
 
     fun loadUserData(documentId: String) {
         if (documentId.isEmpty()) {
@@ -32,11 +49,10 @@ class DashboardViewModel : ViewModel() {
 
         isLoading = true
         database.child(documentId).get().addOnSuccessListener { snapshot ->
-            if (snapshot.exists()) {
-                fullName = snapshot.child("fullName").value?.toString() ?: ""
-            }
+            fullName = if (snapshot.exists()) snapshot.child("fullName").value?.toString() ?: "" else ""
             isLoading = false
         }.addOnFailureListener {
+            fullName = ""
             isLoading = false
         }
     }
