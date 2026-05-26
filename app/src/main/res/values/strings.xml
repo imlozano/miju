@@ -71,7 +71,6 @@
     <string name="dashboard_greeting_generic">Hola</string>
     <string name="dashboard_notifications">Notificaciones</string>
     <string name="dashboard_balance_label">SALDO DISPONIBLE</string>
-    <string name="dashboard_monthly_change">%1$s este mes</string>
     <string name="dashboard_membership">Miembro MiJu</string>
     <string name="dashboard_send_money">Enviar Dinero</string>
     <string name="dashboard_recent_activity">Actividad reciente</string>

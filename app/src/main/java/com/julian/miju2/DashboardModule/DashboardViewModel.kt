@@ -27,9 +27,6 @@ class DashboardViewModel : ViewModel() {
     var balance by mutableStateOf(0.0)
         private set
 
-    var monthlyChangePercent by mutableStateOf(2.4)
-        private set
-
     var transactions by mutableStateOf<List<Transaction>>(emptyList())
         private set
 
@@ -42,13 +39,6 @@ class DashboardViewModel : ViewModel() {
         get() = java.text.NumberFormat
             .getCurrencyInstance(java.util.Locale("es", "CO"))
             .format(balance)
-
-    val monthlyChangeText: String
-        get() = if (monthlyChangePercent >= 0) {
-            "+$monthlyChangePercent%"
-        } else {
-            "$monthlyChangePercent%"
-        }
 
     fun loadUserData(documentId: String) {
         if (documentId.isEmpty()) {

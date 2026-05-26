@@ -161,10 +161,7 @@ fun DashboardScreen(
 
             Spacer(modifier = Modifier.height(24.dp))
 
-            BalanceCard(
-                formattedBalance = viewModel.formattedBalance,
-                monthlyChangeText = viewModel.monthlyChangeText
-            )
+            BalanceCard(formattedBalance = viewModel.formattedBalance)
 
             Spacer(modifier = Modifier.height(24.dp))
 
@@ -314,7 +311,6 @@ private fun SendMoneyButton(onClick: () -> Unit, modifier: Modifier = Modifier) 
 @Composable
 private fun BalanceCard(
     formattedBalance: String,
-    monthlyChangeText: String,
     modifier: Modifier = Modifier
 ) {
     Box(
@@ -333,27 +329,12 @@ private fun BalanceCard(
                 letterSpacing = 1.5.sp
             )
             Spacer(modifier = Modifier.height(8.dp))
-            Row(
-                verticalAlignment = Alignment.Bottom,
-                horizontalArrangement = Arrangement.spacedBy(8.dp)
-            ) {
-                Text(
-                    text = formattedBalance,
-                    color = Color.White,
-                    fontSize = 32.sp,
-                    fontWeight = FontWeight.ExtraBold
-                )
-                Text(
-                    text = stringResource(
-                        id = R.string.dashboard_monthly_change,
-                        monthlyChangeText
-                    ),
-                    color = Secondary,
-                    fontSize = 13.sp,
-                    fontWeight = FontWeight.Bold,
-                    modifier = Modifier.padding(bottom = 4.dp)
-                )
-            }
+            Text(
+                text = formattedBalance,
+                color = Color.White,
+                fontSize = 32.sp,
+                fontWeight = FontWeight.ExtraBold
+            )
             Spacer(modifier = Modifier.height(24.dp))
             Row(
                 modifier = Modifier.fillMaxWidth(),
