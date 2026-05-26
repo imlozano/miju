@@ -74,7 +74,9 @@ fun DashboardScreen(
                     // TODO: navegar a la pantalla de Transactions cuando exista
                 },
                 onProfileClick = {
-                    navController.navigate("profile/$documentId")
+                    navController.navigate("profile/$documentId") {
+                        launchSingleTop = true
+                    }
                 }
             )
         }
