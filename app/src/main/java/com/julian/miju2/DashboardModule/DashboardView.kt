@@ -171,7 +171,7 @@ fun DashboardScreen(
             Spacer(modifier = Modifier.height(24.dp))
 
             SendMoneyButton(onClick = {
-                // TODO: navegar a la pantalla de envío de dinero cuando esté implementada
+                navController.navigate("send-money/$documentId")
             })
 
             Spacer(modifier = Modifier.height(32.dp))

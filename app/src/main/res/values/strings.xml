@@ -100,4 +100,18 @@
     <string name="transactions_title">Movimientos</string>
     <string name="transactions_empty">No tienes movimientos aún</string>
     <string name="transactions_back">Volver</string>
+
+    <!-- Send Money Screen -->
+    <string name="send_money_title">FinFlow</string>
+    <string name="send_money_eyebrow">NUEVA TRANSACCIÓN</string>
+    <string name="send_money_headline">Envía dinero al instante</string>
+    <string name="send_money_label_recipient">Destinatario</string>
+    <string name="send_money_placeholder_recipient">Número de cuenta</string>
+    <string name="send_money_hint_recipient">Verifica bien el número para enviar a la persona correcta.</string>
+    <string name="send_money_label_amount">Monto a enviar</string>
+    <string name="send_money_label_concept">Concepto (opcional)</string>
+    <string name="send_money_placeholder_concept">Ej: Cena del viernes</string>
+    <string name="send_money_continue">Continuar</string>
+    <string name="send_money_available_balance">Saldo disponible: %1$s</string>
+    <string name="send_money_back">Volver</string>
 </resources>
