@@ -165,7 +165,7 @@ fun DashboardScreen(
 
             BalanceCard(
                 formattedBalance = viewModel.formattedBalance,
-                accountNumber = viewModel.accountNumber
+                accountNumber = documentId
             )
 
             Spacer(modifier = Modifier.height(24.dp))
