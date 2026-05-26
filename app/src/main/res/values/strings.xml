@@ -114,4 +114,10 @@
     <string name="send_money_continue">Continuar</string>
     <string name="send_money_available_balance">Saldo disponible: %1$s</string>
     <string name="send_money_back">Volver</string>
+    <string name="send_money_error_recipient_required">Ingresa el número de cuenta del destinatario</string>
+    <string name="send_money_error_amount_invalid">Ingresa un monto válido mayor a cero</string>
+    <string name="send_money_error_insufficient">Saldo insuficiente</string>
+    <string name="send_money_error_recipient_not_found">No existe una cuenta con ese número</string>
+    <string name="send_money_error_self">No puedes enviarte dinero a ti mismo</string>
+    <string name="send_money_error_connection">Error de conexión. Intenta de nuevo.</string>
 </resources>

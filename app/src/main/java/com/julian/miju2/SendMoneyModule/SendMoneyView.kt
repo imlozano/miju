@@ -37,6 +37,7 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import com.julian.miju2.R
 import com.julian.miju2.ui.theme.Background
+import com.julian.miju2.ui.theme.Error
 import com.julian.miju2.ui.theme.Neutral
 import com.julian.miju2.ui.theme.OnSurface
 import com.julian.miju2.ui.theme.OnSurfaceVariant
@@ -199,12 +200,26 @@ fun SendMoneyScreen(
 
             Spacer(Modifier.height(32.dp))
 
+            viewModel.errorMessage?.let { errorRes ->
+                Text(
+                    text = stringResource(id = errorRes),
+                    color = Error,
+                    fontSize = 12.sp,
+                    modifier = Modifier.padding(top = 8.dp)
+                )
+            }
+
             Button(
-                onClick = { /* TODO: validar y mostrar confirmacion */ },
+                onClick = {
+                    viewModel.validateAndResolve(documentId) {
+                        // TODO mostrar diálogo de confirmación
+                    }
+                },
                 modifier = Modifier
                     .fillMaxWidth()
                     .height(56.dp),
                 shape = RoundedCornerShape(16.dp),
+                enabled = !viewModel.isLoading,
                 colors = ButtonDefaults.buttonColors(containerColor = Primary)
             ) {
                 Text(
