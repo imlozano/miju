@@ -11,6 +11,7 @@ class SignUpViewModel : ViewModel() {
 
     // Referencia a Firebase Realtime Database
     private val database = FirebaseDatabase.getInstance().getReference("users")
+    private val accountsDatabase = FirebaseDatabase.getInstance().getReference("accounts")
 
     // Estados de los campos
     var fullName by mutableStateOf("")
@@ -143,8 +144,21 @@ class SignUpViewModel : ViewModel() {
 
         database.child(documentId).setValue(user)
             .addOnSuccessListener {
-                isLoading = false
-                onResult(true, R.string.signup_success)
+                val account = mapOf(
+                    "accountNumber" to ("03" + documentId),
+                    "accountType" to "savings",
+                    "ownerId" to documentId,
+                    "balance" to 0.0
+                )
+                accountsDatabase.child(documentId).setValue(account)
+                    .addOnSuccessListener {
+                        isLoading = false
+                        onResult(true, R.string.signup_success)
+                    }
+                    .addOnFailureListener {
+                        isLoading = false
+                        onResult(false, R.string.error_register_failed)
+                    }
             }
             .addOnFailureListener {
                 isLoading = false
