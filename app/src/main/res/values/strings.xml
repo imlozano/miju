@@ -88,6 +88,7 @@
     <string name="profile_btn_change_password">Cambio de Clave</string>
     <string name="profile_change_password_instruction">Ingresa tu nueva contraseña (mín. 6 caracteres)</string>
     <string name="profile_label_new_password">Nueva contraseña</string>
+    <string name="profile_password_update_success">Tu contraseña ha sido actualizada correctamente.</string>
     <string name="profile_btn_logout">Cerrar Sesión</string>
     <string name="profile_footer_version">MiJu V1 — 2026</string>
     <string name="profile_nav_home">HOME</string>
