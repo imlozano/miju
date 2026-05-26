@@ -67,8 +67,7 @@ fun DashboardScreen(
             MijuBottomBar(
                 selectedTab = BottomTab.HOME,
                 onHomeClick = {
-                    viewModel.loadUserData(documentId)
-                    viewModel.loadTransactions(documentId)
+                    // Ya estamos en Home; el ViewModel conserva los datos cargados, no es necesario recargar.
                 },
                 onTransactionsClick = {
                     // TODO: navegar a la pantalla de Transactions cuando exista
