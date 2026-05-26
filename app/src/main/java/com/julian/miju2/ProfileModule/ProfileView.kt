@@ -139,7 +139,11 @@ fun ProfileScreen(
                     icon = { Icon(Icons.Default.SwapHoriz, contentDescription = null) },
                     label = { Text(stringResource(id = R.string.profile_nav_transactions)) },
                     selected = false,
-                    onClick = { /* Navigate Transactions */ },
+                    onClick = {
+                        navController.navigate("transactions/$documentId") {
+                            launchSingleTop = true
+                        }
+                    },
                     colors = NavigationBarItemDefaults.colors(
                         unselectedIconColor = OnSurfaceVariant,
                         unselectedTextColor = OnSurfaceVariant

@@ -70,7 +70,9 @@ fun DashboardScreen(
                     // Ya estamos en Home; el ViewModel conserva los datos cargados, no es necesario recargar.
                 },
                 onTransactionsClick = {
-                    // TODO: navegar a la pantalla de Transactions cuando exista
+                    navController.navigate("transactions/$documentId") {
+                        launchSingleTop = true
+                    }
                 },
                 onProfileClick = {
                     navController.navigate("profile/$documentId") {
@@ -174,7 +176,9 @@ fun DashboardScreen(
             RecentActivitySection(
                 items = viewModel.transactionsUi,
                 onSeeAll = {
-                    // TODO: navegar a la pantalla de Transactions cuando esté implementada
+                    navController.navigate("transactions/$documentId") {
+                        launchSingleTop = true
+                    }
                 }
             )
         }
@@ -182,7 +186,7 @@ fun DashboardScreen(
 }
 
 @Composable
-private fun TransactionItem(item: TransactionUi, modifier: Modifier = Modifier) {
+internal fun TransactionItem(item: TransactionUi, modifier: Modifier = Modifier) {
     Row(
         modifier = modifier
             .fillMaxWidth()
