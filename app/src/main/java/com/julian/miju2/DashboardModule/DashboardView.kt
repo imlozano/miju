@@ -186,7 +186,7 @@ fun DashboardScreen(
 }
 
 @Composable
-fun TransactionItem(item: TransactionUi, modifier: Modifier = Modifier) {
+internal fun TransactionItem(item: TransactionUi, modifier: Modifier = Modifier) {
     Row(
         modifier = modifier
             .fillMaxWidth()
