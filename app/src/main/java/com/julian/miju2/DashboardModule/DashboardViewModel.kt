@@ -36,6 +36,8 @@ class DashboardViewModel : ViewModel() {
     var transactionsUi by mutableStateOf<List<TransactionUi>>(emptyList())
         private set
 
+    private var userNames: Map<String, String> = emptyMap()
+
     val formattedBalance: String
         get() = java.text.NumberFormat
             .getCurrencyInstance(java.util.Locale("es", "CO"))
@@ -79,22 +81,37 @@ class DashboardViewModel : ViewModel() {
             return
         }
 
-        transactionsRef.get().addOnSuccessListener { snapshot ->
-            val lista = snapshot.children
-                .mapNotNull { it.getValue(Transaction::class.java) }
-                .filter { it.from == documentId || it.to == documentId }
-                .sortedByDescending { it.date }
-            transactions = lista
-            transactionsUi = lista.map { mapToUi(it, documentId) }
+        loadUserNames {
+            transactionsRef.get().addOnSuccessListener { snapshot ->
+                val lista = snapshot.children
+                    .mapNotNull { it.getValue(Transaction::class.java) }
+                    .filter { it.from == documentId || it.to == documentId }
+                    .sortedByDescending { it.date }
+                transactions = lista
+                transactionsUi = lista.map { mapToUi(it, documentId) }
+            }.addOnFailureListener {
+                transactions = emptyList()
+                transactionsUi = emptyList()
+            }
+        }
+    }
+
+    private fun loadUserNames(onLoaded: () -> Unit) {
+        database.get().addOnSuccessListener { snapshot ->
+            userNames = snapshot.children.associate { child ->
+                (child.key ?: "") to (child.child("fullName").value?.toString() ?: "")
+            }
+            onLoaded()
         }.addOnFailureListener {
-            transactions = emptyList()
-            transactionsUi = emptyList()
+            userNames = emptyMap()
+            onLoaded()
         }
     }
 
     private fun mapToUi(tx: Transaction, documentId: String): TransactionUi {
         val isIncoming = tx.to == documentId
-        val counterparty = if (isIncoming) tx.from else tx.to
+        val otherId = if (isIncoming) tx.from else tx.to
+        val counterparty = userNames[otherId] ?: otherId
         val currency = java.text.NumberFormat.getCurrencyInstance(java.util.Locale("es", "CO"))
         val sign = if (isIncoming) "+" else "-"
         val amountText = "$sign${currency.format(tx.amount)}"
