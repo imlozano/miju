@@ -4,6 +4,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
+import com.julian.miju2.R
 import com.julian.miju2.data.repository.UserRepositoryImpl
 import com.julian.miju2.domain.usecase.GetUserDataUseCase
 import com.julian.miju2.domain.usecase.UpdatePasswordUseCase
@@ -11,7 +12,6 @@ import com.julian.miju2.domain.usecase.ValidatePasswordUseCase
 
 class ProfileViewModel : ViewModel() {
     
-    // Inyección manual de dependencias
     private val repository = UserRepositoryImpl()
     private val getUserDataUseCase = GetUserDataUseCase(repository)
     private val updatePasswordUseCase = UpdatePasswordUseCase(repository)
@@ -19,7 +19,6 @@ class ProfileViewModel : ViewModel() {
 
     private var currentDocumentId: String = ""
 
-    // Estados de datos de usuario
     var fullName by mutableStateOf("")
         private set
     var email by mutableStateOf("")
@@ -29,14 +28,17 @@ class ProfileViewModel : ViewModel() {
     var isLoading by mutableStateOf(false)
         private set
 
-    // Estados para el cambio de contraseña
     var newPassword by mutableStateOf("")
+        private set
+    var confirmNewPassword by mutableStateOf("")
         private set
     var isChangingPassword by mutableStateOf(false)
         private set
     var passwordChangeSuccess by mutableStateOf(false)
         private set
     var passwordError by mutableStateOf<Int?>(null)
+        private set
+    var confirmPasswordError by mutableStateOf<Int?>(null)
         private set
 
     var navigateToLogin by mutableStateOf(false)
@@ -62,16 +64,22 @@ class ProfileViewModel : ViewModel() {
         passwordError = null
     }
 
+    fun onConfirmNewPasswordChange(password: String) {
+        confirmNewPassword = password
+        confirmPasswordError = null
+    }
+
     fun resetPasswordState() {
         passwordChangeSuccess = false
         passwordError = null
+        confirmPasswordError = null
         newPassword = ""
+        confirmNewPassword = ""
     }
 
-    fun onChangePasswordClick() {
+    fun onChangePasswordClick(onResult: (Boolean, Int) -> Unit) {
         if (currentDocumentId.isEmpty()) return
-        
-        // VALIDACIÓN REUTILIZABLE: Usamos el mismo caso de uso que el registro
+
         val errorResId = validatePasswordUseCase(
             password = newPassword,
             documentId = currentDocumentId,
@@ -83,15 +91,20 @@ class ProfileViewModel : ViewModel() {
             return
         }
 
+        if (newPassword != confirmNewPassword) {
+            confirmPasswordError = R.string.error_passwords_not_match
+            return
+        }
+
         isChangingPassword = true
-        updatePasswordUseCase(currentDocumentId, newPassword) { success, _ ->
+        updatePasswordUseCase(currentDocumentId, newPassword) { success, messageResId ->
             isChangingPassword = false
             if (success) {
                 passwordChangeSuccess = true
                 newPassword = ""
-            } else {
-                // Aquí podrías asignar un error de conexión genérico
+                confirmNewPassword = ""
             }
+            onResult(success, messageResId)
         }
     }
     
