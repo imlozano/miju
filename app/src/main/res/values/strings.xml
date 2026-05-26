@@ -5,6 +5,7 @@
     <string name="text_loading">Cargando...</string>
     <string name="success_title">¡Éxito!</string>
     <string name="error_title">Atención</string>
+    <string name="login_error_invalid_credentials">Usuario y/o contraseña incorrectos</string>
 
     <!-- SignUp Screen -->
     <string name="signup_tittle_secure">REGISTRO SEGURO</string>
