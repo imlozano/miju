@@ -11,13 +11,13 @@ import androidx.compose.material.icons.automirrored.filled.Logout
 import androidx.compose.material.icons.filled.*
 import androidx.compose.material.icons.outlined.Notifications
 import androidx.compose.material3.*
-import androidx.compose.runtime.*
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
@@ -102,75 +102,10 @@ fun ProfileScreen(
     documentId: String,
     viewModel: ProfileViewModel = viewModel()
 ) {
-    var showDialog by remember { mutableStateOf(false) }
-
     LaunchedEffect(documentId) {
         viewModel.loadUserData(documentId)
     }
-
-    // Diálogo para cambiar contraseña
-    if (showDialog) {
-        AlertDialog(
-            onDismissRequest = { 
-                showDialog = false
-                viewModel.resetPasswordState()
-            },
-            title = { Text(stringResource(id = R.string.profile_btn_change_password), fontWeight = FontWeight.Bold) },
-            text = {
-                Column {
-                    Text("Ingresa tu nueva contraseña (mín. 6 caracteres)", fontSize = 14.sp)
-                    Spacer(modifier = Modifier.height(16.dp))
-                    OutlinedTextField(
-                        value = viewModel.newPassword,
-                        onValueChange = { viewModel.onNewPasswordChange(it) },
-                        label = { Text("Nueva contraseña") },
-                        visualTransformation = PasswordVisualTransformation(),
-                        isError = viewModel.passwordError != null,
-                        modifier = Modifier.fillMaxWidth(),
-                        singleLine = true
-                    )
-                    if (viewModel.passwordError != null) {
-                        Text(
-                            text = viewModel.passwordError!!,
-                            color = MaterialTheme.colorScheme.error,
-                            fontSize = 12.sp,
-                            modifier = Modifier.padding(start = 16.dp, top = 4.dp)
-                        )
-                    }
-                }
-            },
-            confirmButton = {
-                Button(
-                    onClick = { viewModel.onChangePasswordClick() },
-                    enabled = viewModel.newPassword.isNotEmpty() && !viewModel.isChangingPassword
-                ) {
-                    if (viewModel.isChangingPassword) {
-                        CircularProgressIndicator(modifier = Modifier.size(20.dp), color = MaterialTheme.colorScheme.onPrimary)
-                    } else {
-                        Text("Guardar")
-                    }
-                }
-            },
-            dismissButton = {
-                TextButton(onClick = { 
-                    showDialog = false
-                    viewModel.resetPasswordState()
-                }) {
-                    Text("Cancelar")
-                }
-            }
-        )
-    }
-
-    // Cerrar diálogo si fue exitoso
-    if (viewModel.passwordChangeSuccess) {
-        LaunchedEffect(Unit) {
-            showDialog = false
-            viewModel.resetPasswordState()
-        }
-    }
-
-    // Lógica para navegar al login y limpiar el historial
+    //Regresar al login al cerrar sesion
     if (viewModel.navigateToLogin) {
         LaunchedEffect(Unit) {
             navController.navigate("login") {
@@ -301,23 +236,23 @@ fun ProfileScreen(
                                 fontSize = 18.sp
                             )
                         }
-                        
+
                         Spacer(modifier = Modifier.height(20.dp))
-                        
+
                         ProfileInfoField(
                             label = stringResource(id = R.string.signup_label_fullname),
                             value = viewModel.fullName
                         )
-                        
+
                         Spacer(modifier = Modifier.height(16.dp))
-                        
+
                         ProfileInfoField(
                             label = stringResource(id = R.string.profile_label_email),
                             value = viewModel.email
                         )
-                        
+
                         Spacer(modifier = Modifier.height(16.dp))
-                        
+
                         ProfileInfoField(
                             label = stringResource(id = R.string.signup_label_cellphone_number),
                             value = viewModel.cellphoneNumber
@@ -345,13 +280,13 @@ fun ProfileScreen(
                                 fontSize = 18.sp
                             )
                         }
-                        
+
                         Spacer(modifier = Modifier.height(20.dp))
-                        
+
                         ProfileActionItem(
                             icon = Icons.Default.History,
                             text = stringResource(id = R.string.profile_btn_change_password),
-                            onClick = { showDialog = true }
+                            onClick = { viewModel.onChangePasswordClick() }
                         )
                     }
                 }
