@@ -8,7 +8,7 @@ import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
 import com.julian.miju2.DashboardModule.DashboardScreen
 import com.julian.miju2.LoginModule.LoginScreen
-import com.julian.miju2.ProfileModule.ProfileScreen
+import com.julian.miju2.presentation.profile.ProfileScreen
 import com.julian.miju2.presentation.signUp.SignUpScreen
 import com.julian.miju2.TransactionsModule.TransactionsScreen
 
