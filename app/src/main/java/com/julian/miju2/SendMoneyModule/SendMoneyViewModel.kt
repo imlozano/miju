@@ -10,6 +10,7 @@ import com.julian.miju2.R
 class SendMoneyViewModel : ViewModel() {
     private val accountsRef = FirebaseDatabase.getInstance().getReference("accounts")
     private val usersRef = FirebaseDatabase.getInstance().getReference("users")
+    private val transactionsRef = FirebaseDatabase.getInstance().getReference("transactions")
 
     private val currencyFormat = java.text.NumberFormat.getCurrencyInstance(java.util.Locale("es", "CO"))
 
@@ -35,6 +36,9 @@ class SendMoneyViewModel : ViewModel() {
         private set
 
     var recipientDocumentId by mutableStateOf("")
+        private set
+
+    var sendSuccess by mutableStateOf(false)
         private set
 
     val formattedBalance: String
@@ -110,6 +114,60 @@ class SendMoneyViewModel : ViewModel() {
                 recipientName = userSnap.value?.toString() ?: ""
                 isLoading = false
                 onValid()
+            }.addOnFailureListener {
+                isLoading = false
+                errorMessage = R.string.send_money_error_connection
+            }
+        }.addOnFailureListener {
+            isLoading = false
+            errorMessage = R.string.send_money_error_connection
+        }
+    }
+
+    fun sendMoney(senderDocumentId: String) {
+        isLoading = true
+        errorMessage = null
+
+        accountsRef.child(senderDocumentId).child("balance").get().addOnSuccessListener { snapshot ->
+            val currentBalance = snapshot.getValue(Double::class.java) ?: 0.0
+            if (amountValue > currentBalance) {
+                isLoading = false
+                errorMessage = R.string.send_money_error_insufficient
+                return@addOnSuccessListener
+            }
+
+            accountsRef.child(recipientDocumentId).child("balance").get().addOnSuccessListener { snapshot2 ->
+                val recipientBalance = snapshot2.getValue(Double::class.java) ?: 0.0
+                val newSenderBalance = currentBalance - amountValue
+                val newRecipientBalance = recipientBalance + amountValue
+
+                accountsRef.child(senderDocumentId).child("balance").setValue(newSenderBalance).addOnSuccessListener {
+                    accountsRef.child(recipientDocumentId).child("balance").setValue(newRecipientBalance).addOnSuccessListener {
+                        val newRef = transactionsRef.push()
+                        val tx = mapOf(
+                            "transactionId" to (newRef.key ?: ""),
+                            "from" to senderDocumentId,
+                            "to" to recipientDocumentId,
+                            "amount" to amountValue,
+                            "date" to System.currentTimeMillis(),
+                            "status" to "completed",
+                            "concept" to concept
+                        )
+                        newRef.setValue(tx).addOnSuccessListener {
+                            isLoading = false
+                            sendSuccess = true
+                        }.addOnFailureListener {
+                            isLoading = false
+                            errorMessage = R.string.send_money_error_connection
+                        }
+                    }.addOnFailureListener {
+                        isLoading = false
+                        errorMessage = R.string.send_money_error_connection
+                    }
+                }.addOnFailureListener {
+                    isLoading = false
+                    errorMessage = R.string.send_money_error_connection
+                }
             }.addOnFailureListener {
                 isLoading = false
                 errorMessage = R.string.send_money_error_connection

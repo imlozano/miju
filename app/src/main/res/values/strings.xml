@@ -127,4 +127,5 @@
     <string name="send_money_confirm_send">Confirmar y Enviar</string>
     <string name="send_money_confirm_cancel">Cancelar</string>
     <string name="send_money_no_concept">Sin concepto</string>
+    <string name="send_money_success">¡Envío realizado con éxito!</string>
 </resources>

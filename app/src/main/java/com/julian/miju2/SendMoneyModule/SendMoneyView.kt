@@ -60,6 +60,15 @@ fun SendMoneyScreen(
         viewModel.loadSenderBalance(documentId)
     }
 
+    LaunchedEffect(viewModel.sendSuccess) {
+        if (viewModel.sendSuccess) {
+            navController.navigate("dashboard/$documentId") {
+                popUpTo("dashboard/$documentId") { inclusive = true }
+                launchSingleTop = true
+            }
+        }
+    }
+
     var showConfirmDialog by remember { mutableStateOf(false) }
 
     Scaffold(containerColor = Background) { paddingValues ->
@@ -271,7 +280,8 @@ fun SendMoneyScreen(
                 confirmButton = {
                     Button(
                         onClick = {
-                            // TODO ejecutar el envío
+                            showConfirmDialog = false
+                            viewModel.sendMoney(documentId)
                         },
                         colors = ButtonDefaults.buttonColors(containerColor = Primary)
                     ) {
