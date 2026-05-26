@@ -1,6 +1,8 @@
 package com.julian.miju2.DashboardModule
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -40,6 +42,8 @@ import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import com.julian.miju2.R
+import com.julian.miju2.components.BottomTab
+import com.julian.miju2.components.MijuBottomBar
 import com.julian.miju2.ui.theme.Background
 import com.julian.miju2.ui.theme.OnSurfaceVariant
 import com.julian.miju2.ui.theme.Primary
@@ -58,11 +62,27 @@ fun DashboardScreen(
     }
 
     Scaffold(
-        containerColor = Background
+        containerColor = Background,
+        bottomBar = {
+            MijuBottomBar(
+                selectedTab = BottomTab.HOME,
+                onHomeClick = {
+                    viewModel.loadUserData(documentId)
+                    viewModel.loadTransactions(documentId)
+                },
+                onTransactionsClick = {
+                    // TODO: navegar a la pantalla de Transactions cuando exista
+                },
+                onProfileClick = {
+                    navController.navigate("profile/$documentId")
+                }
+            )
+        }
     ) { paddingValues ->
         Column(
             modifier = Modifier
                 .padding(paddingValues)
+                .verticalScroll(rememberScrollState())
                 .padding(horizontal = 24.dp)
         ) {
             Row(
