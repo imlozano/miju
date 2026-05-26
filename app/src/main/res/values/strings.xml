@@ -106,8 +106,8 @@
     <string name="send_money_eyebrow">NUEVA TRANSACCIÓN</string>
     <string name="send_money_headline">Envía dinero al instante</string>
     <string name="send_money_label_recipient">Destinatario</string>
-    <string name="send_money_placeholder_recipient">Número de cuenta</string>
-    <string name="send_money_hint_recipient">Verifica bien el número para enviar a la persona correcta.</string>
+    <string name="send_money_placeholder_recipient">Número de documento del destinatario</string>
+    <string name="send_money_hint_recipient">Verifica el número de documento para enviar a la persona correcta.</string>
     <string name="send_money_label_amount">Monto a enviar</string>
     <string name="send_money_label_concept">Concepto (opcional)</string>
     <string name="send_money_placeholder_concept">Ej: Cena del viernes</string>

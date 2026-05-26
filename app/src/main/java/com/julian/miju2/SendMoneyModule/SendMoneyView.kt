@@ -42,6 +42,7 @@ import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import com.julian.miju2.R
+import com.julian.miju2.components.ShowMessageAlertDialog
 import com.julian.miju2.ui.theme.Background
 import com.julian.miju2.ui.theme.Error
 import com.julian.miju2.ui.theme.Neutral
@@ -60,16 +61,14 @@ fun SendMoneyScreen(
         viewModel.loadSenderBalance(documentId)
     }
 
+    var showConfirmDialog by remember { mutableStateOf(false) }
+    var showSuccessDialog by remember { mutableStateOf(false) }
+
     LaunchedEffect(viewModel.sendSuccess) {
         if (viewModel.sendSuccess) {
-            navController.navigate("dashboard/$documentId") {
-                popUpTo("dashboard/$documentId") { inclusive = true }
-                launchSingleTop = true
-            }
+            showSuccessDialog = true
         }
     }
-
-    var showConfirmDialog by remember { mutableStateOf(false) }
 
     Scaffold(containerColor = Background) { paddingValues ->
         Column(
@@ -134,7 +133,7 @@ fun SendMoneyScreen(
             )
             Spacer(Modifier.height(4.dp))
             TextField(
-                value = viewModel.recipientAccount,
+                value = viewModel.recipientDocument,
                 onValueChange = { viewModel.onRecipientChange(it) },
                 modifier = Modifier.fillMaxWidth(),
                 placeholder = {
@@ -263,7 +262,7 @@ fun SendMoneyScreen(
                     Column {
                         ConfirmRow(
                             label = stringResource(id = R.string.send_money_confirm_to),
-                            value = viewModel.recipientName.ifBlank { viewModel.recipientAccount }
+                            value = viewModel.recipientName.ifBlank { viewModel.recipientDocument }
                         )
                         Spacer(Modifier.height(8.dp))
                         ConfirmRow(
@@ -300,6 +299,20 @@ fun SendMoneyScreen(
                     }
                 },
                 containerColor = Background
+            )
+        }
+
+        if (showSuccessDialog) {
+            ShowMessageAlertDialog(
+                onConfirmation = {
+                    showSuccessDialog = false
+                    navController.navigate("dashboard/$documentId") {
+                        popUpTo("dashboard/$documentId") { inclusive = true }
+                        launchSingleTop = true
+                    }
+                },
+                dialogTitle = R.string.success_title,
+                dialogText = R.string.send_money_success
             )
         }
     }

@@ -14,7 +14,7 @@ class SendMoneyViewModel : ViewModel() {
 
     private val currencyFormat = java.text.NumberFormat.getCurrencyInstance(java.util.Locale("es", "CO"))
 
-    var recipientAccount by mutableStateOf("")
+    var recipientDocument by mutableStateOf("")
         private set
 
     var amount by mutableStateOf("")
@@ -51,7 +51,7 @@ class SendMoneyViewModel : ViewModel() {
         get() = currencyFormat.format(amountValue)
 
     fun onRecipientChange(value: String) {
-        if (value.all { it.isDigit() }) recipientAccount = value
+        if (value.all { it.isDigit() }) recipientDocument = value
     }
 
     fun onAmountChange(value: String) {
@@ -78,7 +78,7 @@ class SendMoneyViewModel : ViewModel() {
     fun validateAndResolve(senderDocumentId: String, onValid: () -> Unit) {
         errorMessage = null
 
-        if (recipientAccount.isBlank()) {
+        if (recipientDocument.isBlank()) {
             errorMessage = R.string.send_money_error_recipient_required
             return
         }
@@ -92,25 +92,22 @@ class SendMoneyViewModel : ViewModel() {
         }
 
         isLoading = true
-        accountsRef.get().addOnSuccessListener { snapshot ->
-            val found = snapshot.children.firstOrNull { child ->
-                child.child("accountNumber").value?.toString() == recipientAccount
-            }
-            if (found == null) {
+
+        if (recipientDocument == senderDocumentId) {
+            isLoading = false
+            errorMessage = R.string.send_money_error_self
+            return
+        }
+
+        accountsRef.child(recipientDocument).get().addOnSuccessListener { snapshot ->
+            if (!snapshot.exists()) {
                 isLoading = false
                 errorMessage = R.string.send_money_error_recipient_not_found
                 return@addOnSuccessListener
             }
 
-            val ownerId = found.child("ownerId").value?.toString() ?: (found.key ?: "")
-            if (ownerId == senderDocumentId) {
-                isLoading = false
-                errorMessage = R.string.send_money_error_self
-                return@addOnSuccessListener
-            }
-
-            recipientDocumentId = ownerId
-            usersRef.child(ownerId).child("fullName").get().addOnSuccessListener { userSnap ->
+            recipientDocumentId = recipientDocument
+            usersRef.child(recipientDocument).child("fullName").get().addOnSuccessListener { userSnap ->
                 recipientName = userSnap.value?.toString() ?: ""
                 isLoading = false
                 onValid()
