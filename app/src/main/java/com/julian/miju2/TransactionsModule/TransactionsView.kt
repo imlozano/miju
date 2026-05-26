@@ -126,7 +126,10 @@ fun TransactionsScreen(
                     modifier = Modifier.fillMaxSize(),
                     contentPadding = PaddingValues(horizontal = 24.dp, vertical = 8.dp)
                 ) {
-                    items(viewModel.transactionsUi) { tx ->
+                    items(
+                        items = viewModel.transactionsUi,
+                        key = { it.transactionId }
+                    ) { tx ->
                         TransactionItem(item = tx)
                     }
                 }

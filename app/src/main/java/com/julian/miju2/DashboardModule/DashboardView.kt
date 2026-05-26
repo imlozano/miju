@@ -176,7 +176,9 @@ fun DashboardScreen(
             RecentActivitySection(
                 items = viewModel.transactionsUi,
                 onSeeAll = {
-                    navController.navigate("transactions/$documentId")
+                    navController.navigate("transactions/$documentId") {
+                        launchSingleTop = true
+                    }
                 }
             )
         }
