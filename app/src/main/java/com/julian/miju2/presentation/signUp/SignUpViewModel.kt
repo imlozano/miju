@@ -8,6 +8,7 @@ import com.julian.miju2.R
 import com.julian.miju2.data.repository.UserRepositoryImpl
 import com.julian.miju2.domain.model.User
 import com.julian.miju2.domain.usecase.CheckEmailUseCase
+import com.julian.miju2.domain.usecase.GetUserDataUseCase
 import com.julian.miju2.domain.usecase.RegisterUserUseCase
 import com.julian.miju2.domain.usecase.ValidatePasswordUseCase
 
@@ -17,6 +18,7 @@ class SignUpViewModel : ViewModel() {
     private val registerUserUseCase = RegisterUserUseCase(repository)
     private val checkEmailUseCase = CheckEmailUseCase(repository)
     private val validatePasswordUseCase = ValidatePasswordUseCase()
+    private val getUserDataUseCase = GetUserDataUseCase(repository)
 
     var fullName by mutableStateOf("")
         private set
@@ -82,20 +84,31 @@ class SignUpViewModel : ViewModel() {
     fun onSignUpClick(onResult: (Boolean, Int) -> Unit) {
         if (validateFields()) {
             isLoading = true
-            checkEmailUseCase(email) { exists ->
-                if (exists) {
+            
+            // Verificar si el documento ya existe
+            getUserDataUseCase(documentId) { existingUser ->
+                if (existingUser != null) {
                     isLoading = false
-                    emailError = R.string.error_email_exists
-                    onResult(false, R.string.error_email_exists)
+                    documentIdError = R.string.error_document_invalid
+                    onResult(false, R.string.error_document_invalid)
                 } else {
-                    val newUser = User(
-                        documentId = documentId,
-                        fullName = fullName,
-                        email = email,
-                        cellphoneNumber = cellphoneNumber,
-                        password = password
-                    )
-                    registerUserUseCase(newUser, onResult)
+                    // Si el documento es nuevo, verificar el email
+                    checkEmailUseCase(email) { exists ->
+                        if (exists) {
+                            isLoading = false
+                            emailError = R.string.error_email_exists
+                            onResult(false, R.string.error_email_exists)
+                        } else {
+                            val newUser = User(
+                                documentId = documentId,
+                                fullName = fullName,
+                                email = email,
+                                cellphoneNumber = cellphoneNumber,
+                                password = password
+                            )
+                            registerUserUseCase(newUser, onResult)
+                        }
+                    }
                 }
             }
         }
