@@ -23,15 +23,23 @@ class TransactionsViewModel : ViewModel() {
     var isLoading by mutableStateOf(false)
         private set
 
+    var fullName by mutableStateOf("")
+        private set
+
+    val initial: String
+        get() = fullName.trim().firstOrNull { it.isLetterOrDigit() }?.uppercaseChar()?.toString() ?: "?"
+
     fun loadTransactions(documentId: String) {
         if (documentId.isEmpty()) {
             transactionsUi = emptyList()
+            fullName = ""
             isLoading = false
             return
         }
 
         isLoading = true
         loadUserNames {
+            fullName = userNames[documentId] ?: ""
             transactionsRef.get().addOnSuccessListener { snapshot ->
                 val lista = snapshot.children
                     .mapNotNull { child ->

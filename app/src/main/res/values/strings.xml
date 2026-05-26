@@ -94,4 +94,9 @@
     <string name="nav_home">Home</string>
     <string name="nav_transactions">Transactions</string>
     <string name="nav_profile">Profile</string>
+
+    <!-- Transactions Screen -->
+    <string name="transactions_title">Movimientos</string>
+    <string name="transactions_empty">No tienes movimientos aún</string>
+    <string name="transactions_back">Volver</string>
 </resources>
