@@ -163,12 +163,15 @@ fun DashboardScreen(
 
             Spacer(modifier = Modifier.height(24.dp))
 
-            BalanceCard(formattedBalance = viewModel.formattedBalance)
+            BalanceCard(
+                formattedBalance = viewModel.formattedBalance,
+                accountNumber = documentId
+            )
 
             Spacer(modifier = Modifier.height(24.dp))
 
             SendMoneyButton(onClick = {
-                // TODO: navegar a la pantalla de envío de dinero cuando esté implementada
+                navController.navigate("send-money/$documentId")
             })
 
             Spacer(modifier = Modifier.height(32.dp))
@@ -315,6 +318,7 @@ private fun SendMoneyButton(onClick: () -> Unit, modifier: Modifier = Modifier) 
 @Composable
 private fun BalanceCard(
     formattedBalance: String,
+    accountNumber: String,
     modifier: Modifier = Modifier
 ) {
     Box(
@@ -342,8 +346,15 @@ private fun BalanceCard(
             Spacer(modifier = Modifier.height(24.dp))
             Row(
                 modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.End
+                horizontalArrangement = Arrangement.SpaceBetween,
+                verticalAlignment = Alignment.CenterVertically
             ) {
+                Text(
+                    text = stringResource(id = R.string.dashboard_account_number, accountNumber),
+                    color = Color.White.copy(alpha = 0.7f),
+                    fontSize = 11.sp,
+                    fontWeight = FontWeight.Medium
+                )
                 Text(
                     text = stringResource(id = R.string.dashboard_membership),
                     color = Color.White.copy(alpha = 0.6f),

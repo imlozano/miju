@@ -9,6 +9,7 @@ import androidx.navigation.navArgument
 import com.julian.miju2.DashboardModule.DashboardScreen
 import com.julian.miju2.LoginModule.LoginScreen
 import com.julian.miju2.ProfileModule.ProfileScreen
+import com.julian.miju2.SendMoneyModule.SendMoneyScreen
 import com.julian.miju2.SignUpModule.SignUpScreen
 import com.julian.miju2.TransactionsModule.TransactionsScreen
 
@@ -51,6 +52,14 @@ fun AppNavigation() {
         ) { backStackEntry ->
             val documentId = backStackEntry.arguments?.getString("documentId") ?: ""
             TransactionsScreen(navController = navController, documentId = documentId)
+        }
+
+        composable(
+            route = "send-money/{documentId}",
+            arguments = listOf(navArgument("documentId") { type = NavType.StringType })
+        ) { backStackEntry ->
+            val documentId = backStackEntry.arguments?.getString("documentId") ?: ""
+            SendMoneyScreen(navController = navController, documentId = documentId)
         }
     }
 }
