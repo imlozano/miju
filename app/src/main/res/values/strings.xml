@@ -102,7 +102,7 @@
     <string name="transactions_back">Volver</string>
 
     <!-- Send Money Screen -->
-    <string name="send_money_title">FinFlow</string>
+    <string name="send_money_title">MiJu</string>
     <string name="send_money_eyebrow">NUEVA TRANSACCIÓN</string>
     <string name="send_money_headline">Envía dinero al instante</string>
     <string name="send_money_label_recipient">Destinatario</string>
