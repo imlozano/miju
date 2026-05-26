@@ -190,7 +190,11 @@ fun ProfileScreen(
                     icon = { Icon(Icons.Default.Home, contentDescription = null) },
                     label = { Text(stringResource(id = R.string.profile_nav_home)) },
                     selected = false,
-                    onClick = { /* Navigate Home */ },
+                    onClick = {
+                        navController.navigate("dashboard/$documentId") {
+                            launchSingleTop = true
+                        }
+                    },
                     colors = NavigationBarItemDefaults.colors(
                         unselectedIconColor = OnSurfaceVariant,
                         unselectedTextColor = OnSurfaceVariant
@@ -200,7 +204,11 @@ fun ProfileScreen(
                     icon = { Icon(Icons.Default.SwapHoriz, contentDescription = null) },
                     label = { Text(stringResource(id = R.string.profile_nav_transactions)) },
                     selected = false,
-                    onClick = { /* Navigate Transactions */ },
+                    onClick = {
+                        navController.navigate("transactions/$documentId") {
+                            launchSingleTop = true
+                        }
+                    },
                     colors = NavigationBarItemDefaults.colors(
                         unselectedIconColor = OnSurfaceVariant,
                         unselectedTextColor = OnSurfaceVariant

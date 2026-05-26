@@ -10,6 +10,8 @@ import com.julian.miju2.DashboardModule.DashboardScreen
 import com.julian.miju2.LoginModule.LoginScreen
 import com.julian.miju2.ProfileModule.ProfileScreen
 import com.julian.miju2.presentation.signUp.SignUpScreen
+import com.julian.miju2.TransactionsModule.TransactionsScreen
+
 
 @Composable
 fun AppNavigation() {
@@ -42,6 +44,14 @@ fun AppNavigation() {
         ) { backStackEntry ->
             val documentId = backStackEntry.arguments?.getString("documentId") ?: ""
             DashboardScreen(navController = navController, documentId = documentId)
+        }
+
+        composable(
+            route = "transactions/{documentId}",
+            arguments = listOf(navArgument("documentId") { type = NavType.StringType })
+        ) { backStackEntry ->
+            val documentId = backStackEntry.arguments?.getString("documentId") ?: ""
+            TransactionsScreen(navController = navController, documentId = documentId)
         }
     }
 }

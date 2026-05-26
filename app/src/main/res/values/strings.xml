@@ -68,7 +68,16 @@
     <!-- Dashboard Screen -->
     <string name="dashboard_welcome_back">BIENVENIDO DE NUEVO,</string>
     <string name="dashboard_greeting">Hola, %1$s</string>
+    <string name="dashboard_greeting_generic">Hola</string>
     <string name="dashboard_notifications">Notificaciones</string>
+    <string name="dashboard_balance_label">SALDO DISPONIBLE</string>
+    <string name="dashboard_membership">Miembro MiJu</string>
+    <string name="dashboard_send_money">Enviar Dinero</string>
+    <string name="dashboard_recent_activity">Actividad reciente</string>
+    <string name="dashboard_see_all">Ver todo</string>
+    <string name="dashboard_tx_received_from">Transferencia de %1$s</string>
+    <string name="dashboard_tx_sent_to">Transferencia para %1$s</string>
+    <string name="dashboard_tx_icon_desc">Transacción</string>
 
     <!-- Profile Screen -->
     <string name="profile_title_personal_data">Datos Personales</string>
@@ -80,4 +89,14 @@
     <string name="profile_nav_home">HOME</string>
     <string name="profile_nav_transactions">TRANSACTIONS</string>
     <string name="profile_nav_profile">PROFILE</string>
+
+    <!-- Bottom Navigation (compartido) -->
+    <string name="nav_home">Home</string>
+    <string name="nav_transactions">Transactions</string>
+    <string name="nav_profile">Profile</string>
+
+    <!-- Transactions Screen -->
+    <string name="transactions_title">Movimientos</string>
+    <string name="transactions_empty">No tienes movimientos aún</string>
+    <string name="transactions_back">Volver</string>
 </resources>
