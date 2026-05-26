@@ -11,6 +11,9 @@ class DashboardViewModel : ViewModel() {
     private val accountsRef = FirebaseDatabase.getInstance().getReference("accounts")
     private val transactionsRef = FirebaseDatabase.getInstance().getReference("transactions")
 
+    private val currencyFormat = java.text.NumberFormat.getCurrencyInstance(java.util.Locale("es", "CO"))
+    private val dateFormat = java.text.SimpleDateFormat("dd/MM/yyyy", java.util.Locale("es", "CO"))
+
     val initial: String
         get() = fullName.trim()
             .firstOrNull { it.isLetterOrDigit() }
@@ -36,9 +39,7 @@ class DashboardViewModel : ViewModel() {
     private var userNames: Map<String, String> = emptyMap()
 
     val formattedBalance: String
-        get() = java.text.NumberFormat
-            .getCurrencyInstance(java.util.Locale("es", "CO"))
-            .format(balance)
+        get() = currencyFormat.format(balance)
 
     fun loadUserData(documentId: String) {
         if (documentId.isEmpty()) {
@@ -74,7 +75,9 @@ class DashboardViewModel : ViewModel() {
         loadUserNames {
             transactionsRef.get().addOnSuccessListener { snapshot ->
                 val lista = snapshot.children
-                    .mapNotNull { it.getValue(Transaction::class.java) }
+                    .mapNotNull { child ->
+                        child.getValue(Transaction::class.java)?.copy(transactionId = child.key ?: "")
+                    }
                     .filter { it.from == documentId || it.to == documentId }
                     .sortedByDescending { it.date }
                 transactions = lista
@@ -102,11 +105,9 @@ class DashboardViewModel : ViewModel() {
         val isIncoming = tx.to == documentId
         val otherId = if (isIncoming) tx.from else tx.to
         val counterparty = userNames[otherId] ?: otherId
-        val currency = java.text.NumberFormat.getCurrencyInstance(java.util.Locale("es", "CO"))
         val sign = if (isIncoming) "+" else "-"
-        val amountText = "$sign${currency.format(tx.amount)}"
-        val subtitle = java.text.SimpleDateFormat("dd/MM/yyyy", java.util.Locale("es", "CO"))
-            .format(java.util.Date(tx.date))
+        val amountText = "$sign${currencyFormat.format(tx.amount)}"
+        val subtitle = dateFormat.format(java.util.Date(tx.date))
         return TransactionUi(
             transactionId = tx.transactionId,
             counterparty = counterparty,
