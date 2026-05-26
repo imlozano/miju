@@ -15,16 +15,22 @@ import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
+import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
 import androidx.compose.material3.TextField
 import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -53,6 +59,8 @@ fun SendMoneyScreen(
     LaunchedEffect(documentId) {
         viewModel.loadSenderBalance(documentId)
     }
+
+    var showConfirmDialog by remember { mutableStateOf(false) }
 
     Scaffold(containerColor = Background) { paddingValues ->
         Column(
@@ -212,7 +220,7 @@ fun SendMoneyScreen(
             Button(
                 onClick = {
                     viewModel.validateAndResolve(documentId) {
-                        // TODO mostrar diálogo de confirmación
+                        showConfirmDialog = true
                     }
                 },
                 modifier = Modifier
@@ -231,5 +239,69 @@ fun SendMoneyScreen(
 
             Spacer(Modifier.height(24.dp))
         }
+
+        if (showConfirmDialog) {
+            AlertDialog(
+                onDismissRequest = { showConfirmDialog = false },
+                title = {
+                    Text(
+                        text = stringResource(id = R.string.send_money_confirm_title),
+                        color = Primary,
+                        fontWeight = FontWeight.Bold
+                    )
+                },
+                text = {
+                    Column {
+                        ConfirmRow(
+                            label = stringResource(id = R.string.send_money_confirm_to),
+                            value = viewModel.recipientName.ifBlank { viewModel.recipientAccount }
+                        )
+                        Spacer(Modifier.height(8.dp))
+                        ConfirmRow(
+                            label = stringResource(id = R.string.send_money_confirm_amount),
+                            value = viewModel.formattedAmount
+                        )
+                        Spacer(Modifier.height(8.dp))
+                        ConfirmRow(
+                            label = stringResource(id = R.string.send_money_confirm_concept),
+                            value = viewModel.concept.ifBlank { stringResource(id = R.string.send_money_no_concept) }
+                        )
+                    }
+                },
+                confirmButton = {
+                    Button(
+                        onClick = {
+                            // TODO ejecutar el envío
+                        },
+                        colors = ButtonDefaults.buttonColors(containerColor = Primary)
+                    ) {
+                        Text(
+                            text = stringResource(id = R.string.send_money_confirm_send),
+                            fontWeight = FontWeight.Bold
+                        )
+                    }
+                },
+                dismissButton = {
+                    TextButton(onClick = { showConfirmDialog = false }) {
+                        Text(
+                            text = stringResource(id = R.string.send_money_confirm_cancel),
+                            color = OnSurfaceVariant
+                        )
+                    }
+                },
+                containerColor = Background
+            )
+        }
+    }
+}
+
+@Composable
+private fun ConfirmRow(label: String, value: String) {
+    Row(
+        modifier = Modifier.fillMaxWidth(),
+        horizontalArrangement = Arrangement.SpaceBetween
+    ) {
+        Text(text = label, color = OnSurfaceVariant, fontSize = 14.sp)
+        Text(text = value, color = Primary, fontSize = 14.sp, fontWeight = FontWeight.Bold)
     }
 }

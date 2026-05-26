@@ -43,6 +43,9 @@ class SendMoneyViewModel : ViewModel() {
     val amountValue: Double
         get() = amount.toDoubleOrNull() ?: 0.0
 
+    val formattedAmount: String
+        get() = currencyFormat.format(amountValue)
+
     fun onRecipientChange(value: String) {
         if (value.all { it.isDigit() }) recipientAccount = value
     }

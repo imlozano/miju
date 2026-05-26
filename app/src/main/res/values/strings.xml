@@ -120,4 +120,11 @@
     <string name="send_money_error_recipient_not_found">No existe una cuenta con ese número</string>
     <string name="send_money_error_self">No puedes enviarte dinero a ti mismo</string>
     <string name="send_money_error_connection">Error de conexión. Intenta de nuevo.</string>
+    <string name="send_money_confirm_title">Confirmar Envío</string>
+    <string name="send_money_confirm_to">Para</string>
+    <string name="send_money_confirm_amount">Monto</string>
+    <string name="send_money_confirm_concept">Concepto</string>
+    <string name="send_money_confirm_send">Confirmar y Enviar</string>
+    <string name="send_money_confirm_cancel">Cancelar</string>
+    <string name="send_money_no_concept">Sin concepto</string>
 </resources>
