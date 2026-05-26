@@ -1,4 +1,4 @@
-package com.julian.miju2.components
+package com.julian.miju2.presentation.components
 
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Home

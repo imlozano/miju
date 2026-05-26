@@ -33,8 +33,8 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import com.julian.miju2.DashboardModule.TransactionItem
 import com.julian.miju2.R
-import com.julian.miju2.components.BottomTab
-import com.julian.miju2.components.MijuBottomBar
+import com.julian.miju2.presentation.components.BottomTab
+import com.julian.miju2.presentation.components.MijuBottomBar
 import com.julian.miju2.ui.theme.Background
 import com.julian.miju2.ui.theme.OnSurfaceVariant
 import com.julian.miju2.ui.theme.Primary
