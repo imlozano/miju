@@ -72,6 +72,7 @@
     <string name="dashboard_notifications">Notificaciones</string>
     <string name="dashboard_balance_label">SALDO DISPONIBLE</string>
     <string name="dashboard_membership">Miembro MiJu</string>
+    <string name="dashboard_account_number">Cuenta: %1$s</string>
     <string name="dashboard_send_money">Enviar Dinero</string>
     <string name="dashboard_recent_activity">Actividad reciente</string>
     <string name="dashboard_see_all">Ver todo</string>
