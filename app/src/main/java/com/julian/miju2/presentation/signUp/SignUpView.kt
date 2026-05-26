@@ -117,11 +117,25 @@ fun SignUpScreen(
                 horizontalArrangement = Arrangement.SpaceBetween,
                 verticalAlignment = Alignment.CenterVertically
             ) {
-                Text(text = stringResource(id = R.string.app_name), color = Primary, fontSize = 20.sp, fontWeight = FontWeight.ExtraBold)
-                Text(text = stringResource(id = R.string.signup_tittle_secure), color = OnSurfaceVariant, fontSize = 12.sp, fontWeight = FontWeight.Bold)
+                Text(
+                    text = stringResource(id = R.string.app_name),
+                    color = Primary,
+                    fontSize = 20.sp,
+                    fontWeight = FontWeight.ExtraBold
+                )
+                Text(
+                    text = stringResource(id = R.string.signup_tittle_secure),
+                    color = OnSurfaceVariant,
+                    fontSize = 12.sp,
+                    fontWeight = FontWeight.Bold
+                )
             }
             Spacer(modifier = Modifier.height(32.dp))
-            Text(text = stringResource(id = R.string.signup_subtitle_step), color = OnSurfaceVariant, fontSize = 14.sp)
+            Text(text = stringResource(
+                id = R.string.signup_subtitle_step),
+                color = OnSurfaceVariant,
+                fontSize = 14.sp
+            )
             Spacer(modifier = Modifier.height(32.dp))
 
             Card(
@@ -170,6 +184,7 @@ fun SignUpScreen(
                         value = viewModel.password,
                         onValueChange = { viewModel.onPasswordChange(it) },
                         placeholder = stringResource(id = R.string.signup_placeholder_password),
+                        keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
                         isPassword = true,
                         error = viewModel.passwordError
                     )
@@ -179,6 +194,7 @@ fun SignUpScreen(
                         value = viewModel.confirmPassword,
                         onValueChange = { viewModel.onConfirmPasswordChange(it) },
                         placeholder = stringResource(id = R.string.signup_placeholder_password),
+                        keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
                         isPassword = true,
                         error = viewModel.confirmPasswordError
                     )
@@ -193,9 +209,19 @@ fun SignUpScreen(
                         Text(
                             text = buildAnnotatedString {
                                 append(stringResource(id = R.string.signup_terms_accept))
-                                withStyle(style = SpanStyle(color = Primary, fontWeight = FontWeight.Bold)) { append(stringResource(id = R.string.signup_terms_service)) }
+
+                                withStyle(style = SpanStyle(
+                                    color = Primary,
+                                    fontWeight = FontWeight.Bold)
+                                ) { append(stringResource(id = R.string.signup_terms_service)) }
+
                                 append(stringResource(id = R.string.signup_terms_and))
-                                withStyle(style = SpanStyle(color = Primary, fontWeight = FontWeight.Bold)) { append(stringResource(id = R.string.signup_terms_privacy)) }
+
+                                withStyle(style = SpanStyle(
+                                    color = Primary,
+                                    fontWeight = FontWeight.Bold))
+                                { append(stringResource(id = R.string.signup_terms_privacy)) }
+
                                 append(stringResource(id = R.string.signup_terms_process))
                             },
                             fontSize = 11.sp, lineHeight = 16.sp, color = OnSurfaceVariant
@@ -203,7 +229,12 @@ fun SignUpScreen(
                     }
 
                     viewModel.termsError?.let { errorRes ->
-                        Text(text = stringResource(id = errorRes), color = Error, fontSize = 10.sp, modifier = Modifier.padding(start = 12.dp))
+                        Text(
+                            text = stringResource(id = errorRes),
+                            color = Error,
+                            fontSize = 10.sp,
+                            modifier = Modifier.padding(start = 12.dp)
+                        )
                     }
 
                     Spacer(modifier = Modifier.height(24.dp))
@@ -235,9 +266,19 @@ fun SignUpScreen(
                 shape = RoundedCornerShape(24.dp)
             ) {
                 Column(modifier = Modifier.padding(20.dp)) {
-                    Text(text = stringResource(id = R.string.signup_id_verification_tittle), color = Primary, fontWeight = FontWeight.Bold, fontSize = 16.sp)
+
+                    Text(text = stringResource(
+                        id = R.string.signup_id_verification_tittle),
+                        color = Primary,
+                        fontWeight = FontWeight.Bold,
+                        fontSize = 16.sp
+                    )
                     Spacer(modifier = Modifier.height(8.dp))
-                    Text(text = stringResource(id = R.string.signup_id_verification_label_instruction), color = OnSurfaceVariant, fontSize = 13.sp)
+                    Text(
+                        text = stringResource(id = R.string.signup_id_verification_label_instruction),
+                        color = OnSurfaceVariant,
+                        fontSize = 13.sp
+                    )
                     Spacer(modifier = Modifier.height(20.dp))
                     Surface(
                         modifier = Modifier.fillMaxWidth().height(180.dp),
@@ -247,11 +288,24 @@ fun SignUpScreen(
                     ) {
                         Box(contentAlignment = Alignment.Center) {
                             Column(horizontalAlignment = Alignment.CenterHorizontally) {
-                                Surface(modifier = Modifier.size(48.dp), shape = RoundedCornerShape(12.dp), color = Primary.copy(alpha = 0.1f)) {
-                                    IconButton(onClick = { /* ViewModel Open Camera */ }) { Icon(Icons.Default.CameraAlt, contentDescription = null, tint = Primary) }
+
+                                Surface(
+                                    modifier = Modifier.size(48.dp),
+                                    shape = RoundedCornerShape(12.dp),
+                                    color = Primary.copy(alpha = 0.1f)) {
+                                    IconButton(onClick = { /* ViewModel Open Camera */ })
+                                    { Icon(Icons.Default.CameraAlt,
+                                        contentDescription = null,
+                                        tint = Primary) }
                                 }
                                 Spacer(modifier = Modifier.height(8.dp))
-                                Text(stringResource(id = R.string.signup_btn_open_camera), fontSize = 12.sp, fontWeight = FontWeight.Bold, color = Primary, letterSpacing = 1.sp)
+                                Text(stringResource(
+                                    id = R.string.signup_btn_open_camera),
+                                    fontSize = 12.sp,
+                                    fontWeight = FontWeight.Bold,
+                                    color = Primary,
+                                    letterSpacing = 1.sp
+                                )
                             }
                         }
                     }
@@ -262,7 +316,8 @@ fun SignUpScreen(
             Text(
                 text = buildAnnotatedString {
                     append(stringResource(id = R.string.signup_account_created))
-                    withStyle(style = SpanStyle(color = Secondary, fontWeight = FontWeight.Bold)) { append(stringResource(id = R.string.signup_login_link)) }
+                    withStyle(style = SpanStyle(color = Secondary, fontWeight = FontWeight.Bold))
+                    { append(stringResource(id = R.string.signup_login_link)) }
                 },
                 modifier = Modifier.fillMaxWidth().clickable { navController.navigate("login") },
                 textAlign = TextAlign.Center, fontSize = 14.sp, color = OnSurfaceVariant
