@@ -42,6 +42,8 @@
     <string name="error_register_failed">Error al registrar el usuario</string>
     <string name="error_name_required">El nombre es obligatorio</string>
     <string name="error_document_length_10">El documento debe tener 10 dígitos</string>
+    <string name="error_document_length">El documento debe tener entre 6 y 10 dígitos</string>
+    <string name="error_document_numeric">El documento debe contener solo números</string>
     <string name="error_document_nuip_range">Debe ser superior a 1.000.000.000</string>
     <string name="error_document_invalid">Documento inválido</string>
     <string name="error_invalid_email">Email no válido</string>

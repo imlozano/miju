@@ -72,10 +72,16 @@ class SignUpViewModel : ViewModel() {
         }
     }
     fun onPasswordChange(newValue: String) {
-        password = newValue; passwordError = null
+        if (newValue.all { it.isDigit() } && newValue.length <= 6) {
+            password = newValue
+            passwordError = null
+        }
     }
     fun onConfirmPasswordChange(newValue: String) {
-        confirmPassword = newValue; confirmPasswordError = null
+        if (newValue.all { it.isDigit() } && newValue.length <= 6) {
+            confirmPassword = newValue
+            confirmPasswordError = null
+        }
     }
     fun onTermsChange(newValue: Boolean) {
         acceptedTerms = newValue; termsError = null
@@ -85,14 +91,12 @@ class SignUpViewModel : ViewModel() {
         if (validateFields()) {
             isLoading = true
             
-            // Verificar si el documento ya existe
             getUserDataUseCase(documentId) { existingUser ->
                 if (existingUser != null) {
                     isLoading = false
                     documentIdError = R.string.error_document_invalid
                     onResult(false, R.string.error_document_invalid)
                 } else {
-                    // Si el documento es nuevo, verificar el email
                     checkEmailUseCase(email) { exists ->
                         if (exists) {
                             isLoading = false
@@ -106,7 +110,10 @@ class SignUpViewModel : ViewModel() {
                                 cellphoneNumber = cellphoneNumber,
                                 password = password
                             )
-                            registerUserUseCase(newUser, onResult)
+                            registerUserUseCase(newUser) { success, messageId ->
+                                isLoading = false
+                                onResult(success, messageId)
+                            }
                         }
                     }
                 }
@@ -126,8 +133,12 @@ class SignUpViewModel : ViewModel() {
             fullNameError = R.string.error_name_required; isValid = false
         }
 
-        if (documentId.length != 10) {
-            documentIdError = R.string.error_document_length_10; isValid = false
+        if (!documentId.all { it.isDigit() }) {
+            documentIdError = R.string.error_document_numeric
+            isValid = false
+        } else if (documentId.length !in 6..10) {
+            documentIdError = R.string.error_document_length
+            isValid = false
         }
 
         if (!email.matches(emailPattern)) {
