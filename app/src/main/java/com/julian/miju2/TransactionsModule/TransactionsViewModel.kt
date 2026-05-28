@@ -5,8 +5,8 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import com.google.firebase.database.FirebaseDatabase
-import com.julian.miju2.DashboardModule.Transaction
-import com.julian.miju2.DashboardModule.TransactionUi
+import com.julian.miju2.domain.model.Transaction
+import com.julian.miju2.presentation.model.TransactionUi
 
 class TransactionsViewModel : ViewModel() {
     private val database = FirebaseDatabase.getInstance().getReference("users")

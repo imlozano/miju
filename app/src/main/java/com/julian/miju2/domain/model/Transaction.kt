@@ -1,4 +1,4 @@
-package com.julian.miju2.DashboardModule
+package com.julian.miju2.domain.model
 
 data class Transaction(
     val transactionId: String = "",
@@ -8,12 +8,4 @@ data class Transaction(
     val date: Long = 0L,
     val status: String = "",
     val concept: String = ""
-)
-
-data class TransactionUi(
-    val transactionId: String,
-    val counterparty: String,
-    val subtitle: String,
-    val amountText: String,
-    val isIncoming: Boolean
 )

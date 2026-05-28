@@ -44,6 +44,7 @@ import androidx.navigation.NavController
 import com.julian.miju2.R
 import com.julian.miju2.presentation.components.BottomTab
 import com.julian.miju2.presentation.components.MijuBottomBar
+import com.julian.miju2.presentation.model.TransactionUi
 import com.julian.miju2.ui.theme.Background
 import com.julian.miju2.ui.theme.OnSurfaceVariant
 import com.julian.miju2.ui.theme.Primary
