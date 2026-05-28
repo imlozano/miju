@@ -1,4 +1,4 @@
-package com.julian.miju2.LoginModule
+package com.julian.miju2.presentation.login
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -37,7 +37,6 @@ fun LoginScreen(
     navController: NavController,
     viewModel: LoginViewModel = viewModel()
 ) {
-    // Escuchar el éxito del login para navegar al perfil
     LaunchedEffect(viewModel.loginSuccess) {
         if (viewModel.loginSuccess) {
             navController.navigate("dashboard/${viewModel.documentId}") {

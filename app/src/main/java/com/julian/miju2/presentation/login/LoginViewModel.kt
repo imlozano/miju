@@ -1,17 +1,17 @@
-package com.julian.miju2.LoginModule
+package com.julian.miju2.presentation.login
 
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
-import com.google.firebase.database.DatabaseReference
-import com.google.firebase.database.FirebaseDatabase
 import com.julian.miju2.R
+import com.julian.miju2.data.repository.UserRepositoryImpl
+import com.julian.miju2.domain.usecase.LoginUseCase
 
-class LoginViewModel: ViewModel() {
+class LoginViewModel : ViewModel() {
 
-    // Declaración que me permite guardar información que traigo de firebase
-//    private lateinit var database: DatabaseReference
+    private val repository = UserRepositoryImpl()
+    private val loginUseCase = LoginUseCase(repository)
 
     var documentId: String by mutableStateOf("")
         private set
@@ -35,13 +35,7 @@ class LoginViewModel: ViewModel() {
     var loginSuccess: Boolean by mutableStateOf(false)
         private set
 
-//    private lateinit var database: DatabaseReference
-private val database = FirebaseDatabase.getInstance().getReference("users")
 
-
-
-
-    // Eventos de la UI
     fun onDocumentIdChange(newDocumentId: String) {
         if (newDocumentId.all { it.isDigit() }) {
             documentId = newDocumentId
@@ -66,48 +60,20 @@ private val database = FirebaseDatabase.getInstance().getReference("users")
         passwordVisible = !passwordVisible
     }
 
-
-
-//    fun login(documentNumber: String, password: String){
-//        // Instancia de dfirebase database que saca la referencia users
-//        database =
-//
-//    }
-
-    // Lógica principal: validar formato y luego consultar Firebase
-
     fun onLoginClick() {
         if (!validateFormat()) return
 
-//        database = FirebaseDatabase.getInstance().getReference("users")
-
         isLoading = true
-
-        database.child(documentId).get()
-            .addOnSuccessListener { snapshot ->
-                isLoading = false
-
-                if (!snapshot.exists()) {
-                    loginErrorMessage = R.string.login_error_invalid_credentials
-                    return@addOnSuccessListener
-                }
-
-                val dbPassword = snapshot.child("password").value?.toString()
-
-                if (dbPassword == password) {
-                    loginSuccess = true
-                    println("Login exitoso: documentId=$documentId")
-                } else {
-                    loginErrorMessage = R.string.login_error_invalid_credentials
-                }
+        loginUseCase(documentId, password) { success, _, _ ->
+            isLoading = false
+            if (success) {
+                loginSuccess = true
+            } else {
+                loginErrorMessage = R.string.login_error_invalid_credentials
             }
-            .addOnFailureListener {
-                isLoading = false
-                passwordError = "Error de conexión. Intenta de nuevo."
-            }
+        }
     }
 
-    // Validación de formato (solo local)
     private fun validateFormat(): Boolean {
         val docError = when {
             documentId.isBlank() -> "El documento es obligatorio"
