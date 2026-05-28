@@ -1,17 +1,29 @@
-package com.julian.miju2.DashboardModule
+package com.julian.miju2.presentation.dashboard
 
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
-import com.google.firebase.database.FirebaseDatabase
+import com.julian.miju2.data.repository.AccountRepositoryImpl
+import com.julian.miju2.data.repository.TransactionRepositoryImpl
+import com.julian.miju2.data.repository.UserRepositoryImpl
 import com.julian.miju2.domain.model.Transaction
+import com.julian.miju2.domain.usecase.GetAccountUseCase
+import com.julian.miju2.domain.usecase.GetTransactionsUseCase
+import com.julian.miju2.domain.usecase.GetUserDataUseCase
+import com.julian.miju2.domain.usecase.GetUserNamesUseCase
 import com.julian.miju2.presentation.model.TransactionUi
 
 class DashboardViewModel : ViewModel() {
-    private val database = FirebaseDatabase.getInstance().getReference("users")
-    private val accountsRef = FirebaseDatabase.getInstance().getReference("accounts")
-    private val transactionsRef = FirebaseDatabase.getInstance().getReference("transactions")
+
+    private val userRepository = UserRepositoryImpl()
+    private val accountRepository = AccountRepositoryImpl()
+    private val transactionRepository = TransactionRepositoryImpl()
+
+    private val getUserDataUseCase = GetUserDataUseCase(userRepository)
+    private val getAccountUseCase = GetAccountUseCase(accountRepository)
+    private val getTransactionsUseCase = GetTransactionsUseCase(transactionRepository)
+    private val getUserNamesUseCase = GetUserNamesUseCase(userRepository)
 
     private val currencyFormat = java.text.NumberFormat.getCurrencyInstance(java.util.Locale("es", "CO"))
     private val dateFormat = java.text.SimpleDateFormat("dd/MM/yyyy", java.util.Locale("es", "CO"))
@@ -28,7 +40,7 @@ class DashboardViewModel : ViewModel() {
     var isLoading by mutableStateOf(false)
         private set
 
-    // Saldo leído desde el nodo 'accounts' en Firebase
+    // Saldo leído desde el nodo 'accounts'
     var balance by mutableStateOf(0.0)
         private set
 
@@ -56,20 +68,14 @@ class DashboardViewModel : ViewModel() {
         }
 
         isLoading = true
-        database.child(documentId).get().addOnSuccessListener { snapshot ->
-            fullName = if (snapshot.exists()) snapshot.child("fullName").value?.toString() ?: "" else ""
-            isLoading = false
-        }.addOnFailureListener {
-            fullName = ""
+        getUserDataUseCase(documentId) { user ->
+            fullName = user?.fullName ?: ""
             isLoading = false
         }
 
-        accountsRef.child(documentId).get().addOnSuccessListener { snapshot ->
-            balance = snapshot.child("balance").getValue(Double::class.java) ?: 0.0
-            accountNumber = snapshot.child("accountNumber").value?.toString() ?: ""
-        }.addOnFailureListener {
-            balance = 0.0
-            accountNumber = ""
+        getAccountUseCase(documentId) { account ->
+            balance = account?.balance ?: 0.0
+            accountNumber = account?.accountNumber ?: ""
         }
     }
 
@@ -80,32 +86,12 @@ class DashboardViewModel : ViewModel() {
             return
         }
 
-        loadUserNames {
-            transactionsRef.get().addOnSuccessListener { snapshot ->
-                val lista = snapshot.children
-                    .mapNotNull { child ->
-                        child.getValue(Transaction::class.java)?.copy(transactionId = child.key ?: "")
-                    }
-                    .filter { it.from == documentId || it.to == documentId }
-                    .sortedByDescending { it.date }
+        getUserNamesUseCase { names ->
+            userNames = names
+            getTransactionsUseCase(documentId) { lista ->
                 transactions = lista
                 transactionsUi = lista.map { mapToUi(it, documentId) }
-            }.addOnFailureListener {
-                transactions = emptyList()
-                transactionsUi = emptyList()
             }
-        }
-    }
-
-    private fun loadUserNames(onLoaded: () -> Unit) {
-        database.get().addOnSuccessListener { snapshot ->
-            userNames = snapshot.children.associate { child ->
-                (child.key ?: "") to (child.child("fullName").value?.toString() ?: "")
-            }
-            onLoaded()
-        }.addOnFailureListener {
-            userNames = emptyMap()
-            onLoaded()
         }
     }
 
@@ -124,6 +110,4 @@ class DashboardViewModel : ViewModel() {
             isIncoming = isIncoming
         )
     }
-
-
 }

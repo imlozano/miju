@@ -6,7 +6,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
-import com.julian.miju2.DashboardModule.DashboardScreen
+import com.julian.miju2.presentation.dashboard.DashboardScreen
 import com.julian.miju2.presentation.login.LoginScreen
 import com.julian.miju2.presentation.profile.ProfileScreen
 import com.julian.miju2.presentation.signUp.SignUpScreen
@@ -32,7 +32,7 @@ fun AppNavigation() {
         }
 
         composable(
-            route = "profile/{documentId}",
+            route = "profile/" + "{documentId}",
             arguments = listOf(navArgument("documentId") { type = NavType.StringType })
         ) { backStackEntry ->
             val documentId = backStackEntry.arguments?.getString("documentId") ?: ""

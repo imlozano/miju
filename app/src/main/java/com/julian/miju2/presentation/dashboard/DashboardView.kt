@@ -1,4 +1,4 @@
-package com.julian.miju2.DashboardModule
+package com.julian.miju2.presentation.dashboard
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.rememberScrollState
@@ -16,7 +16,6 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.AccountBalanceWallet
 import androidx.compose.material.icons.filled.Send
 import androidx.compose.material.icons.outlined.Notifications
 import androidx.compose.material3.Card
@@ -44,6 +43,7 @@ import androidx.navigation.NavController
 import com.julian.miju2.R
 import com.julian.miju2.presentation.components.BottomTab
 import com.julian.miju2.presentation.components.MijuBottomBar
+import com.julian.miju2.presentation.components.TransactionItem
 import com.julian.miju2.presentation.model.TransactionUi
 import com.julian.miju2.ui.theme.Background
 import com.julian.miju2.ui.theme.OnSurfaceVariant
@@ -186,60 +186,6 @@ fun DashboardScreen(
                 }
             )
         }
-    }
-}
-
-@Composable
-internal fun TransactionItem(item: TransactionUi, modifier: Modifier = Modifier) {
-    Row(
-        modifier = modifier
-            .fillMaxWidth()
-            .padding(vertical = 8.dp),
-        verticalAlignment = Alignment.CenterVertically,
-        horizontalArrangement = Arrangement.SpaceBetween
-    ) {
-        Row(
-            verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.spacedBy(12.dp)
-        ) {
-            Box(
-                modifier = Modifier
-                    .size(48.dp)
-                    .background(Primary.copy(alpha = 0.1f), CircleShape),
-                contentAlignment = Alignment.Center
-            ) {
-                Icon(
-                    imageVector = Icons.Default.AccountBalanceWallet,
-                    contentDescription = stringResource(id = R.string.dashboard_tx_icon_desc),
-                    tint = Primary,
-                    modifier = Modifier.size(24.dp)
-                )
-            }
-            Column {
-                val title = if (item.isIncoming) {
-                    stringResource(id = R.string.dashboard_tx_received_from, item.counterparty)
-                } else {
-                    stringResource(id = R.string.dashboard_tx_sent_to, item.counterparty)
-                }
-                Text(
-                    text = title,
-                    color = Primary,
-                    fontSize = 14.sp,
-                    fontWeight = FontWeight.Bold
-                )
-                Text(
-                    text = item.subtitle,
-                    color = OnSurfaceVariant,
-                    fontSize = 12.sp
-                )
-            }
-        }
-        Text(
-            text = item.amountText,
-            color = if (item.isIncoming) Secondary else Primary,
-            fontSize = 14.sp,
-            fontWeight = FontWeight.Bold
-        )
     }
 }
 

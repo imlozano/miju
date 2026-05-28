@@ -31,7 +31,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
-import com.julian.miju2.DashboardModule.TransactionItem
+import com.julian.miju2.presentation.components.TransactionItem
 import com.julian.miju2.R
 import com.julian.miju2.presentation.components.BottomTab
 import com.julian.miju2.presentation.components.MijuBottomBar
@@ -60,7 +60,7 @@ fun TransactionsScreen(
                     }
                 },
                 onTransactionsClick = {
-                    // Ya estamos en Transactions; no recargar.
+
                 },
                 onProfileClick = {
                     navController.navigate("profile/$documentId") {
