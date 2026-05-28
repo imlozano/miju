@@ -42,7 +42,7 @@ import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import com.julian.miju2.R
-import com.julian.miju2.components.ShowMessageAlertDialog
+import com.julian.miju2.presentation.components.ShowMessageAlertDialog
 import com.julian.miju2.ui.theme.Background
 import com.julian.miju2.ui.theme.Error
 import com.julian.miju2.ui.theme.Neutral

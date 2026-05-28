@@ -29,7 +29,7 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.julian.miju2.R
-import com.julian.miju2.components.ShowMessageAlertDialog
+import com.julian.miju2.presentation.components.ShowMessageAlertDialog
 import com.julian.miju2.ui.theme.*
 
 @Composable
