@@ -28,6 +28,8 @@ import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
+import com.julian.miju2.R
+import com.julian.miju2.components.ShowMessageAlertDialog
 import com.julian.miju2.ui.theme.*
 
 @Composable
@@ -248,6 +250,14 @@ fun LoginScreen(
                             )
                         }
                     }
+                }
+
+                viewModel.loginErrorMessage?.let { errorRes ->
+                    ShowMessageAlertDialog(
+                        onConfirmation = { viewModel.clearLoginError() },
+                        dialogTitle = R.string.error_title,
+                        dialogText = errorRes
+                    )
                 }
 
                 Spacer(modifier = Modifier.weight(1f))

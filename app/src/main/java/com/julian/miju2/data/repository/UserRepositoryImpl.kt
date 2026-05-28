@@ -38,9 +38,24 @@ class UserRepositoryImpl(
             "password" to user.password
         )
 
+        // 1. Guardar el usuario
         dataSource.saveUser(user.documentId, userData)
             .addOnSuccessListener {
-                onResult(true, R.string.signup_success)
+                // 2. Si el usuario se crea con éxito, crear la cuenta bancaria
+                val accountData = mapOf(
+                    "accountNumber" to ("03" + user.documentId),
+                    "accountType" to "savings",
+                    "ownerId" to user.documentId,
+                    "balance" to 0.0
+                )
+                
+                dataSource.saveAccount(user.documentId, accountData)
+                    .addOnSuccessListener {
+                        onResult(true, R.string.signup_success)
+                    }
+                    .addOnFailureListener {
+                        onResult(false, R.string.error_register_failed)
+                    }
             }
             .addOnFailureListener {
                 onResult(false, R.string.error_register_failed)

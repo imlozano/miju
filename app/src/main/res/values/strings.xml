@@ -7,6 +7,7 @@
     <string name="text_loading">Cargando...</string>
     <string name="success_title">¡Éxito!</string>
     <string name="error_title">Atención</string>
+    <string name="login_error_invalid_credentials">Usuario y/o contraseña incorrectos</string>
 
     <!-- SignUp Screen -->
     <string name="signup_tittle_secure">REGISTRO SEGURO</string>
@@ -74,6 +75,7 @@
     <string name="dashboard_notifications">Notificaciones</string>
     <string name="dashboard_balance_label">SALDO DISPONIBLE</string>
     <string name="dashboard_membership">Miembro MiJu</string>
+    <string name="dashboard_account_number">Cuenta: %1$s</string>
     <string name="dashboard_send_money">Enviar Dinero</string>
     <string name="dashboard_recent_activity">Actividad reciente</string>
     <string name="dashboard_see_all">Ver todo</string>
@@ -104,4 +106,32 @@
     <string name="transactions_title">Movimientos</string>
     <string name="transactions_empty">No tienes movimientos aún</string>
     <string name="transactions_back">Volver</string>
+
+    <!-- Send Money Screen -->
+    <string name="send_money_title">MiJu</string>
+    <string name="send_money_eyebrow">NUEVA TRANSACCIÓN</string>
+    <string name="send_money_headline">Envía dinero al instante</string>
+    <string name="send_money_label_recipient">Destinatario</string>
+    <string name="send_money_placeholder_recipient">Número de documento del destinatario</string>
+    <string name="send_money_hint_recipient">Verifica el número de documento para enviar a la persona correcta.</string>
+    <string name="send_money_label_amount">Monto a enviar</string>
+    <string name="send_money_label_concept">Concepto (opcional)</string>
+    <string name="send_money_placeholder_concept">Ej: Cena del viernes</string>
+    <string name="send_money_continue">Continuar</string>
+    <string name="send_money_available_balance">Saldo disponible: %1$s</string>
+    <string name="send_money_back">Volver</string>
+    <string name="send_money_error_recipient_required">Ingresa el número de cuenta del destinatario</string>
+    <string name="send_money_error_amount_invalid">Ingresa un monto válido mayor a cero</string>
+    <string name="send_money_error_insufficient">Saldo insuficiente</string>
+    <string name="send_money_error_recipient_not_found">No existe una cuenta con ese número</string>
+    <string name="send_money_error_self">No puedes enviarte dinero a ti mismo</string>
+    <string name="send_money_error_connection">Error de conexión. Intenta de nuevo.</string>
+    <string name="send_money_confirm_title">Confirmar Envío</string>
+    <string name="send_money_confirm_to">Para</string>
+    <string name="send_money_confirm_amount">Monto</string>
+    <string name="send_money_confirm_concept">Concepto</string>
+    <string name="send_money_confirm_send">Confirmar y Enviar</string>
+    <string name="send_money_confirm_cancel">Cancelar</string>
+    <string name="send_money_no_concept">Sin concepto</string>
+    <string name="send_money_success">¡Envío realizado con éxito!</string>
 </resources>

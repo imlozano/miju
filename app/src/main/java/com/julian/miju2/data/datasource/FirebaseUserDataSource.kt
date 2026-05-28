@@ -7,6 +7,7 @@ import com.google.firebase.database.FirebaseDatabase
 class FirebaseUserDataSource {
 
     private val database = FirebaseDatabase.getInstance().getReference("users")
+    private val accountsDatabase = FirebaseDatabase.getInstance().getReference("accounts")
 
     fun getUser(documentNumber: String): Task<DataSnapshot> {
         return database.child(documentNumber).get()
@@ -14,6 +15,10 @@ class FirebaseUserDataSource {
 
     fun saveUser(documentNumber: String, userData: Map<String, Any?>): Task<Void> {
         return database.child(documentNumber).setValue(userData)
+    }
+
+    fun saveAccount(documentNumber: String, accountData: Map<String, Any?>): Task<Void> {
+        return accountsDatabase.child(documentNumber).setValue(accountData)
     }
 
     fun updateField(documentNumber: String, field: String, value: Any): Task<Void> {

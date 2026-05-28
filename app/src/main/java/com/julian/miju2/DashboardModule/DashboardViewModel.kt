@@ -30,6 +30,9 @@ class DashboardViewModel : ViewModel() {
     var balance by mutableStateOf(0.0)
         private set
 
+    var accountNumber by mutableStateOf("")
+        private set
+
     var transactions by mutableStateOf<List<Transaction>>(emptyList())
         private set
 
@@ -45,6 +48,7 @@ class DashboardViewModel : ViewModel() {
         if (documentId.isEmpty()) {
             fullName = ""
             balance = 0.0
+            accountNumber = ""
             isLoading = false
             return
         }
@@ -58,10 +62,12 @@ class DashboardViewModel : ViewModel() {
             isLoading = false
         }
 
-        accountsRef.child(documentId).child("balance").get().addOnSuccessListener { snapshot ->
-            balance = snapshot.getValue(Double::class.java) ?: 0.0
+        accountsRef.child(documentId).get().addOnSuccessListener { snapshot ->
+            balance = snapshot.child("balance").getValue(Double::class.java) ?: 0.0
+            accountNumber = snapshot.child("accountNumber").value?.toString() ?: ""
         }.addOnFailureListener {
             balance = 0.0
+            accountNumber = ""
         }
     }
 

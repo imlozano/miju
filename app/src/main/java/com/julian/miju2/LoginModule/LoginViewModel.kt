@@ -6,6 +6,7 @@ import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
+import com.julian.miju2.R
 
 class LoginViewModel: ViewModel() {
 
@@ -26,6 +27,8 @@ class LoginViewModel: ViewModel() {
         private set
     var passwordError: String? by mutableStateOf(null)
         private set
+    var loginErrorMessage: Int? by mutableStateOf(null)
+        private set
 
     var isLoading: Boolean by mutableStateOf(false)
         private set
@@ -43,13 +46,17 @@ private val database = FirebaseDatabase.getInstance().getReference("users")
         if (newDocumentId.all { it.isDigit() }) {
             documentId = newDocumentId
             documentIdError = null
+            loginErrorMessage = null
         }
     }
 
     fun onPasswordChange(newPassword: String) {
         password = newPassword
         passwordError = null
+        loginErrorMessage = null
     }
+
+    fun clearLoginError() { loginErrorMessage = null }
 
     fun onRememberChange(newValue: Boolean) {
         rememberMe = newValue
@@ -81,7 +88,7 @@ private val database = FirebaseDatabase.getInstance().getReference("users")
                 isLoading = false
 
                 if (!snapshot.exists()) {
-                    documentIdError = "Usuario no encontrado"
+                    loginErrorMessage = R.string.login_error_invalid_credentials
                     return@addOnSuccessListener
                 }
 
@@ -91,7 +98,7 @@ private val database = FirebaseDatabase.getInstance().getReference("users")
                     loginSuccess = true
                     println("Login exitoso: documentId=$documentId")
                 } else {
-                    passwordError = "Contraseña incorrecta"
+                    loginErrorMessage = R.string.login_error_invalid_credentials
                 }
             }
             .addOnFailureListener {
