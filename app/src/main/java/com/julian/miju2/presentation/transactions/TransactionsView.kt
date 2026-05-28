@@ -1,4 +1,4 @@
-package com.julian.miju2.TransactionsModule
+package com.julian.miju2.presentation.transactions
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box

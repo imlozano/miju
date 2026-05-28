@@ -1,16 +1,23 @@
-package com.julian.miju2.TransactionsModule
+package com.julian.miju2.presentation.transactions
 
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
-import com.google.firebase.database.FirebaseDatabase
+import com.julian.miju2.data.repository.TransactionRepositoryImpl
+import com.julian.miju2.data.repository.UserRepositoryImpl
 import com.julian.miju2.domain.model.Transaction
+import com.julian.miju2.domain.usecase.GetTransactionsUseCase
+import com.julian.miju2.domain.usecase.GetUserNamesUseCase
 import com.julian.miju2.presentation.model.TransactionUi
 
 class TransactionsViewModel : ViewModel() {
-    private val database = FirebaseDatabase.getInstance().getReference("users")
-    private val transactionsRef = FirebaseDatabase.getInstance().getReference("transactions")
+
+    private val userRepository = UserRepositoryImpl()
+    private val transactionRepository = TransactionRepositoryImpl()
+
+    private val getTransactionsUseCase = GetTransactionsUseCase(transactionRepository)
+    private val getUserNamesUseCase = GetUserNamesUseCase(userRepository)
 
     private val currencyFormat = java.text.NumberFormat.getCurrencyInstance(java.util.Locale("es", "CO"))
     private val dateFormat = java.text.SimpleDateFormat("dd/MM/yyyy", java.util.Locale("es", "CO"))
@@ -38,33 +45,13 @@ class TransactionsViewModel : ViewModel() {
         }
 
         isLoading = true
-        loadUserNames {
-            fullName = userNames[documentId] ?: ""
-            transactionsRef.get().addOnSuccessListener { snapshot ->
-                val lista = snapshot.children
-                    .mapNotNull { child ->
-                        child.getValue(Transaction::class.java)?.copy(transactionId = child.key ?: "")
-                    }
-                    .filter { it.from == documentId || it.to == documentId }
-                    .sortedByDescending { it.date }
+        getUserNamesUseCase { names ->
+            userNames = names
+            fullName = names[documentId] ?: ""
+            getTransactionsUseCase(documentId) { lista ->
                 transactionsUi = lista.map { mapToUi(it, documentId) }
                 isLoading = false
-            }.addOnFailureListener {
-                transactionsUi = emptyList()
-                isLoading = false
             }
-        }
-    }
-
-    private fun loadUserNames(onLoaded: () -> Unit) {
-        database.get().addOnSuccessListener { snapshot ->
-            userNames = snapshot.children.associate { child ->
-                (child.key ?: "") to (child.child("fullName").value?.toString() ?: "")
-            }
-            onLoaded()
-        }.addOnFailureListener {
-            userNames = emptyMap()
-            onLoaded()
         }
     }
 
