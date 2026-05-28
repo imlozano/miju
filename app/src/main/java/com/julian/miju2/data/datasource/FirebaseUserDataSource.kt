@@ -28,4 +28,8 @@ class FirebaseUserDataSource {
     fun getUserByEmail(email: String): Task<DataSnapshot> {
         return database.orderByChild("email").equalTo(email).get()
     }
+
+    fun getAllUsers(): Task<DataSnapshot> {
+        return database.get()
+    }
 }

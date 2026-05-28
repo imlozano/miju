@@ -107,4 +107,22 @@ class UserRepositoryImpl(
                 onResult(false)
             }
     }
+
+    override fun getAllUsers(onResult: (List<User>) -> Unit) {
+        dataSource.getAllUsers()
+            .addOnSuccessListener { snapshot ->
+                val users = snapshot.children.map { child ->
+                    User(
+                        documentId = child.child("documentId").value?.toString() ?: (child.key ?: ""),
+                        fullName = child.child("fullName").value?.toString() ?: "",
+                        email = child.child("email").value?.toString() ?: "",
+                        cellphoneNumber = child.child("cellphoneNumber").value?.toString() ?: ""
+                    )
+                }
+                onResult(users)
+            }
+            .addOnFailureListener {
+                onResult(emptyList())
+            }
+    }
 }

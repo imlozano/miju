@@ -11,4 +11,6 @@ interface UserRepository {
 
     fun login(documentId: String, password: String, onResult: (Boolean, Int, User?) -> Unit)
     fun isEmailRegistered(email: String, onResult: (Boolean) -> Unit)
+
+    fun getAllUsers(onResult: (List<User>) -> Unit)
 }
