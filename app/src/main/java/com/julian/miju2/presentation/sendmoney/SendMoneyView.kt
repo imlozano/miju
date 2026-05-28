@@ -1,4 +1,4 @@
-package com.julian.miju2.SendMoneyModule
+package com.julian.miju2.presentation.sendmoney
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row

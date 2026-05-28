@@ -10,7 +10,7 @@ import com.julian.miju2.presentation.dashboard.DashboardScreen
 import com.julian.miju2.presentation.login.LoginScreen
 import com.julian.miju2.presentation.profile.ProfileScreen
 import com.julian.miju2.presentation.signUp.SignUpScreen
-import com.julian.miju2.SendMoneyModule.SendMoneyScreen
+import com.julian.miju2.presentation.sendmoney.SendMoneyScreen
 import com.julian.miju2.presentation.transactions.TransactionsScreen
 
 
