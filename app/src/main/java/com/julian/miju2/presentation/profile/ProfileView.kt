@@ -252,7 +252,7 @@ fun ProfileScreen(
             MijuBottomBar(
                 selectedTab = BottomTab.PROFILE,
                 onHomeClick = { navController.navigate("dashboard/$documentId") },
-                onTransactionsClick = { /* Navegar a transacciones */ },
+                onTransactionsClick = { navController.navigate("transactions/$documentId") },
                 onProfileClick = { }
             )
         }
