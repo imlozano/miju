@@ -72,7 +72,7 @@ fun LoginScreen(
                 Spacer(modifier = Modifier.height(60.dp))
 
                 Text(
-                    text = "MiJu",
+                    text = stringResource(R.string.app_name),
                     color = Primary,
                     fontSize = 24.sp,
                     fontWeight = FontWeight.Bold
@@ -81,13 +81,13 @@ fun LoginScreen(
                 Spacer(modifier = Modifier.height(40.dp))
 
                 Text(
-                    text = "Bienvenido de nuevo",
+                    text = stringResource(R.string.login_welcome_title),
                     color = OnSurface,
                     fontSize = 28.sp,
                     fontWeight = FontWeight.Bold
                 )
                 Text(
-                    text = "Ingresa tus credenciales para acceder a tu panel.",
+                    text = stringResource(R.string.login_welcome_subtitle),
                     color = OnSurfaceVariant,
                     fontSize = 16.sp
                 )
@@ -95,7 +95,7 @@ fun LoginScreen(
                 Spacer(modifier = Modifier.height(40.dp))
 
                 Text(
-                    text = "Número de documento de identidad",
+                    text = stringResource(R.string.login_label_document),
                     color = OnSurface,
                     fontSize = 14.sp,
                     fontWeight = FontWeight.Bold
@@ -105,7 +105,7 @@ fun LoginScreen(
                     value = viewModel.documentId,
                     onValueChange = { viewModel.onDocumentIdChange(it) },
                     modifier = Modifier.fillMaxWidth(),
-                    placeholder = { Text("1000000000", color = OnSurfaceVariant) },
+                    placeholder = { Text(stringResource(R.string.login_placeholder_document), color = OnSurfaceVariant) },
                     leadingIcon = {
                         Icon(
                             Icons.Default.Person,
@@ -137,13 +137,13 @@ fun LoginScreen(
                     verticalAlignment = Alignment.CenterVertically
                 ) {
                     Text(
-                        text = "Contraseña",
+                        text = stringResource(R.string.login_label_password),
                         color = OnSurface,
                         fontSize = 14.sp,
                         fontWeight = FontWeight.Bold
                     )
                     Text(
-                        text = "¿Olvidaste tu contraseña?",
+                        text = stringResource(R.string.login_forgot_password),
                         color = Secondary,
                         fontSize = 12.sp,
                         fontWeight = FontWeight.Bold
@@ -172,9 +172,9 @@ fun LoginScreen(
                                 else
                                     Icons.Default.Visibility,
                                 contentDescription = if (viewModel.passwordVisible)
-                                    "Ocultar contraseña"
+                                    stringResource(R.string.login_password_hide)
                                 else
-                                    "Mostrar contraseña",
+                                    stringResource(R.string.login_password_show),
                                 tint = OnSurfaceVariant
                             )
                         }
@@ -201,7 +201,7 @@ fun LoginScreen(
                         onCheckedChange = { viewModel.onRememberChange(it) }
                     )
                     Text(
-                        text = "Recordar sesión en este dispositivo",
+                        text = stringResource(R.string.login_remember_me),
                         color = OnSurfaceVariant,
                         fontSize = 14.sp
                     )
@@ -241,7 +241,7 @@ fun LoginScreen(
                         )
                     } else {
                         Row(verticalAlignment = Alignment.CenterVertically) {
-                            Text("Ingresar", fontSize = 16.sp, fontWeight = FontWeight.Bold)
+                            Text(stringResource(R.string.login_button_enter), fontSize = 16.sp, fontWeight = FontWeight.Bold)
                             Spacer(modifier = Modifier.width(8.dp))
                             Icon(
                                 imageVector = Icons.AutoMirrored.Filled.ArrowForward,
@@ -269,12 +269,12 @@ fun LoginScreen(
                     horizontalArrangement = Arrangement.Center
                 ) {
                     Text(
-                        text = "¿No tienes una cuenta? ",
+                        text = stringResource(R.string.login_no_account),
                         color = OnSurfaceVariant,
                         fontSize = 14.sp
                     )
                     Text(
-                        text = "Regístrate ahora",
+                        text = stringResource(R.string.login_register_now),
                         color = Primary,
                         fontSize = 14.sp,
                         fontWeight = FontWeight.Bold,

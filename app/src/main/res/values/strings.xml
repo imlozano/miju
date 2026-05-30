@@ -74,6 +74,7 @@
     <string name="login_welcome_title">Bienvenido de nuevo</string>
     <string name="login_welcome_subtitle">Ingresa tus credenciales para acceder a tu panel.</string>
     <string name="login_label_document">Número de documento de identidad</string>
+    <string name="login_placeholder_document">1000000000</string>
     <string name="login_label_password">Contraseña</string>
     <string name="login_forgot_password">¿Olvidaste tu contraseña?</string>
     <string name="login_remember_me">Recordar sesión en este dispositivo</string>
