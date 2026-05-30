@@ -70,6 +70,24 @@
     <string name="signup_account_created">¿Ya tienes cuenta? </string>
     <string name="signup_login_link">Inicia Sesión aquí</string>
 
+    <!-- Login Screen -->
+    <string name="login_welcome_title">Bienvenido de nuevo</string>
+    <string name="login_welcome_subtitle">Ingresa tus credenciales para acceder a tu panel.</string>
+    <string name="login_label_document">Número de documento de identidad</string>
+    <string name="login_label_password">Contraseña</string>
+    <string name="login_forgot_password">¿Olvidaste tu contraseña?</string>
+    <string name="login_remember_me">Recordar sesión en este dispositivo</string>
+    <string name="login_button_enter">Ingresar</string>
+    <string name="login_no_account">¿No tienes una cuenta? </string>
+    <string name="login_register_now">Regístrate ahora</string>
+    <string name="login_password_show">Mostrar contraseña</string>
+    <string name="login_password_hide">Ocultar contraseña</string>
+    <string name="login_error_document_required">El documento es obligatorio</string>
+    <string name="login_error_document_min">Debe tener al menos 6 dígitos</string>
+    <string name="login_error_document_max">Máximo 10 dígitos</string>
+    <string name="login_error_password_required">La contraseña es obligatoria</string>
+    <string name="login_error_password_min">Debe tener al menos 6 caracteres</string>
+
     <!-- Dashboard Screen -->
     <string name="dashboard_welcome_back">BIENVENIDO DE NUEVO,</string>
     <string name="dashboard_greeting">Hola, %1$s</string>

@@ -18,6 +18,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
@@ -123,7 +124,7 @@ fun LoginScreen(
                     isError = viewModel.documentIdError != null,
                     supportingText = {
                         viewModel.documentIdError?.let { message ->
-                            Text(text = message, color = MaterialTheme.colorScheme.error)
+                            Text(text = stringResource(id = message), color = MaterialTheme.colorScheme.error)
                         }
                     }
                 )
@@ -187,7 +188,7 @@ fun LoginScreen(
                     isError = viewModel.passwordError != null,
                     supportingText = {
                         viewModel.passwordError?.let { message ->
-                            Text(text = message, color = MaterialTheme.colorScheme.error)
+                            Text(text = stringResource(id = message), color = MaterialTheme.colorScheme.error)
                         }
                     }
                 )

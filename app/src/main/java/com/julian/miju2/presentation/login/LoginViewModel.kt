@@ -23,9 +23,9 @@ class LoginViewModel : ViewModel() {
     var passwordVisible: Boolean by mutableStateOf(false)
         private set
 
-    var documentIdError: String? by mutableStateOf(null)
+    var documentIdError: Int? by mutableStateOf(null)
         private set
-    var passwordError: String? by mutableStateOf(null)
+    var passwordError: Int? by mutableStateOf(null)
         private set
     var loginErrorMessage: Int? by mutableStateOf(null)
         private set
@@ -76,15 +76,15 @@ class LoginViewModel : ViewModel() {
 
     private fun validateFormat(): Boolean {
         val docError = when {
-            documentId.isBlank() -> "El documento es obligatorio"
-            documentId.length < 6 -> "Debe tener al menos 6 dígitos"
-            documentId.length > 10 -> "Máximo 10 dígitos"
+            documentId.isBlank() -> R.string.login_error_document_required
+            documentId.length < 6 -> R.string.login_error_document_min
+            documentId.length > 10 -> R.string.login_error_document_max
             else -> null
         }
 
         val passError = when {
-            password.isBlank() -> "La contraseña es obligatoria"
-            password.length < 6 -> "Debe tener al menos 6 caracteres"
+            password.isBlank() -> R.string.login_error_password_required
+            password.length < 6 -> R.string.login_error_password_min
             else -> null
         }
 
