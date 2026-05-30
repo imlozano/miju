@@ -20,7 +20,7 @@ fun AppNavigation() {
 
     NavHost(
         navController = navController,
-        startDestination = "signup"
+        startDestination = "login"
     ) {
 
         composable("signup"){
