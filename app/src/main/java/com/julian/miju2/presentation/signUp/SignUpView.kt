@@ -19,8 +19,6 @@ import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
-import androidx.compose.ui.text.input.PasswordVisualTransformation
-import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
@@ -30,53 +28,10 @@ import androidx.navigation.NavController
 import com.julian.miju2.R
 import com.julian.miju2.presentation.components.ShowLoadingAlertDialog
 import com.julian.miju2.presentation.components.ShowMessageAlertDialog
+import com.julian.miju2.presentation.components.MijuTextField
 import com.julian.miju2.ui.theme.*
 
-@Composable
-fun SignUpTextField(
-    label: String,
-    value: String,
-    onValueChange: (String) -> Unit,
-    placeholder: String,
-    isPassword: Boolean = false,
-    keyboardOptions: KeyboardOptions = KeyboardOptions.Default,
-    error: Int? = null
-) {
-    Column {
-        Text(
-            text = label,
-            fontSize = 11.sp,
-            fontWeight = FontWeight.Bold,
-            color = Primary
-        )
-        Spacer(modifier = Modifier.height(4.dp))
-        TextField(
-            value = value,
-            onValueChange = onValueChange,
-            modifier = Modifier.fillMaxWidth(),
-            placeholder = { Text(placeholder, color = OnSurfaceVariant.copy(alpha = 0.5f), fontSize = 14.sp) },
-            singleLine = true,
-            visualTransformation = if (isPassword) PasswordVisualTransformation() else VisualTransformation.None,
-            keyboardOptions = keyboardOptions,
-            colors = TextFieldDefaults.colors(
-                focusedTextColor = Color.Black,
-                unfocusedTextColor = Color.Black,
-                focusedContainerColor = Neutral,
-                unfocusedContainerColor = Neutral,
-                disabledContainerColor = Neutral,
-                focusedIndicatorColor = Color.Transparent,
-                unfocusedIndicatorColor = Color.Transparent,
-            ),
-            shape = RoundedCornerShape(8.dp),
-            isError = error != null,
-            supportingText = {
-                if (error != null) {
-                    Text(text = stringResource(id = error), color = Error, fontSize = 10.sp)
-                }
-            }
-        )
-    }
-}
+
 
 @Composable
 fun SignUpScreen(
@@ -147,7 +102,7 @@ fun SignUpScreen(
                 elevation = CardDefaults.cardElevation(defaultElevation = 2.dp)
             ) {
                 Column(modifier = Modifier.padding(20.dp)) {
-                    SignUpTextField(
+                    MijuTextField(
                         label = stringResource(id = R.string.signup_label_fullname),
                         value = viewModel.fullName,
                         onValueChange = { viewModel.onFullNameChange(it) },
@@ -155,7 +110,7 @@ fun SignUpScreen(
                         error = viewModel.fullNameError
                     )
                     Spacer(modifier = Modifier.height(16.dp))
-                    SignUpTextField(
+                    MijuTextField(
                         label = stringResource(id = R.string.signup_label_document),
                         value = viewModel.documentId,
                         onValueChange = { viewModel.onDocumentIdChange(it) },
@@ -164,7 +119,7 @@ fun SignUpScreen(
                         error = viewModel.documentIdError
                     )
                     Spacer(modifier = Modifier.height(16.dp))
-                    SignUpTextField(
+                    MijuTextField(
                         label = stringResource(id = R.string.signup_label_email),
                         value = viewModel.email,
                         onValueChange = { viewModel.onEmailChange(it) },
@@ -172,7 +127,7 @@ fun SignUpScreen(
                         error = viewModel.emailError
                     )
                     Spacer(modifier = Modifier.height(16.dp))
-                    SignUpTextField(
+                    MijuTextField(
                         label = stringResource(id = R.string.signup_label_cellphone_number),
                         value = viewModel.cellphoneNumber,
                         onValueChange = { viewModel.onCellphoneNumberChange(it) },
@@ -181,7 +136,7 @@ fun SignUpScreen(
                         error = viewModel.cellphoneNumberError
                     )
                     Spacer(modifier = Modifier.height(16.dp))
-                    SignUpTextField(
+                    MijuTextField(
                         label = stringResource(id = R.string.signup_label_password),
                         value = viewModel.password,
                         onValueChange = { viewModel.onPasswordChange(it) },
@@ -191,7 +146,7 @@ fun SignUpScreen(
                         error = viewModel.passwordError
                     )
                     Spacer(modifier = Modifier.height(16.dp))
-                    SignUpTextField(
+                    MijuTextField(
                         label = stringResource(id = R.string.signup_label_confirm_password),
                         value = viewModel.confirmPassword,
                         onValueChange = { viewModel.onConfirmPasswordChange(it) },
