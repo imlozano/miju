@@ -23,8 +23,6 @@ import androidx.compose.material3.IconButton
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
-import androidx.compose.material3.TextField
-import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -33,7 +31,6 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
@@ -42,10 +39,10 @@ import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import com.julian.miju2.R
+import com.julian.miju2.presentation.components.MijuTextField
 import com.julian.miju2.presentation.components.ShowMessageAlertDialog
 import com.julian.miju2.ui.theme.Background
 import com.julian.miju2.ui.theme.Error
-import com.julian.miju2.ui.theme.Neutral
 import com.julian.miju2.ui.theme.OnSurface
 import com.julian.miju2.ui.theme.OnSurfaceVariant
 import com.julian.miju2.ui.theme.Primary
@@ -132,25 +129,12 @@ fun SendMoneyScreen(
                 fontWeight = FontWeight.Bold
             )
             Spacer(Modifier.height(4.dp))
-            TextField(
+            MijuTextField(
+                label = "",
                 value = viewModel.recipientDocument,
                 onValueChange = { viewModel.onRecipientChange(it) },
-                modifier = Modifier.fillMaxWidth(),
-                placeholder = {
-                    Text(
-                        text = stringResource(id = R.string.send_money_placeholder_recipient),
-                        color = OnSurfaceVariant
-                    )
-                },
-                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
-                shape = RoundedCornerShape(12.dp),
-                colors = TextFieldDefaults.colors(
-                    focusedContainerColor = Neutral,
-                    unfocusedContainerColor = Neutral,
-                    focusedIndicatorColor = Color.Transparent,
-                    unfocusedIndicatorColor = Color.Transparent
-                ),
-                singleLine = true
+                placeholder = stringResource(id = R.string.send_money_placeholder_recipient),
+                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number)
             )
             Text(
                 text = stringResource(id = R.string.send_money_hint_recipient),
@@ -167,22 +151,12 @@ fun SendMoneyScreen(
                 fontWeight = FontWeight.Bold
             )
             Spacer(Modifier.height(4.dp))
-            TextField(
+            MijuTextField(
+                label = "",
                 value = viewModel.amount,
                 onValueChange = { viewModel.onAmountChange(it) },
-                modifier = Modifier.fillMaxWidth(),
-                placeholder = {
-                    Text(text = "0", color = OnSurfaceVariant)
-                },
-                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
-                shape = RoundedCornerShape(12.dp),
-                colors = TextFieldDefaults.colors(
-                    focusedContainerColor = Neutral,
-                    unfocusedContainerColor = Neutral,
-                    focusedIndicatorColor = Color.Transparent,
-                    unfocusedIndicatorColor = Color.Transparent
-                ),
-                singleLine = true
+                placeholder = "0",
+                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number)
             )
 
             Spacer(Modifier.height(16.dp))
@@ -194,24 +168,11 @@ fun SendMoneyScreen(
                 fontWeight = FontWeight.Bold
             )
             Spacer(Modifier.height(4.dp))
-            TextField(
+            MijuTextField(
+                label = "",
                 value = viewModel.concept,
                 onValueChange = { viewModel.onConceptChange(it) },
-                modifier = Modifier.fillMaxWidth(),
-                placeholder = {
-                    Text(
-                        text = stringResource(id = R.string.send_money_placeholder_concept),
-                        color = OnSurfaceVariant
-                    )
-                },
-                shape = RoundedCornerShape(12.dp),
-                colors = TextFieldDefaults.colors(
-                    focusedContainerColor = Neutral,
-                    unfocusedContainerColor = Neutral,
-                    focusedIndicatorColor = Color.Transparent,
-                    unfocusedIndicatorColor = Color.Transparent
-                ),
-                singleLine = true
+                placeholder = stringResource(id = R.string.send_money_placeholder_concept)
             )
 
             Spacer(Modifier.height(32.dp))
