@@ -24,7 +24,7 @@
     <string name="signup_placeholder_cellphone_number">3212311231</string>
     <string name="signup_label_password">CONTRASEÑA</string>
     <string name="signup_placeholder_password">••••••</string>
-    <string name="signup_label_confirm_password">CONFIRMAR</string>
+    <string name="signup_label_confirm_password">CONFIRMAR CONTRASEÑA</string>
 
     <!-- SignUp Terms -->
     <string name="signup_terms_accept">Acepto los </string>
