@@ -9,6 +9,8 @@ import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.CameraAlt
+import androidx.compose.material.icons.filled.Visibility
+import androidx.compose.material.icons.filled.VisibilityOff
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
@@ -19,6 +21,8 @@ import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
+import androidx.compose.ui.text.input.PasswordVisualTransformation
+import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
@@ -143,6 +147,16 @@ fun SignUpScreen(
                         placeholder = stringResource(id = R.string.signup_placeholder_password),
                         keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.NumberPassword),
                         isPassword = true,
+                        visualTransformation = if (viewModel.passwordVisible) VisualTransformation.None else PasswordVisualTransformation(),
+                        trailingIcon = {
+                            IconButton(onClick = { viewModel.togglePasswordVisibility() }) {
+                                Icon(
+                                    imageVector = if (viewModel.passwordVisible) Icons.Default.VisibilityOff else Icons.Default.Visibility,
+                                    contentDescription = null,
+                                    tint = OnSurfaceVariant
+                                )
+                            }
+                        },
                         error = viewModel.passwordError
                     )
                     Spacer(modifier = Modifier.height(16.dp))
@@ -153,6 +167,16 @@ fun SignUpScreen(
                         placeholder = stringResource(id = R.string.signup_placeholder_password),
                         keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.NumberPassword),
                         isPassword = true,
+                        visualTransformation = if (viewModel.confirmPasswordVisible) VisualTransformation.None else PasswordVisualTransformation(),
+                        trailingIcon = {
+                            IconButton(onClick = { viewModel.toggleConfirmPasswordVisibility() }) {
+                                Icon(
+                                    imageVector = if (viewModel.confirmPasswordVisible) Icons.Default.VisibilityOff else Icons.Default.Visibility,
+                                    contentDescription = null,
+                                    tint = OnSurfaceVariant
+                                )
+                            }
+                        },
                         error = viewModel.confirmPasswordError
                     )
                     Spacer(modifier = Modifier.height(16.dp))
@@ -250,7 +274,7 @@ fun SignUpScreen(
                                     modifier = Modifier.size(48.dp),
                                     shape = RoundedCornerShape(12.dp),
                                     color = Primary.copy(alpha = 0.1f)) {
-                                    IconButton(onClick = { /* ViewModel Open Camera */ })
+                                    IconButton(onClick = { viewModel.onOpenCamera() })
                                     { Icon(Icons.Default.CameraAlt,
                                         contentDescription = null,
                                         tint = Primary) }

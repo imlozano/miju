@@ -22,13 +22,22 @@ class SignUpViewModel : ViewModel() {
 
     var fullName by mutableStateOf("")
         private set
+
     var documentId by mutableStateOf("")
         private set
+
     var email by mutableStateOf("")
         private set
     var cellphoneNumber by mutableStateOf("")
         private set
+
     var password by mutableStateOf("")
+        private set
+
+    var passwordVisible by mutableStateOf(false)
+        private set
+
+    var confirmPasswordVisible by mutableStateOf(false)
         private set
     var confirmPassword by mutableStateOf("")
         private set
@@ -123,6 +132,14 @@ class SignUpViewModel : ViewModel() {
 
     fun onOpenCamera() {
         println("Abriendo cámara para verificación de ID (Logcat)")
+    }
+
+    fun togglePasswordVisibility() {
+        passwordVisible = !passwordVisible
+    }
+
+    fun toggleConfirmPasswordVisibility() {
+        confirmPasswordVisible = !confirmPasswordVisible
     }
 
     private fun validateFields(): Boolean {
