@@ -39,6 +39,11 @@ class SignUpViewModel : ViewModel() {
         private set
     var confirmPassword by mutableStateOf("")
         private set
+    var passwordVisible by mutableStateOf(false)
+        private set
+
+    var confirmPasswordVisible by mutableStateOf(false)
+        private set
     var acceptedTerms by mutableStateOf(false)
         private set
 
@@ -89,6 +94,14 @@ class SignUpViewModel : ViewModel() {
             confirmPassword = newValue
             confirmPasswordError = null
         }
+    }
+
+    fun togglePasswordVisibility() {
+        passwordVisible = !passwordVisible
+    }
+
+    fun toggleConfirmPasswordVisibility() {
+        confirmPasswordVisible = !confirmPasswordVisible
     }
     fun onTermsChange(newValue: Boolean) {
         acceptedTerms = newValue; termsError = null

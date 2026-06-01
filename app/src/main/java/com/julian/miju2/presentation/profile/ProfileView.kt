@@ -20,6 +20,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
+import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
@@ -29,6 +30,7 @@ import com.julian.miju2.presentation.components.BottomTab
 import com.julian.miju2.presentation.components.MijuBottomBar
 import com.julian.miju2.presentation.components.ShowLoadingAlertDialog
 import com.julian.miju2.presentation.components.ShowMessageAlertDialog
+import com.julian.miju2.presentation.components.MijuTextField
 import com.julian.miju2.ui.theme.*
 
 @Composable
@@ -119,6 +121,8 @@ fun ProfileScreen(
     var showResultDialog by remember { mutableStateOf(false) }
     var dialogTitle by remember { mutableIntStateOf(R.string.error_title) }
     var dialogMessage by remember { mutableIntStateOf(0) }
+    var newPasswordVisible by remember { mutableStateOf(false) }
+    var confirmPasswordVisible by remember { mutableStateOf(false) }
 
     LaunchedEffect(documentId) {
         viewModel.loadUserData(documentId)
@@ -141,61 +145,67 @@ fun ProfileScreen(
             onDismissRequest = {
                 showDialog = false
                 viewModel.resetPasswordState()
+                newPasswordVisible = false
+                confirmPasswordVisible = false
             },
             title = {
                 Text(
                     text = stringResource(id = R.string.profile_btn_change_password),
-                    fontWeight = FontWeight.Bold
+                    fontWeight = FontWeight.Bold,
+                    color = MaterialTheme.colorScheme.primary
                 )
             },
             text = {
                 Column {
                     Text(
                         text = stringResource(id = R.string.profile_change_password_instruction),
-                        fontSize = 14.sp
+                        fontSize = 14.sp,
+                        color = MaterialTheme.colorScheme.onSurface
                     )
 
-                    Spacer(modifier = Modifier.height(16.dp))
+                    Spacer(modifier = Modifier.height(24.dp))
 
-                    OutlinedTextField(
+                    MijuTextField(
+                        label = stringResource(id = R.string.profile_label_new_password),
                         value = viewModel.newPassword,
                         onValueChange = { viewModel.onNewPasswordChange(it) },
-                        label = { Text(text = stringResource(id = R.string.profile_label_new_password)) },
-                        visualTransformation = PasswordVisualTransformation(),
+                        placeholder = "••••••",
+                        isPassword = true,
+                        visualTransformation = if (newPasswordVisible) VisualTransformation.None else PasswordVisualTransformation(),
+                        trailingIcon = {
+                            IconButton(onClick = { newPasswordVisible = !newPasswordVisible }) {
+                                Icon(
+                                    imageVector = if (newPasswordVisible) Icons.Default.VisibilityOff else Icons.Default.Visibility,
+                                    contentDescription = null,
+                                    tint = MaterialTheme.colorScheme.onSurfaceVariant
+                                )
+                            }
+                        },
                         keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
-                        isError = viewModel.passwordError != null,
-                        modifier = Modifier.fillMaxWidth(),
-                        singleLine = true
+                        error = viewModel.passwordError
                     )
-                    if (viewModel.passwordError != null) {
-                        Text(
-                            text = stringResource(id = viewModel.passwordError!!),
-                            color = MaterialTheme.colorScheme.error,
-                            fontSize = 12.sp,
-                            modifier = Modifier.padding(start = 16.dp, top = 4.dp)
-                        )
-                    }
 
                     Spacer(modifier = Modifier.height(16.dp))
 
-                    OutlinedTextField(
+                    MijuTextField(
+                        label = stringResource(id = R.string.signup_label_confirm_password),
                         value = viewModel.confirmNewPassword,
                         onValueChange = { viewModel.onConfirmNewPasswordChange(it) },
-                        label = { Text(text = stringResource(id = R.string.signup_label_confirm_password)) },
-                        visualTransformation = PasswordVisualTransformation(),
+                        placeholder = "••••••",
+                        isPassword = true,
+                        visualTransformation = if (confirmPasswordVisible) VisualTransformation.None else PasswordVisualTransformation(),
+                        trailingIcon = {
+                            IconButton(onClick = { confirmPasswordVisible = !confirmPasswordVisible }) {
+                                Icon(
+                                    imageVector = if (confirmPasswordVisible) Icons.Default.VisibilityOff else Icons.Default.Visibility,
+                                    contentDescription = null,
+                                    tint = MaterialTheme.colorScheme.onSurfaceVariant
+                                )
+                            }
+                        },
                         keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
-                        isError = viewModel.confirmPasswordError != null,
-                        modifier = Modifier.fillMaxWidth(),
-                        singleLine = true
+                        error = viewModel.confirmPasswordError
                     )
-                    if (viewModel.confirmPasswordError != null) {
-                        Text(
-                            text = stringResource(id = viewModel.confirmPasswordError!!),
-                            color = MaterialTheme.colorScheme.error,
-                            fontSize = 12.sp,
-                            modifier = Modifier.padding(start = 16.dp, top = 4.dp)
-                        )
-                    }
                 }
             },
             confirmButton = {
@@ -215,7 +225,8 @@ fun ProfileScreen(
                     },
                     enabled = viewModel.newPassword.isNotEmpty() &&
                             viewModel.confirmNewPassword.isNotEmpty() &&
-                            !viewModel.isChangingPassword
+                            !viewModel.isChangingPassword,
+                    colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.primary)
                 ) {
                     if (viewModel.isChangingPassword) {
                         CircularProgressIndicator(
@@ -223,7 +234,7 @@ fun ProfileScreen(
                             color = MaterialTheme.colorScheme.onPrimary
                         )
                     } else {
-                        Text(text = stringResource(id = R.string.btn_save))
+                        Text(text = stringResource(id = R.string.btn_save), fontWeight = FontWeight.Bold)
                     }
                 }
             },
@@ -234,9 +245,10 @@ fun ProfileScreen(
                         viewModel.resetPasswordState()
                     }
                 ) {
-                    Text(text = stringResource(id = R.string.btn_cancel))
+                    Text(text = stringResource(id = R.string.btn_cancel), color = MaterialTheme.colorScheme.onSurfaceVariant)
                 }
-            }
+            },
+            containerColor = MaterialTheme.colorScheme.surface
         )
     }
 
@@ -295,7 +307,6 @@ fun ProfileScreen(
 
                 Spacer(modifier = Modifier.height(32.dp))
 
-                // User Info
                 Text(
                     text = viewModel.fullName,
                     color = MaterialTheme.colorScheme.primary,
@@ -310,7 +321,6 @@ fun ProfileScreen(
 
                 Spacer(modifier = Modifier.height(32.dp))
 
-                // Personal Data Card
                 Card(
                     modifier = Modifier.fillMaxWidth(),
                     colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface),
@@ -443,8 +453,7 @@ fun ProfileScreen(
                 }
 
                 Spacer(modifier = Modifier.height(40.dp))
-
-                // Logout Button
+                
                 OutlinedButton(
                     onClick = { viewModel.onLogoutClick() },
                     modifier = Modifier

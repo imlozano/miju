@@ -23,13 +23,12 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
-import androidx.navigation.compose.rememberNavController
 import com.julian.miju2.R
+import com.julian.miju2.presentation.components.MijuTextField
 import com.julian.miju2.presentation.components.ShowMessageAlertDialog
 import com.julian.miju2.ui.theme.*
 
@@ -41,7 +40,6 @@ fun LoginScreen(
     LaunchedEffect(viewModel.loginSuccess) {
         if (viewModel.loginSuccess) {
             navController.navigate("dashboard/${viewModel.documentId}") {
-                // Limpiar el historial para que el usuario no regrese al login al dar atrás
                 popUpTo("login") { inclusive = true }
             }
         }
@@ -94,111 +92,76 @@ fun LoginScreen(
 
                 Spacer(modifier = Modifier.height(40.dp))
 
-                Text(
-                    text = stringResource(R.string.login_label_document),
-                    color = MaterialTheme.colorScheme.onSurface,
-                    fontSize = 14.sp,
-                    fontWeight = FontWeight.Bold
-                )
-                Spacer(modifier = Modifier.height(8.dp))
-                TextField(
+                MijuTextField(
+                    label = stringResource(R.string.login_label_document),
                     value = viewModel.documentId,
                     onValueChange = { viewModel.onDocumentIdChange(it) },
-                    modifier = Modifier.fillMaxWidth(),
-                    placeholder = { Text(stringResource(R.string.login_placeholder_document), color = MaterialTheme.colorScheme.onSurfaceVariant) },
+                    placeholder = stringResource(R.string.login_placeholder_document),
                     leadingIcon = {
                         Icon(
-                            Icons.Default.Person,
+                            imageVector = Icons.Default.Person,
                             contentDescription = null,
                             tint = MaterialTheme.colorScheme.onSurfaceVariant
                         )
                     },
-                    shape = RoundedCornerShape(12.dp),
                     keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
-                    colors = TextFieldDefaults.colors(
-                        focusedContainerColor = MaterialTheme.colorScheme.surfaceVariant,
-                        unfocusedContainerColor = MaterialTheme.colorScheme.surfaceVariant,
-                        focusedIndicatorColor = Color.Transparent,
-                        unfocusedIndicatorColor = Color.Transparent
-                    ),
-                    isError = viewModel.documentIdError != null,
-                    supportingText = {
-                        viewModel.documentIdError?.let { message ->
-                            Text(text = stringResource(id = message), color = MaterialTheme.colorScheme.error)
-                        }
-                    }
+                    error = viewModel.documentIdError
                 )
 
                 Spacer(modifier = Modifier.height(24.dp))
 
-                Row(
-                    modifier = Modifier.fillMaxWidth(),
-                    horizontalArrangement = Arrangement.SpaceBetween,
-                    verticalAlignment = Alignment.CenterVertically
-                ) {
-                    Text(
-                        text = stringResource(R.string.login_label_password),
-                        color = MaterialTheme.colorScheme.onSurface,
-                        fontSize = 14.sp,
-                        fontWeight = FontWeight.Bold
+                Box(modifier = Modifier.fillMaxWidth()) {
+                    MijuTextField(
+                        label = stringResource(R.string.login_label_password),
+                        value = viewModel.password,
+                        onValueChange = { viewModel.onPasswordChange(it) },
+                        placeholder = "••••••••",
+                        leadingIcon = {
+                            Icon(
+                                imageVector = Icons.Default.Lock, 
+                                contentDescription = null, 
+                                tint = MaterialTheme.colorScheme.onSurfaceVariant
+                            )
+                        },
+                        trailingIcon = {
+                            IconButton(onClick = { viewModel.togglePasswordVisibility() }) {
+                                Icon(
+                                    imageVector = if (viewModel.passwordVisible)
+                                        Icons.Default.VisibilityOff
+                                    else
+                                        Icons.Default.Visibility,
+                                    contentDescription = null,
+                                    tint = MaterialTheme.colorScheme.onSurfaceVariant
+                                )
+                            }
+                        },
+                        visualTransformation = if (viewModel.passwordVisible)
+                            VisualTransformation.None
+                        else
+                            PasswordVisualTransformation(),
+                        keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.NumberPassword),
+                        error = viewModel.passwordError
                     )
+
                     Text(
                         text = stringResource(R.string.login_forgot_password),
                         color = MaterialTheme.colorScheme.secondary,
                         fontSize = 12.sp,
-                        fontWeight = FontWeight.Bold
+                        fontWeight = FontWeight.Bold,
+                        modifier = Modifier
+                            .align(Alignment.TopEnd)
+                            .padding(top = 0.dp)
+                            .clickable { /* Acción para recuperar contraseña */ }
                     )
                 }
-                Spacer(modifier = Modifier.height(8.dp))
-                TextField(
-                    value = viewModel.password,
-                    onValueChange = { viewModel.onPasswordChange(it) },
-                    modifier = Modifier.fillMaxWidth(),
-                    placeholder = { Text("••••••••", color = MaterialTheme.colorScheme.onSurfaceVariant) },
-                    leadingIcon = {
-                        Icon(Icons.Default.Lock, contentDescription = null, tint = MaterialTheme.colorScheme.onSurfaceVariant)
-                    },
-                    shape = RoundedCornerShape(12.dp),
-                    keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.NumberPassword),
-                    visualTransformation = if (viewModel.passwordVisible)
-                        VisualTransformation.None
-                    else
-                        PasswordVisualTransformation(),
-                    trailingIcon = {
-                        IconButton(onClick = { viewModel.togglePasswordVisibility() }) {
-                            Icon(
-                                imageVector = if (viewModel.passwordVisible)
-                                    Icons.Default.VisibilityOff
-                                else
-                                    Icons.Default.Visibility,
-                                contentDescription = if (viewModel.passwordVisible)
-                                    stringResource(R.string.login_password_hide)
-                                else
-                                    stringResource(R.string.login_password_show),
-                                tint = MaterialTheme.colorScheme.onSurfaceVariant
-                            )
-                        }
-                    },
-                    colors = TextFieldDefaults.colors(
-                        focusedContainerColor = MaterialTheme.colorScheme.surfaceVariant,
-                        unfocusedContainerColor = MaterialTheme.colorScheme.surfaceVariant,
-                        focusedIndicatorColor = Color.Transparent,
-                        unfocusedIndicatorColor = Color.Transparent
-                    ),
-                    isError = viewModel.passwordError != null,
-                    supportingText = {
-                        viewModel.passwordError?.let { message ->
-                            Text(text = stringResource(id = message), color = MaterialTheme.colorScheme.error)
-                        }
-                    }
-                )
 
                 Spacer(modifier = Modifier.height(16.dp))
 
                 Row(verticalAlignment = Alignment.CenterVertically) {
                     Checkbox(
                         checked = viewModel.rememberMe,
-                        onCheckedChange = { viewModel.onRememberChange(it) }
+                        onCheckedChange = { viewModel.onRememberChange(it) },
+                        colors = CheckboxDefaults.colors(checkedColor = MaterialTheme.colorScheme.primary)
                     )
                     Text(
                         text = stringResource(R.string.login_remember_me),
@@ -241,8 +204,12 @@ fun LoginScreen(
                         )
                     } else {
                         Row(verticalAlignment = Alignment.CenterVertically) {
-                            // El botón usa un degradado índigo fijo en ambos temas, por eso el texto va en blanco.
-                            Text(stringResource(R.string.login_button_enter), color = Color.White, fontSize = 16.sp, fontWeight = FontWeight.Bold)
+                            Text(
+                                text = stringResource(R.string.login_button_enter), 
+                                color = Color.White, 
+                                fontSize = 16.sp, 
+                                fontWeight = FontWeight.Bold
+                            )
                             Spacer(modifier = Modifier.width(8.dp))
                             Icon(
                                 imageVector = Icons.AutoMirrored.Filled.ArrowForward,
@@ -289,13 +256,3 @@ fun LoginScreen(
         }
     }
 }
-
-/*
-@Preview(showBackground = true, showSystemUi = true)
-@Composable
-fun LoginPreview() {
-    Miju2Theme {
-        LoginScreen(navController = rememberNavController())
-    }
-}
-*/
