@@ -5,6 +5,7 @@ import androidx.compose.material.icons.filled.Home
 import androidx.compose.material.icons.filled.Person
 import androidx.compose.material.icons.filled.SwapHoriz
 import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.NavigationBar
 import androidx.compose.material3.NavigationBarItem
 import androidx.compose.material3.NavigationBarItemDefaults
@@ -13,9 +14,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.julian.miju2.R
-import com.julian.miju2.ui.theme.Background
-import com.julian.miju2.ui.theme.OnSurfaceVariant
-import com.julian.miju2.ui.theme.Primary
 
 enum class BottomTab { HOME, TRANSACTIONS, PROFILE }
 
@@ -27,15 +25,15 @@ fun MijuBottomBar(
     onProfileClick: () -> Unit
 ) {
     val itemColors = NavigationBarItemDefaults.colors(
-        selectedIconColor = Primary,
-        selectedTextColor = Primary,
-        indicatorColor = Primary.copy(alpha = 0.1f),
-        unselectedIconColor = OnSurfaceVariant,
-        unselectedTextColor = OnSurfaceVariant
+        selectedIconColor = MaterialTheme.colorScheme.primary,
+        selectedTextColor = MaterialTheme.colorScheme.primary,
+        indicatorColor = MaterialTheme.colorScheme.primary.copy(alpha = 0.1f),
+        unselectedIconColor = MaterialTheme.colorScheme.onSurfaceVariant,
+        unselectedTextColor = MaterialTheme.colorScheme.onSurfaceVariant
     )
 
     NavigationBar(
-        containerColor = Background,
+        containerColor = MaterialTheme.colorScheme.surface,
         tonalElevation = 8.dp
     ) {
         NavigationBarItem(

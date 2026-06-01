@@ -13,10 +13,14 @@ import com.julian.miju2.presentation.profile.ProfileScreen
 import com.julian.miju2.presentation.signUp.SignUpScreen
 import com.julian.miju2.presentation.sendmoney.SendMoneyScreen
 import com.julian.miju2.presentation.transactions.TransactionsScreen
+import com.julian.miju2.ui.theme.ThemeMode
 
 
 @Composable
-fun AppNavigation() {
+fun AppNavigation(
+    themeMode: ThemeMode,
+    onThemeModeChange: (ThemeMode) -> Unit
+) {
     val navController = rememberNavController()
 
     NavHost(
@@ -50,7 +54,12 @@ fun AppNavigation() {
             arguments = listOf(navArgument("documentId") { type = NavType.StringType })
         ) { backStackEntry ->
             val documentId = backStackEntry.arguments?.getString("documentId") ?: ""
-            ProfileScreen(navController = navController, documentId = documentId)
+            ProfileScreen(
+                navController = navController,
+                documentId = documentId,
+                themeMode = themeMode,
+                onThemeModeChange = onThemeModeChange
+            )
         }
 
         composable(

@@ -23,6 +23,7 @@ import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
@@ -45,11 +46,8 @@ import com.julian.miju2.presentation.components.BottomTab
 import com.julian.miju2.presentation.components.MijuBottomBar
 import com.julian.miju2.presentation.components.TransactionItem
 import com.julian.miju2.presentation.model.TransactionUi
-import com.julian.miju2.ui.theme.Background
-import com.julian.miju2.ui.theme.OnSurfaceVariant
 import com.julian.miju2.ui.theme.Primary
 import com.julian.miju2.ui.theme.PrimaryDark
-import com.julian.miju2.ui.theme.Secondary
 
 @Composable
 fun DashboardScreen(
@@ -63,7 +61,7 @@ fun DashboardScreen(
     }
 
     Scaffold(
-        containerColor = Background,
+        containerColor = MaterialTheme.colorScheme.background,
         bottomBar = {
             MijuBottomBar(
                 selectedTab = BottomTab.HOME,
@@ -103,18 +101,18 @@ fun DashboardScreen(
                     Box(
                         modifier = Modifier
                             .size(40.dp)
-                            .background(Primary, CircleShape),
+                            .background(MaterialTheme.colorScheme.primary, CircleShape),
                         contentAlignment = Alignment.Center
                     ) {
                         Text(
                             text = viewModel.initial,
-                            color = Color.White,
+                            color = MaterialTheme.colorScheme.onPrimary,
                             fontWeight = FontWeight.Bold
                         )
                     }
                     Text(
                         text = stringResource(id = R.string.app_name),
-                        color = Primary,
+                        color = MaterialTheme.colorScheme.primary,
                         fontSize = 20.sp,
                         fontWeight = FontWeight.ExtraBold
                     )
@@ -126,7 +124,7 @@ fun DashboardScreen(
                     Icon(
                         imageVector = Icons.Outlined.Notifications,
                         contentDescription = stringResource(id = R.string.dashboard_notifications),
-                        tint = Primary
+                        tint = MaterialTheme.colorScheme.primary
                     )
                 }
             }
@@ -138,14 +136,14 @@ fun DashboardScreen(
                     text = stringResource(id = R.string.dashboard_welcome_back),
                     fontSize = 12.sp,
                     fontWeight = FontWeight.Medium,
-                    color = OnSurfaceVariant,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant,
                     letterSpacing = 1.5.sp
                 )
                 Spacer(modifier = Modifier.height(4.dp))
                 if (viewModel.isLoading) {
                     CircularProgressIndicator(
                         modifier = Modifier.size(24.dp),
-                        color = Primary
+                        color = MaterialTheme.colorScheme.primary
                     )
                 } else {
                     val greeting = if (viewModel.fullName.isBlank()) {
@@ -157,7 +155,7 @@ fun DashboardScreen(
                         text = greeting,
                         fontSize = 28.sp,
                         fontWeight = FontWeight.ExtraBold,
-                        color = Primary
+                        color = MaterialTheme.colorScheme.primary
                     )
                 }
             }
@@ -203,14 +201,14 @@ private fun RecentActivitySection(
         ) {
             Text(
                 text = stringResource(id = R.string.dashboard_recent_activity),
-                color = Primary,
+                color = MaterialTheme.colorScheme.primary,
                 fontSize = 18.sp,
                 fontWeight = FontWeight.Bold
             )
             TextButton(onClick = onSeeAll) {
                 Text(
                     text = stringResource(id = R.string.dashboard_see_all),
-                    color = Secondary,
+                    color = MaterialTheme.colorScheme.secondary,
                     fontSize = 12.sp,
                     fontWeight = FontWeight.Bold
                 )
@@ -229,7 +227,7 @@ private fun SendMoneyButton(onClick: () -> Unit, modifier: Modifier = Modifier) 
         onClick = onClick,
         modifier = modifier.fillMaxWidth(),
         shape = RoundedCornerShape(16.dp),
-        colors = CardDefaults.cardColors(containerColor = Color.White),
+        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface),
         elevation = CardDefaults.cardElevation(defaultElevation = 2.dp)
     ) {
         Row(
@@ -241,20 +239,20 @@ private fun SendMoneyButton(onClick: () -> Unit, modifier: Modifier = Modifier) 
             Box(
                 modifier = Modifier
                     .size(48.dp)
-                    .background(Secondary.copy(alpha = 0.1f), CircleShape),
+                    .background(MaterialTheme.colorScheme.secondary.copy(alpha = 0.1f), CircleShape),
                 contentAlignment = Alignment.Center
             ) {
                 Icon(
                     imageVector = Icons.Default.Send,
                     contentDescription = stringResource(id = R.string.dashboard_send_money),
-                    tint = Secondary,
+                    tint = MaterialTheme.colorScheme.secondary,
                     modifier = Modifier.size(24.dp)
                 )
             }
             Spacer(modifier = Modifier.width(16.dp))
             Text(
                 text = stringResource(id = R.string.dashboard_send_money),
-                color = Primary,
+                color = MaterialTheme.colorScheme.primary,
                 fontSize = 16.sp,
                 fontWeight = FontWeight.Bold
             )

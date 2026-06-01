@@ -15,6 +15,7 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.AccountBalanceWallet
 import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -25,9 +26,6 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.julian.miju2.R
 import com.julian.miju2.presentation.model.TransactionUi
-import com.julian.miju2.ui.theme.OnSurfaceVariant
-import com.julian.miju2.ui.theme.Primary
-import com.julian.miju2.ui.theme.Secondary
 
 @Composable
 fun TransactionItem(item: TransactionUi, modifier: Modifier = Modifier) {
@@ -46,13 +44,13 @@ fun TransactionItem(item: TransactionUi, modifier: Modifier = Modifier) {
             Box(
                 modifier = Modifier
                     .size(48.dp)
-                    .background(Primary.copy(alpha = 0.1f), CircleShape),
+                    .background(MaterialTheme.colorScheme.primary.copy(alpha = 0.1f), CircleShape),
                 contentAlignment = Alignment.Center
             ) {
                 Icon(
                     imageVector = Icons.Default.AccountBalanceWallet,
                     contentDescription = stringResource(id = R.string.dashboard_tx_icon_desc),
-                    tint = Primary,
+                    tint = MaterialTheme.colorScheme.primary,
                     modifier = Modifier.size(24.dp)
                 )
             }
@@ -64,13 +62,13 @@ fun TransactionItem(item: TransactionUi, modifier: Modifier = Modifier) {
                 }
                 Text(
                     text = title,
-                    color = Primary,
+                    color = MaterialTheme.colorScheme.primary,
                     fontSize = 14.sp,
                     fontWeight = FontWeight.Bold
                 )
                 Text(
                     text = item.subtitle,
-                    color = OnSurfaceVariant,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant,
                     fontSize = 12.sp
                 )
             }
@@ -78,7 +76,7 @@ fun TransactionItem(item: TransactionUi, modifier: Modifier = Modifier) {
         Spacer(Modifier.width(12.dp))
         Text(
             text = item.amountText,
-            color = if (item.isIncoming) Secondary else Primary,
+            color = if (item.isIncoming) MaterialTheme.colorScheme.secondary else MaterialTheme.colorScheme.primary,
             fontSize = 14.sp,
             fontWeight = FontWeight.Bold,
             maxLines = 1,

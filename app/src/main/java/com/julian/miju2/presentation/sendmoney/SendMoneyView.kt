@@ -20,6 +20,7 @@ import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
@@ -43,13 +44,6 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import com.julian.miju2.R
 import com.julian.miju2.presentation.components.ShowMessageAlertDialog
-import com.julian.miju2.ui.theme.Background
-import com.julian.miju2.ui.theme.Error
-import com.julian.miju2.ui.theme.Neutral
-import com.julian.miju2.ui.theme.OnSurface
-import com.julian.miju2.ui.theme.OnSurfaceVariant
-import com.julian.miju2.ui.theme.Primary
-import com.julian.miju2.ui.theme.Secondary
 
 @Composable
 fun SendMoneyScreen(
@@ -70,7 +64,7 @@ fun SendMoneyScreen(
         }
     }
 
-    Scaffold(containerColor = Background) { paddingValues ->
+    Scaffold(containerColor = MaterialTheme.colorScheme.background) { paddingValues ->
         Column(
             modifier = Modifier
                 .padding(paddingValues)
@@ -89,12 +83,12 @@ fun SendMoneyScreen(
                     Icon(
                         imageVector = Icons.AutoMirrored.Filled.ArrowBack,
                         contentDescription = stringResource(id = R.string.send_money_back),
-                        tint = Primary
+                        tint = MaterialTheme.colorScheme.primary
                     )
                 }
                 Text(
                     text = stringResource(id = R.string.send_money_title),
-                    color = Primary,
+                    color = MaterialTheme.colorScheme.primary,
                     fontSize = 20.sp,
                     fontWeight = FontWeight.ExtraBold
                 )
@@ -105,21 +99,21 @@ fun SendMoneyScreen(
 
             Text(
                 text = stringResource(id = R.string.send_money_eyebrow),
-                color = Secondary,
+                color = MaterialTheme.colorScheme.secondary,
                 fontSize = 12.sp,
                 fontWeight = FontWeight.Bold,
                 letterSpacing = 1.5.sp
             )
             Text(
                 text = stringResource(id = R.string.send_money_headline),
-                color = Primary,
+                color = MaterialTheme.colorScheme.primary,
                 fontSize = 28.sp,
                 fontWeight = FontWeight.ExtraBold
             )
             Spacer(Modifier.height(8.dp))
             Text(
                 text = stringResource(id = R.string.send_money_available_balance, viewModel.formattedBalance),
-                color = OnSurfaceVariant,
+                color = MaterialTheme.colorScheme.onSurfaceVariant,
                 fontSize = 13.sp
             )
 
@@ -127,7 +121,7 @@ fun SendMoneyScreen(
 
             Text(
                 text = stringResource(id = R.string.send_money_label_recipient),
-                color = OnSurface,
+                color = MaterialTheme.colorScheme.onSurface,
                 fontSize = 14.sp,
                 fontWeight = FontWeight.Bold
             )
@@ -139,14 +133,14 @@ fun SendMoneyScreen(
                 placeholder = {
                     Text(
                         text = stringResource(id = R.string.send_money_placeholder_recipient),
-                        color = OnSurfaceVariant
+                        color = MaterialTheme.colorScheme.onSurfaceVariant
                     )
                 },
                 keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
                 shape = RoundedCornerShape(12.dp),
                 colors = TextFieldDefaults.colors(
-                    focusedContainerColor = Neutral,
-                    unfocusedContainerColor = Neutral,
+                    focusedContainerColor = MaterialTheme.colorScheme.surfaceVariant,
+                    unfocusedContainerColor = MaterialTheme.colorScheme.surfaceVariant,
                     focusedIndicatorColor = Color.Transparent,
                     unfocusedIndicatorColor = Color.Transparent
                 ),
@@ -154,7 +148,7 @@ fun SendMoneyScreen(
             )
             Text(
                 text = stringResource(id = R.string.send_money_hint_recipient),
-                color = OnSurfaceVariant,
+                color = MaterialTheme.colorScheme.onSurfaceVariant,
                 fontSize = 11.sp
             )
 
@@ -162,7 +156,7 @@ fun SendMoneyScreen(
 
             Text(
                 text = stringResource(id = R.string.send_money_label_amount),
-                color = OnSurface,
+                color = MaterialTheme.colorScheme.onSurface,
                 fontSize = 14.sp,
                 fontWeight = FontWeight.Bold
             )
@@ -172,13 +166,13 @@ fun SendMoneyScreen(
                 onValueChange = { viewModel.onAmountChange(it) },
                 modifier = Modifier.fillMaxWidth(),
                 placeholder = {
-                    Text(text = "0", color = OnSurfaceVariant)
+                    Text(text = "0", color = MaterialTheme.colorScheme.onSurfaceVariant)
                 },
                 keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
                 shape = RoundedCornerShape(12.dp),
                 colors = TextFieldDefaults.colors(
-                    focusedContainerColor = Neutral,
-                    unfocusedContainerColor = Neutral,
+                    focusedContainerColor = MaterialTheme.colorScheme.surfaceVariant,
+                    unfocusedContainerColor = MaterialTheme.colorScheme.surfaceVariant,
                     focusedIndicatorColor = Color.Transparent,
                     unfocusedIndicatorColor = Color.Transparent
                 ),
@@ -189,7 +183,7 @@ fun SendMoneyScreen(
 
             Text(
                 text = stringResource(id = R.string.send_money_label_concept),
-                color = OnSurface,
+                color = MaterialTheme.colorScheme.onSurface,
                 fontSize = 14.sp,
                 fontWeight = FontWeight.Bold
             )
@@ -201,13 +195,13 @@ fun SendMoneyScreen(
                 placeholder = {
                     Text(
                         text = stringResource(id = R.string.send_money_placeholder_concept),
-                        color = OnSurfaceVariant
+                        color = MaterialTheme.colorScheme.onSurfaceVariant
                     )
                 },
                 shape = RoundedCornerShape(12.dp),
                 colors = TextFieldDefaults.colors(
-                    focusedContainerColor = Neutral,
-                    unfocusedContainerColor = Neutral,
+                    focusedContainerColor = MaterialTheme.colorScheme.surfaceVariant,
+                    unfocusedContainerColor = MaterialTheme.colorScheme.surfaceVariant,
                     focusedIndicatorColor = Color.Transparent,
                     unfocusedIndicatorColor = Color.Transparent
                 ),
@@ -219,7 +213,7 @@ fun SendMoneyScreen(
             viewModel.errorMessage?.let { errorRes ->
                 Text(
                     text = stringResource(id = errorRes),
-                    color = Error,
+                    color = MaterialTheme.colorScheme.error,
                     fontSize = 12.sp,
                     modifier = Modifier.padding(top = 8.dp)
                 )
@@ -236,7 +230,7 @@ fun SendMoneyScreen(
                     .height(56.dp),
                 shape = RoundedCornerShape(16.dp),
                 enabled = !viewModel.isLoading,
-                colors = ButtonDefaults.buttonColors(containerColor = Primary)
+                colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.primary)
             ) {
                 Text(
                     text = stringResource(id = R.string.send_money_continue),
@@ -254,7 +248,7 @@ fun SendMoneyScreen(
                 title = {
                     Text(
                         text = stringResource(id = R.string.send_money_confirm_title),
-                        color = Primary,
+                        color = MaterialTheme.colorScheme.primary,
                         fontWeight = FontWeight.Bold
                     )
                 },
@@ -282,7 +276,7 @@ fun SendMoneyScreen(
                             showConfirmDialog = false
                             viewModel.sendMoney(documentId)
                         },
-                        colors = ButtonDefaults.buttonColors(containerColor = Primary)
+                        colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.primary)
                     ) {
                         Text(
                             text = stringResource(id = R.string.send_money_confirm_send),
@@ -294,11 +288,11 @@ fun SendMoneyScreen(
                     TextButton(onClick = { showConfirmDialog = false }) {
                         Text(
                             text = stringResource(id = R.string.send_money_confirm_cancel),
-                            color = OnSurfaceVariant
+                            color = MaterialTheme.colorScheme.onSurfaceVariant
                         )
                     }
                 },
-                containerColor = Background
+                containerColor = MaterialTheme.colorScheme.surface
             )
         }
 
@@ -324,7 +318,7 @@ private fun ConfirmRow(label: String, value: String) {
         modifier = Modifier.fillMaxWidth(),
         horizontalArrangement = Arrangement.SpaceBetween
     ) {
-        Text(text = label, color = OnSurfaceVariant, fontSize = 14.sp)
-        Text(text = value, color = Primary, fontSize = 14.sp, fontWeight = FontWeight.Bold)
+        Text(text = label, color = MaterialTheme.colorScheme.onSurfaceVariant, fontSize = 14.sp)
+        Text(text = value, color = MaterialTheme.colorScheme.primary, fontSize = 14.sp, fontWeight = FontWeight.Bold)
     }
 }

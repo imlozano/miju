@@ -32,9 +32,6 @@ import com.google.mlkit.vision.common.InputImage
 import com.google.mlkit.vision.text.TextRecognition
 import com.google.mlkit.vision.text.latin.TextRecognizerOptions
 import com.julian.miju2.R
-import com.julian.miju2.ui.theme.Neutral
-import com.julian.miju2.ui.theme.OnSurfaceVariant
-import com.julian.miju2.ui.theme.Primary
 
 
 @Composable
@@ -59,7 +56,7 @@ fun CameraScannerScreen(
         if (!hasPermission) permissionLauncher.launch(Manifest.permission.CAMERA)
     }
 
-    Surface(modifier = Modifier.fillMaxSize(), color = Neutral) {
+    Surface(modifier = Modifier.fillMaxSize(), color = MaterialTheme.colorScheme.background) {
         if (hasPermission) {
             CameraContent(onTextScanned = onTextScanned, onBack = onBack)
         } else {
@@ -78,23 +75,23 @@ private fun PermissionDenied(onRetry: () -> Unit, onBack: () -> Unit) {
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center
     ) {
-        Icon(Icons.Default.CameraAlt, contentDescription = null, tint = Primary)
+        Icon(Icons.Default.CameraAlt, contentDescription = null, tint = MaterialTheme.colorScheme.primary)
         Spacer(Modifier.height(16.dp))
         Text(
             text = stringResource(id = R.string.camera_permission_required),
-            color = OnSurfaceVariant,
+            color = MaterialTheme.colorScheme.onSurfaceVariant,
             fontSize = 14.sp
         )
         Spacer(Modifier.height(24.dp))
         Button(
             onClick = onRetry,
-            colors = ButtonDefaults.buttonColors(containerColor = Primary)
+            colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.primary)
         ) {
             Text(stringResource(id = R.string.camera_grant_permission))
         }
         Spacer(Modifier.height(8.dp))
         TextButton(onClick = onBack) {
-            Text(stringResource(id = R.string.camera_back), color = OnSurfaceVariant)
+            Text(stringResource(id = R.string.camera_back), color = MaterialTheme.colorScheme.onSurfaceVariant)
         }
     }
 }
@@ -166,7 +163,7 @@ private fun CameraContent(
                 .padding(bottom = 40.dp)
                 .fillMaxWidth(0.7f)
                 .height(56.dp),
-            colors = ButtonDefaults.buttonColors(containerColor = Primary),
+            colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.primary),
             enabled = !isProcessing
         ) {
             if (isProcessing) {

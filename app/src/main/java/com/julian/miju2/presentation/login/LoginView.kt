@@ -60,7 +60,7 @@ fun LoginScreen(
         Card(
             modifier = Modifier.fillMaxSize(),
             shape = RoundedCornerShape(32.dp),
-            colors = CardDefaults.cardColors(containerColor = Background),
+            colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface),
             elevation = CardDefaults.cardElevation(defaultElevation = 8.dp)
         ) {
             Column(
@@ -73,7 +73,7 @@ fun LoginScreen(
 
                 Text(
                     text = stringResource(R.string.app_name),
-                    color = Primary,
+                    color = MaterialTheme.colorScheme.primary,
                     fontSize = 24.sp,
                     fontWeight = FontWeight.Bold
                 )
@@ -82,13 +82,13 @@ fun LoginScreen(
 
                 Text(
                     text = stringResource(R.string.login_welcome_title),
-                    color = OnSurface,
+                    color = MaterialTheme.colorScheme.onSurface,
                     fontSize = 28.sp,
                     fontWeight = FontWeight.Bold
                 )
                 Text(
                     text = stringResource(R.string.login_welcome_subtitle),
-                    color = OnSurfaceVariant,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant,
                     fontSize = 16.sp
                 )
 
@@ -96,7 +96,7 @@ fun LoginScreen(
 
                 Text(
                     text = stringResource(R.string.login_label_document),
-                    color = OnSurface,
+                    color = MaterialTheme.colorScheme.onSurface,
                     fontSize = 14.sp,
                     fontWeight = FontWeight.Bold
                 )
@@ -105,19 +105,19 @@ fun LoginScreen(
                     value = viewModel.documentId,
                     onValueChange = { viewModel.onDocumentIdChange(it) },
                     modifier = Modifier.fillMaxWidth(),
-                    placeholder = { Text(stringResource(R.string.login_placeholder_document), color = OnSurfaceVariant) },
+                    placeholder = { Text(stringResource(R.string.login_placeholder_document), color = MaterialTheme.colorScheme.onSurfaceVariant) },
                     leadingIcon = {
                         Icon(
                             Icons.Default.Person,
                             contentDescription = null,
-                            tint = OnSurfaceVariant
+                            tint = MaterialTheme.colorScheme.onSurfaceVariant
                         )
                     },
                     shape = RoundedCornerShape(12.dp),
                     keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
                     colors = TextFieldDefaults.colors(
-                        focusedContainerColor = Neutral,
-                        unfocusedContainerColor = Neutral,
+                        focusedContainerColor = MaterialTheme.colorScheme.surfaceVariant,
+                        unfocusedContainerColor = MaterialTheme.colorScheme.surfaceVariant,
                         focusedIndicatorColor = Color.Transparent,
                         unfocusedIndicatorColor = Color.Transparent
                     ),
@@ -138,13 +138,13 @@ fun LoginScreen(
                 ) {
                     Text(
                         text = stringResource(R.string.login_label_password),
-                        color = OnSurface,
+                        color = MaterialTheme.colorScheme.onSurface,
                         fontSize = 14.sp,
                         fontWeight = FontWeight.Bold
                     )
                     Text(
                         text = stringResource(R.string.login_forgot_password),
-                        color = Secondary,
+                        color = MaterialTheme.colorScheme.secondary,
                         fontSize = 12.sp,
                         fontWeight = FontWeight.Bold
                     )
@@ -154,9 +154,9 @@ fun LoginScreen(
                     value = viewModel.password,
                     onValueChange = { viewModel.onPasswordChange(it) },
                     modifier = Modifier.fillMaxWidth(),
-                    placeholder = { Text("••••••••", color = OnSurfaceVariant) },
+                    placeholder = { Text("••••••••", color = MaterialTheme.colorScheme.onSurfaceVariant) },
                     leadingIcon = {
-                        Icon(Icons.Default.Lock, contentDescription = null, tint = OnSurfaceVariant)
+                        Icon(Icons.Default.Lock, contentDescription = null, tint = MaterialTheme.colorScheme.onSurfaceVariant)
                     },
                     shape = RoundedCornerShape(12.dp),
                     keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.NumberPassword),
@@ -175,13 +175,13 @@ fun LoginScreen(
                                     stringResource(R.string.login_password_hide)
                                 else
                                     stringResource(R.string.login_password_show),
-                                tint = OnSurfaceVariant
+                                tint = MaterialTheme.colorScheme.onSurfaceVariant
                             )
                         }
                     },
                     colors = TextFieldDefaults.colors(
-                        focusedContainerColor = Neutral,
-                        unfocusedContainerColor = Neutral,
+                        focusedContainerColor = MaterialTheme.colorScheme.surfaceVariant,
+                        unfocusedContainerColor = MaterialTheme.colorScheme.surfaceVariant,
                         focusedIndicatorColor = Color.Transparent,
                         unfocusedIndicatorColor = Color.Transparent
                     ),
@@ -202,7 +202,7 @@ fun LoginScreen(
                     )
                     Text(
                         text = stringResource(R.string.login_remember_me),
-                        color = OnSurfaceVariant,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant,
                         fontSize = 14.sp
                     )
                 }
@@ -241,11 +241,13 @@ fun LoginScreen(
                         )
                     } else {
                         Row(verticalAlignment = Alignment.CenterVertically) {
-                            Text(stringResource(R.string.login_button_enter), fontSize = 16.sp, fontWeight = FontWeight.Bold)
+                            // El botón usa un degradado índigo fijo en ambos temas, por eso el texto va en blanco.
+                            Text(stringResource(R.string.login_button_enter), color = Color.White, fontSize = 16.sp, fontWeight = FontWeight.Bold)
                             Spacer(modifier = Modifier.width(8.dp))
                             Icon(
                                 imageVector = Icons.AutoMirrored.Filled.ArrowForward,
                                 contentDescription = null,
+                                tint = Color.White,
                                 modifier = Modifier.size(20.dp)
                             )
                         }
@@ -270,12 +272,12 @@ fun LoginScreen(
                 ) {
                     Text(
                         text = stringResource(R.string.login_no_account),
-                        color = OnSurfaceVariant,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant,
                         fontSize = 14.sp
                     )
                     Text(
                         text = stringResource(R.string.login_register_now),
-                        color = Primary,
+                        color = MaterialTheme.colorScheme.primary,
                         fontSize = 14.sp,
                         fontWeight = FontWeight.Bold,
                         modifier = Modifier.clickable {

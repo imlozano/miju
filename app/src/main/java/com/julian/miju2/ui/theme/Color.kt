@@ -26,3 +26,13 @@ val GradientEnd = Color(0xFFB8BFF2)    // morado más definido
 // Feedback & Actions
 val Error = Color(0xFFD32F2F)               // Rojo para acciones críticas
 val ErrorLight = Color(0xFFE57373)
+
+//Paleta MODO OSCURO
+// Índigo/teal aclarados para que contrasten sobre fondos oscuros.
+val PrimaryDarkTheme = Color(0xFF9FA4F2)        // Índigo aclarado (primary en dark)
+val SecondaryDarkTheme = Color(0xFF4DD0C4)      // Teal aclarado (secondary en dark)
+val DarkBackground = Color(0xFF121218)          // Fondo de pantalla oscuro
+val DarkSurface = Color(0xFF1E1E2A)             // Superficies/tarjetas oscuras
+val DarkSurfaceVariant = Color(0xFF2A2A3A)      // Fondos de TextField / chips en dark
+val DarkOnSurface = Color(0xFFECECF2)           // Texto principal claro
+val DarkOnSurfaceVariant = Color(0xFFA9AEC2)    // Texto secundario claro/gris

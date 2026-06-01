@@ -47,21 +47,21 @@ fun SignUpTextField(
             text = label,
             fontSize = 11.sp,
             fontWeight = FontWeight.Bold,
-            color = Primary
+            color = MaterialTheme.colorScheme.primary
         )
         Spacer(modifier = Modifier.height(4.dp))
         TextField(
             value = value,
             onValueChange = onValueChange,
             modifier = Modifier.fillMaxWidth(),
-            placeholder = { Text(placeholder, color = OnSurfaceVariant.copy(alpha = 0.5f), fontSize = 14.sp) },
+            placeholder = { Text(placeholder, color = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.5f), fontSize = 14.sp) },
             singleLine = true,
             visualTransformation = if (isPassword) PasswordVisualTransformation() else VisualTransformation.None,
             keyboardOptions = keyboardOptions,
             colors = TextFieldDefaults.colors(
-                focusedContainerColor = Neutral,
-                unfocusedContainerColor = Neutral,
-                disabledContainerColor = Neutral,
+                focusedContainerColor = MaterialTheme.colorScheme.surfaceVariant,
+                unfocusedContainerColor = MaterialTheme.colorScheme.surfaceVariant,
+                disabledContainerColor = MaterialTheme.colorScheme.surfaceVariant,
                 focusedIndicatorColor = Color.Transparent,
                 unfocusedIndicatorColor = Color.Transparent,
             ),
@@ -69,7 +69,7 @@ fun SignUpTextField(
             isError = error != null,
             supportingText = {
                 if (error != null) {
-                    Text(text = stringResource(id = error), color = Error, fontSize = 10.sp)
+                    Text(text = stringResource(id = error), color = MaterialTheme.colorScheme.error, fontSize = 10.sp)
                 }
             }
         )
@@ -117,7 +117,7 @@ fun SignUpScreen(
         )
     }
 
-    Surface(modifier = Modifier.fillMaxSize(), color = Neutral) {
+    Surface(modifier = Modifier.fillMaxSize(), color = MaterialTheme.colorScheme.surfaceVariant) {
         Column(
             modifier = Modifier
                 .fillMaxSize()
@@ -131,13 +131,13 @@ fun SignUpScreen(
             ) {
                 Text(
                     text = stringResource(id = R.string.app_name),
-                    color = Primary,
+                    color = MaterialTheme.colorScheme.primary,
                     fontSize = 20.sp,
                     fontWeight = FontWeight.ExtraBold
                 )
                 Text(
                     text = stringResource(id = R.string.signup_tittle_secure),
-                    color = OnSurfaceVariant,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant,
                     fontSize = 12.sp,
                     fontWeight = FontWeight.Bold
                 )
@@ -145,14 +145,14 @@ fun SignUpScreen(
             Spacer(modifier = Modifier.height(32.dp))
             Text(text = stringResource(
                 id = R.string.signup_subtitle_step),
-                color = OnSurfaceVariant,
+                color = MaterialTheme.colorScheme.onSurfaceVariant,
                 fontSize = 14.sp
             )
             Spacer(modifier = Modifier.height(32.dp))
 
             Card(
                 modifier = Modifier.fillMaxWidth(),
-                colors = CardDefaults.cardColors(containerColor = Background),
+                colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface),
                 shape = RoundedCornerShape(24.dp),
                 elevation = CardDefaults.cardElevation(defaultElevation = 2.dp)
             ) {
@@ -216,34 +216,34 @@ fun SignUpScreen(
                         Checkbox(
                             checked = viewModel.acceptedTerms,
                             onCheckedChange = { viewModel.onTermsChange(it) },
-                            colors = CheckboxDefaults.colors(checkedColor = Primary)
+                            colors = CheckboxDefaults.colors(checkedColor = MaterialTheme.colorScheme.primary)
                         )
                         Text(
                             text = buildAnnotatedString {
                                 append(stringResource(id = R.string.signup_terms_accept))
 
                                 withStyle(style = SpanStyle(
-                                    color = Primary,
+                                    color = MaterialTheme.colorScheme.primary,
                                     fontWeight = FontWeight.Bold)
                                 ) { append(stringResource(id = R.string.signup_terms_service)) }
 
                                 append(stringResource(id = R.string.signup_terms_and))
 
                                 withStyle(style = SpanStyle(
-                                    color = Primary,
+                                    color = MaterialTheme.colorScheme.primary,
                                     fontWeight = FontWeight.Bold))
                                 { append(stringResource(id = R.string.signup_terms_privacy)) }
 
                                 append(stringResource(id = R.string.signup_terms_process))
                             },
-                            fontSize = 11.sp, lineHeight = 16.sp, color = OnSurfaceVariant
+                            fontSize = 11.sp, lineHeight = 16.sp, color = MaterialTheme.colorScheme.onSurfaceVariant
                         )
                     }
 
                     viewModel.termsError?.let { errorRes ->
                         Text(
                             text = stringResource(id = errorRes),
-                            color = Error,
+                            color = MaterialTheme.colorScheme.error,
                             fontSize = 10.sp,
                             modifier = Modifier.padding(start = 12.dp)
                         )
@@ -262,7 +262,7 @@ fun SignUpScreen(
                         },
                         modifier = Modifier.fillMaxWidth().height(56.dp),
                         shape = RoundedCornerShape(16.dp),
-                        colors = ButtonDefaults.buttonColors(containerColor = Primary),
+                        colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.primary),
                         enabled = !viewModel.isLoading
                     ) {
                         Text(stringResource(id = R.string.signup_btn_create_account), fontWeight = FontWeight.Bold, fontSize = 16.sp)
@@ -274,21 +274,21 @@ fun SignUpScreen(
 
             Card(
                 modifier = Modifier.fillMaxWidth(),
-                colors = CardDefaults.cardColors(containerColor = Neutral),
+                colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceVariant),
                 shape = RoundedCornerShape(24.dp)
             ) {
                 Column(modifier = Modifier.padding(20.dp)) {
 
                     Text(text = stringResource(
                         id = R.string.signup_id_verification_tittle),
-                        color = Primary,
+                        color = MaterialTheme.colorScheme.primary,
                         fontWeight = FontWeight.Bold,
                         fontSize = 16.sp
                     )
                     Spacer(modifier = Modifier.height(8.dp))
                     Text(
                         text = stringResource(id = R.string.signup_id_verification_label_instruction),
-                        color = OnSurfaceVariant,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant,
                         fontSize = 13.sp
                     )
                     Spacer(modifier = Modifier.height(20.dp))
@@ -296,7 +296,7 @@ fun SignUpScreen(
                         modifier = Modifier.fillMaxWidth().height(180.dp),
                         color = Color.Transparent,
                         shape = RoundedCornerShape(16.dp),
-                        border = BorderStroke(1.dp, OnSurfaceVariant.copy(alpha = 0.5f))
+                        border = BorderStroke(1.dp, MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.5f))
                     ) {
                         Box(contentAlignment = Alignment.Center) {
                             Column(horizontalAlignment = Alignment.CenterHorizontally) {
@@ -304,18 +304,18 @@ fun SignUpScreen(
                                 Surface(
                                     modifier = Modifier.size(48.dp),
                                     shape = RoundedCornerShape(12.dp),
-                                    color = Primary.copy(alpha = 0.1f)) {
+                                    color = MaterialTheme.colorScheme.primary.copy(alpha = 0.1f)) {
                                     IconButton(onClick = { navController.navigate("camera-scanner") })
                                     { Icon(Icons.Default.CameraAlt,
                                         contentDescription = null,
-                                        tint = Primary) }
+                                        tint = MaterialTheme.colorScheme.primary) }
                                 }
                                 Spacer(modifier = Modifier.height(8.dp))
                                 Text(stringResource(
                                     id = R.string.signup_btn_open_camera),
                                     fontSize = 12.sp,
                                     fontWeight = FontWeight.Bold,
-                                    color = Primary,
+                                    color = MaterialTheme.colorScheme.primary,
                                     letterSpacing = 1.sp
                                 )
                             }
@@ -328,11 +328,11 @@ fun SignUpScreen(
             Text(
                 text = buildAnnotatedString {
                     append(stringResource(id = R.string.signup_account_created))
-                    withStyle(style = SpanStyle(color = Secondary, fontWeight = FontWeight.Bold))
+                    withStyle(style = SpanStyle(color = MaterialTheme.colorScheme.secondary, fontWeight = FontWeight.Bold))
                     { append(stringResource(id = R.string.signup_login_link)) }
                 },
                 modifier = Modifier.fillMaxWidth().clickable { navController.navigate("login") },
-                textAlign = TextAlign.Center, fontSize = 14.sp, color = OnSurfaceVariant
+                textAlign = TextAlign.Center, fontSize = 14.sp, color = MaterialTheme.colorScheme.onSurfaceVariant
             )
             Spacer(modifier = Modifier.height(24.dp))
         }
