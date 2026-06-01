@@ -141,7 +141,7 @@ fun SignUpScreen(
                         value = viewModel.password,
                         onValueChange = { viewModel.onPasswordChange(it) },
                         placeholder = stringResource(id = R.string.signup_placeholder_password),
-                        keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
+                        keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.NumberPassword),
                         isPassword = true,
                         error = viewModel.passwordError
                     )
@@ -151,7 +151,7 @@ fun SignUpScreen(
                         value = viewModel.confirmPassword,
                         onValueChange = { viewModel.onConfirmPasswordChange(it) },
                         placeholder = stringResource(id = R.string.signup_placeholder_password),
-                        keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
+                        keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.NumberPassword),
                         isPassword = true,
                         error = viewModel.confirmPasswordError
                     )
