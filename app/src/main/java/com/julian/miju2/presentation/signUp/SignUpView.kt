@@ -59,6 +59,8 @@ fun SignUpTextField(
             visualTransformation = if (isPassword) PasswordVisualTransformation() else VisualTransformation.None,
             keyboardOptions = keyboardOptions,
             colors = TextFieldDefaults.colors(
+                focusedTextColor = Color.Black,
+                unfocusedTextColor = Color.Black,
                 focusedContainerColor = Neutral,
                 unfocusedContainerColor = Neutral,
                 disabledContainerColor = Neutral,
