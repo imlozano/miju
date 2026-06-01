@@ -25,6 +25,10 @@ class FirebaseUserDataSource {
         return database.child(documentNumber).child(field).setValue(value)
     }
 
+    fun saveOcrScan(documentNumber: String, ocrData: Map<String, Any?>): Task<Void> {
+        return database.child(documentNumber).child("ocrScan").setValue(ocrData)
+    }
+
     fun getUserByEmail(email: String): Task<DataSnapshot> {
         return database.orderByChild("email").equalTo(email).get()
     }

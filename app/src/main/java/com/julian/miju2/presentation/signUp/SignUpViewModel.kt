@@ -9,7 +9,9 @@ import com.julian.miju2.data.repository.UserRepositoryImpl
 import com.julian.miju2.domain.model.User
 import com.julian.miju2.domain.usecase.CheckEmailUseCase
 import com.julian.miju2.domain.usecase.GetUserDataUseCase
+import com.julian.miju2.domain.usecase.ParseDocumentTextUseCase
 import com.julian.miju2.domain.usecase.RegisterUserUseCase
+import com.julian.miju2.domain.usecase.SaveOcrScanUseCase
 import com.julian.miju2.domain.usecase.ValidatePasswordUseCase
 
 class SignUpViewModel : ViewModel() {
@@ -19,6 +21,11 @@ class SignUpViewModel : ViewModel() {
     private val checkEmailUseCase = CheckEmailUseCase(repository)
     private val validatePasswordUseCase = ValidatePasswordUseCase()
     private val getUserDataUseCase = GetUserDataUseCase(repository)
+    private val parseDocumentTextUseCase = ParseDocumentTextUseCase()
+    private val saveOcrScanUseCase = SaveOcrScanUseCase(repository)
+
+    // Texto crudo del último escaneo OCR (para trazabilidad tras el registro).
+    private var lastOcrRawText: String? = null
 
     var fullName by mutableStateOf("")
         private set
@@ -87,6 +94,25 @@ class SignUpViewModel : ViewModel() {
         acceptedTerms = newValue; termsError = null
     }
 
+    /**
+     * Recibe el texto crudo del OCR, lo parsea (heurístico) y AUTOCOMPLETA los
+     * campos del formulario. El usuario puede revisar y corregir antes de registrarse.
+     * También conserva el texto crudo para guardarlo como traza tras el registro.
+     */
+    fun applyOcrText(rawText: String) {
+        lastOcrRawText = rawText
+        val parsed = parseDocumentTextUseCase(rawText)
+
+        if (parsed.fullName.isNotBlank()) {
+            fullName = parsed.fullName
+            fullNameError = null
+        }
+        // Reutiliza la validación de entrada existente (solo dígitos, máx. 10).
+        if (parsed.documentId.isNotBlank()) {
+            onDocumentIdChange(parsed.documentId.take(10))
+        }
+    }
+
     fun onSignUpClick(onResult: (Boolean, Int) -> Unit) {
         if (validateFields()) {
             isLoading = true
@@ -112,6 +138,12 @@ class SignUpViewModel : ViewModel() {
                             )
                             registerUserUseCase(newUser) { success, messageId ->
                                 isLoading = false
+                                // Traza opcional del OCR tras un registro exitoso.
+                                if (success) {
+                                    lastOcrRawText?.let { raw ->
+                                        saveOcrScanUseCase(documentId, raw)
+                                    }
+                                }
                                 onResult(success, messageId)
                             }
                         }
@@ -119,10 +151,6 @@ class SignUpViewModel : ViewModel() {
                 }
             }
         }
-    }
-
-    fun onOpenCamera() {
-        println("Abriendo cámara para verificación de ID (Logcat)")
     }
 
     private fun validateFields(): Boolean {

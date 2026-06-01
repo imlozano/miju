@@ -6,6 +6,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
+import com.julian.miju2.presentation.camera.CameraScannerScreen
 import com.julian.miju2.presentation.dashboard.DashboardScreen
 import com.julian.miju2.presentation.login.LoginScreen
 import com.julian.miju2.presentation.profile.ProfileScreen
@@ -25,6 +26,19 @@ fun AppNavigation() {
 
         composable("signup"){
             SignUpScreen(navController)
+        }
+
+        composable("camera-scanner") {
+            CameraScannerScreen(
+                onTextScanned = { rawText ->
+                    // Devuelve el texto crudo al backstack anterior (signup) y vuelve.
+                    navController.previousBackStackEntry
+                        ?.savedStateHandle
+                        ?.set("ocr_raw_text", rawText)
+                    navController.popBackStack()
+                },
+                onBack = { navController.popBackStack() }
+            )
         }
 
         composable("login"){

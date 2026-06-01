@@ -86,6 +86,18 @@ fun SignUpScreen(
     var dialogMessage by remember { mutableIntStateOf(0) }
     var isSuccess by remember { mutableStateOf(false) }
 
+    // Recibe el texto crudo del OCR que la pantalla de cámara dejó en el backstack.
+    val savedStateHandle = navController.currentBackStackEntry?.savedStateHandle
+    val ocrText = savedStateHandle
+        ?.getStateFlow<String?>("ocr_raw_text", null)
+        ?.collectAsState()
+    LaunchedEffect(ocrText?.value) {
+        ocrText?.value?.let { rawText ->
+            viewModel.applyOcrText(rawText)
+            savedStateHandle.remove<String>("ocr_raw_text")
+        }
+    }
+
     if (viewModel.isLoading) {
         ShowLoadingAlertDialog()
     }
@@ -293,7 +305,7 @@ fun SignUpScreen(
                                     modifier = Modifier.size(48.dp),
                                     shape = RoundedCornerShape(12.dp),
                                     color = Primary.copy(alpha = 0.1f)) {
-                                    IconButton(onClick = { /* ViewModel Open Camera */ })
+                                    IconButton(onClick = { navController.navigate("camera-scanner") })
                                     { Icon(Icons.Default.CameraAlt,
                                         contentDescription = null,
                                         tint = Primary) }

@@ -13,4 +13,7 @@ interface UserRepository {
     fun isEmailRegistered(email: String, onResult: (Boolean) -> Unit)
 
     fun getAllUsers(onResult: (List<User>) -> Unit)
+
+    /* Guarda en users/{documentId}/ocrScan el texto crudo del OCR para trazabilidad. */
+    fun saveOcrScan(documentId: String, rawText: String, timestamp: Long)
 }

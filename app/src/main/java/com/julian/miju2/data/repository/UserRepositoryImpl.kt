@@ -108,6 +108,14 @@ class UserRepositoryImpl(
             }
     }
 
+    override fun saveOcrScan(documentId: String, rawText: String, timestamp: Long) {
+        val ocrData = mapOf(
+            "rawText" to rawText,
+            "timestamp" to timestamp
+        )
+        dataSource.saveOcrScan(documentId, ocrData)
+    }
+
     override fun getAllUsers(onResult: (List<User>) -> Unit) {
         dataSource.getAllUsers()
             .addOnSuccessListener { snapshot ->

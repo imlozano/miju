@@ -66,6 +66,13 @@
     <string name="signup_id_verification_label_instruction">Captura una foto clara de tu Cédula de Identidad para activar las funciones de transferencia.</string>
     <string name="signup_btn_open_camera">ABRIR CÁMARA</string>
 
+    <!-- Camera Scanner (OCR) -->
+    <string name="camera_instruction">Encuadra tu documento dentro de la pantalla y pulsa Capturar.</string>
+    <string name="camera_capture">Capturar</string>
+    <string name="camera_back">Volver</string>
+    <string name="camera_permission_required">Necesitamos permiso de cámara para escanear tu documento.</string>
+    <string name="camera_grant_permission">Conceder permiso</string>
+
     <!-- Footer -->
     <string name="signup_account_created">¿Ya tienes cuenta? </string>
     <string name="signup_login_link">Inicia Sesión aquí</string>
