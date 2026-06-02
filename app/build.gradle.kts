@@ -54,7 +54,7 @@ dependencies {
     implementation("androidx.compose.material:material-icons-extended") // Sin versión, el BOM la pone
 
     // Navigation
-    implementation("androidx.navigation:navigation-compose:2.8.5")
+    implementation(libs.androidx.navigation.compose)
 
     // Firebase (Usando un solo BOM al principio)
     implementation(platform("com.google.firebase:firebase-bom:33.9.0"))
