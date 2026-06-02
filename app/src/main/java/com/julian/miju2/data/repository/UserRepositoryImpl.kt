@@ -71,6 +71,16 @@ class UserRepositoryImpl @Inject constructor(
             }
     }
 
+    override fun updateUserData(documentId: String, updates: Map<String, Any?>, onResult: (Boolean, Int) -> Unit) {
+        dataSource.updateFields(documentId, updates)
+            .addOnSuccessListener {
+                onResult(true, R.string.success_title)
+            }
+            .addOnFailureListener {
+                onResult(false, R.string.error_connection_failed)
+            }
+    }
+
     override fun login(documentId: String, password: String, onResult: (Boolean, Int, User?) -> Unit) {
         dataSource.getUser(documentId)
             .addOnSuccessListener { snapshot ->

@@ -26,6 +26,10 @@ class FirebaseUserDataSource @Inject constructor() {
         return database.child(documentNumber).child(field).setValue(value)
     }
 
+    fun updateFields(documentNumber: String, updates: Map<String, Any?>): Task<Void> {
+        return database.child(documentNumber).updateChildren(updates)
+    }
+
     fun saveOcrScan(documentNumber: String, ocrData: Map<String, Any?>): Task<Void> {
         return database.child(documentNumber).child("ocrScan").setValue(ocrData)
     }
