@@ -4,14 +4,25 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.julian.miju2.R
+import com.julian.miju2.domain.usecase.ClearRememberedDocumentUseCase
+import com.julian.miju2.domain.usecase.GetRememberedDocumentUseCase
 import com.julian.miju2.domain.usecase.LoginUseCase
+import com.julian.miju2.domain.usecase.SaveRememberedDocumentUseCase
+import com.julian.miju2.domain.usecase.SaveUserNameUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.firstOrNull
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
 class LoginViewModel @Inject constructor(
-    private val loginUseCase: LoginUseCase
+    private val loginUseCase: LoginUseCase,
+    private val getRememberedDocumentUseCase: GetRememberedDocumentUseCase,
+    private val saveRememberedDocumentUseCase: SaveRememberedDocumentUseCase,
+    private val clearRememberedDocumentUseCase: ClearRememberedDocumentUseCase,
+    private val saveUserNameUseCase: SaveUserNameUseCase
 ) : ViewModel() {
 
     var documentId: String by mutableStateOf("")
@@ -36,6 +47,16 @@ class LoginViewModel @Inject constructor(
     var loginSuccess: Boolean by mutableStateOf(false)
         private set
 
+    init {
+        viewModelScope.launch {
+            getRememberedDocumentUseCase().firstOrNull()?.let { saved ->
+                if (saved.isNotBlank()) {
+                    documentId = saved
+                    rememberMe = true
+                }
+            }
+        }
+    }
 
     fun onDocumentIdChange(newDocumentId: String) {
         if (newDocumentId.all { it.isDigit() }) {
@@ -65,9 +86,17 @@ class LoginViewModel @Inject constructor(
         if (!validateFormat()) return
 
         isLoading = true
-        loginUseCase(documentId, password) { success, _, _ ->
+        loginUseCase(documentId, password) { success, _, user ->
             isLoading = false
             if (success) {
+                viewModelScope.launch {
+                    if (rememberMe) {
+                        saveRememberedDocumentUseCase(documentId)
+                    } else {
+                        clearRememberedDocumentUseCase()
+                    }
+                    user?.let { saveUserNameUseCase(it.fullName) }
+                }
                 loginSuccess = true
             } else {
                 loginErrorMessage = R.string.login_error_invalid_credentials

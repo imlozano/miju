@@ -4,18 +4,22 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.julian.miju2.R
+import com.julian.miju2.domain.usecase.ClearUserNameUseCase
 import com.julian.miju2.domain.usecase.GetUserDataUseCase
 import com.julian.miju2.domain.usecase.UpdatePasswordUseCase
 import com.julian.miju2.domain.usecase.ValidatePasswordUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
 class ProfileViewModel @Inject constructor(
     private val getUserDataUseCase: GetUserDataUseCase,
     private val updatePasswordUseCase: UpdatePasswordUseCase,
-    private val validatePasswordUseCase: ValidatePasswordUseCase
+    private val validatePasswordUseCase: ValidatePasswordUseCase,
+    private val clearUserNameUseCase: ClearUserNameUseCase
 ) : ViewModel() {
 
     private var currentDocumentId: String = ""
@@ -110,6 +114,7 @@ class ProfileViewModel @Inject constructor(
     }
     
     fun onLogoutClick() {
+        viewModelScope.launch { clearUserNameUseCase() }
         fullName = ""
         email = ""
         cellphoneNumber = ""
