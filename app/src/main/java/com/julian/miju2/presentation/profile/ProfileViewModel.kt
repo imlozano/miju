@@ -4,20 +4,26 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.julian.miju2.R
-import com.julian.miju2.data.repository.UserRepositoryImpl
+import com.julian.miju2.domain.usecase.ClearUserNameUseCase
 import com.julian.miju2.domain.usecase.GetUserDataUseCase
 import com.julian.miju2.domain.usecase.UpdatePasswordUseCase
 import com.julian.miju2.domain.usecase.UpdateUserDataUseCase
 import com.julian.miju2.domain.usecase.ValidatePasswordUseCase
+import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.launch
+import javax.inject.Inject
 
-class ProfileViewModel : ViewModel() {
-    
-    private val repository = UserRepositoryImpl()
-    private val getUserDataUseCase = GetUserDataUseCase(repository)
-    private val updatePasswordUseCase = UpdatePasswordUseCase(repository)
-    private val validatePasswordUseCase = ValidatePasswordUseCase()
-    private val updateUserDataUseCase = UpdateUserDataUseCase(repository)
+@HiltViewModel
+class ProfileViewModel @Inject constructor(
+    private val getUserDataUseCase: GetUserDataUseCase,
+    private val updatePasswordUseCase: UpdatePasswordUseCase,
+    private val validatePasswordUseCase: ValidatePasswordUseCase,
+    private val updateUserDataUseCase: UpdateUserDataUseCase,
+    private val clearUserNameUseCase: ClearUserNameUseCase
+) : ViewModel() {
+
     private var currentDocumentId: String = ""
 
     private var originalEmail: String = ""
@@ -157,6 +163,7 @@ class ProfileViewModel : ViewModel() {
     }
     
     fun onLogoutClick() {
+        viewModelScope.launch { clearUserNameUseCase() }
         fullName = ""
         email = ""
         cellphoneNumber = ""

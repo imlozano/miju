@@ -5,7 +5,6 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import com.julian.miju2.R
-import com.julian.miju2.data.repository.UserRepositoryImpl
 import com.julian.miju2.domain.model.User
 import com.julian.miju2.domain.usecase.CheckEmailUseCase
 import com.julian.miju2.domain.usecase.GetUserDataUseCase
@@ -13,16 +12,18 @@ import com.julian.miju2.domain.usecase.ParseDocumentTextUseCase
 import com.julian.miju2.domain.usecase.RegisterUserUseCase
 import com.julian.miju2.domain.usecase.SaveOcrScanUseCase
 import com.julian.miju2.domain.usecase.ValidatePasswordUseCase
+import dagger.hilt.android.lifecycle.HiltViewModel
+import javax.inject.Inject
 
-class SignUpViewModel : ViewModel() {
-
-    private val repository = UserRepositoryImpl()
-    private val registerUserUseCase = RegisterUserUseCase(repository)
-    private val checkEmailUseCase = CheckEmailUseCase(repository)
-    private val validatePasswordUseCase = ValidatePasswordUseCase()
-    private val getUserDataUseCase = GetUserDataUseCase(repository)
-    private val parseDocumentTextUseCase = ParseDocumentTextUseCase()
-    private val saveOcrScanUseCase = SaveOcrScanUseCase(repository)
+@HiltViewModel
+class SignUpViewModel @Inject constructor(
+    private val registerUserUseCase: RegisterUserUseCase,
+    private val checkEmailUseCase: CheckEmailUseCase,
+    private val validatePasswordUseCase: ValidatePasswordUseCase,
+    private val getUserDataUseCase: GetUserDataUseCase,
+    private val parseDocumentTextUseCase: ParseDocumentTextUseCase,
+    private val saveOcrScanUseCase: SaveOcrScanUseCase
+) : ViewModel() {
 
     // Texto crudo del último escaneo OCR (para trazabilidad tras el registro).
     private var lastOcrRawText: String? = null

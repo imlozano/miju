@@ -2,8 +2,9 @@ package com.julian.miju2.domain.usecase
 
 import com.julian.miju2.domain.model.Transaction
 import com.julian.miju2.domain.repository.TransactionRepository
+import javax.inject.Inject
 
-class GetTransactionsUseCase(private val repository: TransactionRepository) {
+class GetTransactionsUseCase @Inject constructor(private val repository: TransactionRepository) {
     operator fun invoke(documentId: String, onResult: (List<Transaction>) -> Unit) {
         repository.getAllTransactions { transactions ->
             val filtered = transactions

@@ -29,7 +29,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.julian.miju2.presentation.components.TransactionItem
 import com.julian.miju2.R
@@ -40,7 +40,7 @@ import com.julian.miju2.presentation.components.MijuBottomBar
 fun TransactionsScreen(
     navController: NavController,
     documentId: String,
-    viewModel: TransactionsViewModel = viewModel()
+    viewModel: TransactionsViewModel = hiltViewModel()
 ) {
     LaunchedEffect(documentId) {
         viewModel.loadTransactions(documentId)

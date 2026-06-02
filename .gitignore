@@ -17,3 +17,8 @@ local.properties
 app/google-services.json
 
 TECH_DEBT.md
+
+
+gradlew
+gradlew.bat
+

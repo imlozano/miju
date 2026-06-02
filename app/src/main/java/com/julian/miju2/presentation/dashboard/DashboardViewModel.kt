@@ -4,29 +4,38 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
-import com.julian.miju2.data.repository.AccountRepositoryImpl
-import com.julian.miju2.data.repository.TransactionRepositoryImpl
-import com.julian.miju2.data.repository.UserRepositoryImpl
+import androidx.lifecycle.viewModelScope
 import com.julian.miju2.domain.model.Transaction
 import com.julian.miju2.domain.usecase.GetAccountUseCase
 import com.julian.miju2.domain.usecase.GetTransactionsUseCase
 import com.julian.miju2.domain.usecase.GetUserDataUseCase
+import com.julian.miju2.domain.usecase.GetUserNameUseCase
 import com.julian.miju2.domain.usecase.GetUserNamesUseCase
 import com.julian.miju2.presentation.model.TransactionUi
+import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.SharingStarted
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.stateIn
+import javax.inject.Inject
 
-class DashboardViewModel : ViewModel() {
-
-    private val userRepository = UserRepositoryImpl()
-    private val accountRepository = AccountRepositoryImpl()
-    private val transactionRepository = TransactionRepositoryImpl()
-
-    private val getUserDataUseCase = GetUserDataUseCase(userRepository)
-    private val getAccountUseCase = GetAccountUseCase(accountRepository)
-    private val getTransactionsUseCase = GetTransactionsUseCase(transactionRepository)
-    private val getUserNamesUseCase = GetUserNamesUseCase(userRepository)
+@HiltViewModel
+class DashboardViewModel @Inject constructor(
+    private val getUserDataUseCase: GetUserDataUseCase,
+    private val getAccountUseCase: GetAccountUseCase,
+    private val getTransactionsUseCase: GetTransactionsUseCase,
+    private val getUserNamesUseCase: GetUserNamesUseCase,
+    getUserNameUseCase: GetUserNameUseCase
+) : ViewModel() {
 
     private val currencyFormat = java.text.NumberFormat.getCurrencyInstance(java.util.Locale("es", "CO"))
     private val dateFormat = java.text.SimpleDateFormat("dd/MM/yyyy", java.util.Locale("es", "CO"))
+
+    val userName: StateFlow<String?> = getUserNameUseCase()
+        .stateIn(
+            scope = viewModelScope,
+            started = SharingStarted.WhileSubscribed(5000),
+            initialValue = null
+        )
 
     val initial: String
         get() = fullName.trim()

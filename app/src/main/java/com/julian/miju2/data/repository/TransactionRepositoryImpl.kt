@@ -3,9 +3,10 @@ package com.julian.miju2.data.repository
 import com.julian.miju2.data.datasource.FirebaseTransactionDataSource
 import com.julian.miju2.domain.model.Transaction
 import com.julian.miju2.domain.repository.TransactionRepository
+import javax.inject.Inject
 
-class TransactionRepositoryImpl(
-    private val dataSource: FirebaseTransactionDataSource = FirebaseTransactionDataSource()
+class TransactionRepositoryImpl @Inject constructor(
+    private val dataSource: FirebaseTransactionDataSource
 ) : TransactionRepository {
 
     override fun getAllTransactions(onResult: (List<Transaction>) -> Unit) {

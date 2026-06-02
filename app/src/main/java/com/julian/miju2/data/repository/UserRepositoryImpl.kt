@@ -4,9 +4,10 @@ import com.julian.miju2.R
 import com.julian.miju2.data.datasource.FirebaseUserDataSource
 import com.julian.miju2.domain.model.User
 import com.julian.miju2.domain.repository.UserRepository
+import javax.inject.Inject
 
-class UserRepositoryImpl(
-    private val dataSource: FirebaseUserDataSource = FirebaseUserDataSource()
+class UserRepositoryImpl @Inject constructor(
+    private val dataSource: FirebaseUserDataSource
 ) : UserRepository {
 
     override fun getUserData(documentId: String, onResult: (User?) -> Unit) {

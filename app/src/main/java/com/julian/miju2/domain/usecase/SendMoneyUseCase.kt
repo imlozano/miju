@@ -3,8 +3,9 @@ package com.julian.miju2.domain.usecase
 import com.julian.miju2.R
 import com.julian.miju2.domain.repository.AccountRepository
 import com.julian.miju2.domain.repository.TransactionRepository
+import javax.inject.Inject
 
-class SendMoneyUseCase(
+class SendMoneyUseCase @Inject constructor(
     private val accountRepository: AccountRepository,
     private val transactionRepository: TransactionRepository
 ) {

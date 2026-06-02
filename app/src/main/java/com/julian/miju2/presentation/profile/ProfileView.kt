@@ -23,7 +23,7 @@ import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.julian.miju2.R
 import com.julian.miju2.presentation.components.BottomTab
@@ -115,7 +115,7 @@ fun ProfileScreen(
     documentId: String,
     themeMode: ThemeMode,
     onThemeModeChange: (ThemeMode) -> Unit,
-    viewModel: ProfileViewModel = viewModel()
+    viewModel: ProfileViewModel = hiltViewModel()
 ) {
     var showDialog by remember { mutableStateOf(false) }
     var showDataDialog by remember { mutableStateOf(false) }
@@ -361,7 +361,6 @@ fun ProfileScreen(
                     .padding(24.dp),
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
-                // Header
                 Row(
                     modifier = Modifier.fillMaxWidth(),
                     horizontalArrangement = Arrangement.SpaceBetween,
@@ -373,7 +372,7 @@ fun ProfileScreen(
                         fontSize = 20.sp,
                         fontWeight = FontWeight.ExtraBold
                     )
-                    IconButton(onClick = { /* Notifications */ }) {
+                    IconButton(onClick = { /* TODO Notificaciones */ }) {
                         Icon(
                             imageVector = Icons.Outlined.Notifications,
                             contentDescription = null,

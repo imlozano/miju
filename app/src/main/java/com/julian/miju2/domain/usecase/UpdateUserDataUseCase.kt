@@ -1,8 +1,9 @@
 package com.julian.miju2.domain.usecase
 
 import com.julian.miju2.domain.repository.UserRepository
+import javax.inject.Inject
 
-class UpdateUserDataUseCase(
+class UpdateUserDataUseCase @Inject constructor(
     private val userRepository: UserRepository
 ) {
     operator fun invoke(

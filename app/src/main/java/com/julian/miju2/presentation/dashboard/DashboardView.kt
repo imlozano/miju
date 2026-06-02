@@ -20,7 +20,6 @@ import androidx.compose.material.icons.filled.Send
 import androidx.compose.material.icons.outlined.Notifications
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
-import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
@@ -29,6 +28,8 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -39,7 +40,7 @@ import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.julian.miju2.R
 import com.julian.miju2.presentation.components.BottomTab
@@ -53,8 +54,10 @@ import com.julian.miju2.ui.theme.PrimaryDark
 fun DashboardScreen(
     navController: NavController,
     documentId: String,
-    viewModel: DashboardViewModel = viewModel()
+    viewModel: DashboardViewModel = hiltViewModel()
 ) {
+    val userName by viewModel.userName.collectAsState()
+
     LaunchedEffect(documentId) {
         viewModel.loadUserData(documentId)
         viewModel.loadTransactions(documentId)
@@ -140,24 +143,18 @@ fun DashboardScreen(
                     letterSpacing = 1.5.sp
                 )
                 Spacer(modifier = Modifier.height(4.dp))
-                if (viewModel.isLoading) {
-                    CircularProgressIndicator(
-                        modifier = Modifier.size(24.dp),
-                        color = MaterialTheme.colorScheme.primary
-                    )
+                val name = userName
+                val greeting = if (name.isNullOrBlank()) {
+                    stringResource(id = R.string.dashboard_greeting_generic)
                 } else {
-                    val greeting = if (viewModel.fullName.isBlank()) {
-                        stringResource(id = R.string.dashboard_greeting_generic)
-                    } else {
-                        stringResource(id = R.string.dashboard_greeting, viewModel.fullName)
-                    }
-                    Text(
-                        text = greeting,
-                        fontSize = 28.sp,
-                        fontWeight = FontWeight.ExtraBold,
-                        color = MaterialTheme.colorScheme.primary
-                    )
+                    stringResource(id = R.string.dashboard_greeting, name)
                 }
+                Text(
+                    text = greeting,
+                    fontSize = 28.sp,
+                    fontWeight = FontWeight.ExtraBold,
+                    color = MaterialTheme.colorScheme.primary
+                )
             }
 
             Spacer(modifier = Modifier.height(24.dp))

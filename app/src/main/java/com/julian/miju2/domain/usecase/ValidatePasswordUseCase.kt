@@ -1,8 +1,9 @@
 package com.julian.miju2.domain.usecase
 
 import com.julian.miju2.R
+import javax.inject.Inject
 
-class ValidatePasswordUseCase {
+class ValidatePasswordUseCase @Inject constructor() {
     operator fun invoke(
         password: String,
         documentId: String = "",

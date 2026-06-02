@@ -4,20 +4,18 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
-import com.julian.miju2.data.repository.TransactionRepositoryImpl
-import com.julian.miju2.data.repository.UserRepositoryImpl
 import com.julian.miju2.domain.model.Transaction
 import com.julian.miju2.domain.usecase.GetTransactionsUseCase
 import com.julian.miju2.domain.usecase.GetUserNamesUseCase
 import com.julian.miju2.presentation.model.TransactionUi
+import dagger.hilt.android.lifecycle.HiltViewModel
+import javax.inject.Inject
 
-class TransactionsViewModel : ViewModel() {
-
-    private val userRepository = UserRepositoryImpl()
-    private val transactionRepository = TransactionRepositoryImpl()
-
-    private val getTransactionsUseCase = GetTransactionsUseCase(transactionRepository)
-    private val getUserNamesUseCase = GetUserNamesUseCase(userRepository)
+@HiltViewModel
+class TransactionsViewModel @Inject constructor(
+    private val getTransactionsUseCase: GetTransactionsUseCase,
+    private val getUserNamesUseCase: GetUserNamesUseCase
+) : ViewModel() {
 
     private val currencyFormat = java.text.NumberFormat.getCurrencyInstance(java.util.Locale("es", "CO"))
     private val dateFormat = java.text.SimpleDateFormat("dd/MM/yyyy", java.util.Locale("es", "CO"))

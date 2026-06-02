@@ -3,9 +3,10 @@ package com.julian.miju2.data.repository
 import com.julian.miju2.data.datasource.FirebaseAccountDataSource
 import com.julian.miju2.domain.model.Account
 import com.julian.miju2.domain.repository.AccountRepository
+import javax.inject.Inject
 
-class AccountRepositoryImpl(
-    private val dataSource: FirebaseAccountDataSource = FirebaseAccountDataSource()
+class AccountRepositoryImpl @Inject constructor(
+    private val dataSource: FirebaseAccountDataSource
 ) : AccountRepository {
 
     override fun getAccount(documentId: String, onResult: (Account?) -> Unit) {
