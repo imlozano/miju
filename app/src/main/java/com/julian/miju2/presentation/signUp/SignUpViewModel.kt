@@ -181,6 +181,9 @@ class SignUpViewModel @Inject constructor(
         } else if (documentId.length !in 6..10) {
             documentIdError = R.string.error_document_length
             isValid = false
+        }  else if (documentId.length == 10 && documentId.toLong() <= 1_000_000_000L) {
+            documentIdError = R.string.error_document_nuip_range
+            isValid = false
         }
 
         if (!email.matches(emailPattern)) {
