@@ -118,6 +118,7 @@ fun ProfileScreen(
     viewModel: ProfileViewModel = viewModel()
 ) {
     var showDialog by remember { mutableStateOf(false) }
+    var showDataDialog by remember { mutableStateOf(false) }
     var showResultDialog by remember { mutableStateOf(false) }
     var dialogTitle by remember { mutableIntStateOf(R.string.error_title) }
     var dialogMessage by remember { mutableIntStateOf(0) }
@@ -137,6 +138,82 @@ fun ProfileScreen(
             onConfirmation = { showResultDialog = false },
             dialogTitle = dialogTitle,
             dialogText = dialogMessage
+        )
+    }
+
+    if (showDataDialog) {
+        AlertDialog(
+            onDismissRequest = {
+                showDataDialog = false
+                viewModel.resetDataState()
+            },
+            title = {
+                Text(
+                    text = stringResource(id = R.string.profile_edit_data_title),
+                    fontWeight = FontWeight.Bold,
+                    color = MaterialTheme.colorScheme.primary
+                )
+            },
+            text = {
+                Column {
+                    Text(
+                        text = stringResource(id = R.string.profile_edit_data_instruction),
+                        fontSize = 14.sp,
+                        color = MaterialTheme.colorScheme.onSurface
+                    )
+
+                    Spacer(modifier = Modifier.height(24.dp))
+
+                    MijuTextField(
+                        label = stringResource(id = R.string.profile_label_email),
+                        value = viewModel.email,
+                        onValueChange = { viewModel.onEmailChange(it) },
+                        placeholder = stringResource(id = R.string.signup_placeholder_email),
+                        keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Email)
+                    )
+
+                    Spacer(modifier = Modifier.height(16.dp))
+
+                    MijuTextField(
+                        label = stringResource(id = R.string.signup_label_cellphone_number),
+                        value = viewModel.cellphoneNumber,
+                        onValueChange = { viewModel.onCellphoneChange(it) },
+                        placeholder = stringResource(id = R.string.signup_placeholder_cellphone_number),
+                        keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Phone)
+                    )
+                }
+            },
+            confirmButton = {
+                Button(
+                    onClick = {
+                        viewModel.onChangeDataClick { success, messageResId ->
+                            showDataDialog = false
+                            if (success) {
+                                dialogTitle = R.string.success_title
+                                dialogMessage = R.string.profile_data_update_success
+                            } else {
+                                dialogTitle = R.string.error_title
+                                dialogMessage = messageResId
+                            }
+                            showResultDialog = true
+                        }
+                    },
+                    colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.primary)
+                ) {
+                    Text(text = stringResource(id = R.string.btn_save), fontWeight = FontWeight.Bold)
+                }
+            },
+            dismissButton = {
+                TextButton(
+                    onClick = {
+                        showDataDialog = false
+                        viewModel.resetDataState()
+                    }
+                ) {
+                    Text(text = stringResource(id = R.string.btn_cancel), color = MaterialTheme.colorScheme.onSurfaceVariant)
+                }
+            },
+            containerColor = MaterialTheme.colorScheme.surface
         )
     }
 
@@ -363,6 +440,14 @@ fun ProfileScreen(
                             label = stringResource(id = R.string.signup_label_cellphone_number),
                             value = viewModel.cellphoneNumber
                         )
+
+                        Spacer(modifier = Modifier.height(20.dp))
+
+                        ProfileActionItem(
+                            icon = Icons.Default.Edit,
+                            text = stringResource(id = R.string.profile_btn_edit_info),
+                            onClick = { showDataDialog = true }
+                        )
                     }
                 }
 
@@ -394,7 +479,7 @@ fun ProfileScreen(
                         Spacer(modifier = Modifier.height(20.dp))
 
                         ProfileActionItem(
-                            icon = Icons.Default.History,
+                            icon = Icons.Default.LockReset,
                             text = stringResource(id = R.string.profile_btn_change_password),
                             onClick = { showDialog = true }
                         )

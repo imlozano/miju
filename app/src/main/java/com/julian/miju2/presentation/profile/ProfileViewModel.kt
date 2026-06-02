@@ -8,6 +8,7 @@ import com.julian.miju2.R
 import com.julian.miju2.data.repository.UserRepositoryImpl
 import com.julian.miju2.domain.usecase.GetUserDataUseCase
 import com.julian.miju2.domain.usecase.UpdatePasswordUseCase
+import com.julian.miju2.domain.usecase.UpdateUserDataUseCase
 import com.julian.miju2.domain.usecase.ValidatePasswordUseCase
 
 class ProfileViewModel : ViewModel() {
@@ -16,15 +17,20 @@ class ProfileViewModel : ViewModel() {
     private val getUserDataUseCase = GetUserDataUseCase(repository)
     private val updatePasswordUseCase = UpdatePasswordUseCase(repository)
     private val validatePasswordUseCase = ValidatePasswordUseCase()
-
+    private val updateUserDataUseCase = UpdateUserDataUseCase(repository)
     private var currentDocumentId: String = ""
+
+    private var originalEmail: String = ""
+    private var originalCellphone: String = ""
 
     var fullName by mutableStateOf("")
         private set
+
     var email by mutableStateOf("")
         private set
     var cellphoneNumber by mutableStateOf("")
         private set
+
     var isLoading by mutableStateOf(false)
         private set
 
@@ -54,11 +60,20 @@ class ProfileViewModel : ViewModel() {
                 fullName = it.fullName
                 email = it.email
                 cellphoneNumber = it.cellphoneNumber
+                originalEmail = it.email
+                originalCellphone = it.cellphoneNumber
             }
             isLoading = false
         }
     }
 
+    fun onEmailChange(newValue: String){
+        email = newValue
+    }
+
+    fun onCellphoneChange(newValue: String){
+        cellphoneNumber = newValue
+    }
     fun onNewPasswordChange(password: String) {
         newPassword = password
         passwordError = null
@@ -67,6 +82,11 @@ class ProfileViewModel : ViewModel() {
     fun onConfirmNewPasswordChange(password: String) {
         confirmNewPassword = password
         confirmPasswordError = null
+    }
+
+    fun resetDataState(){
+        email = originalEmail
+        cellphoneNumber = originalCellphone
     }
 
     fun resetPasswordState() {
@@ -103,6 +123,34 @@ class ProfileViewModel : ViewModel() {
                 passwordChangeSuccess = true
                 newPassword = ""
                 confirmNewPassword = ""
+            }
+            onResult(success, messageResId)
+        }
+    }
+
+    fun onChangeDataClick(onResult: (Boolean, Int) -> Unit) {
+        if (currentDocumentId.isEmpty()) return
+
+        val updates = mutableMapOf<String, Any>()
+
+        if (email != originalEmail && email.isNotEmpty()) {
+            updates["email"] = email
+        }
+        if (cellphoneNumber != originalCellphone && cellphoneNumber.isNotEmpty()) {
+            updates["cellphoneNumber"] = cellphoneNumber
+        }
+
+        if (updates.isEmpty()) {
+            onResult(false, R.string.profile_no_data_change)
+            return
+        }
+
+        isLoading = true
+        updateUserDataUseCase(currentDocumentId, updates) { success, messageResId ->
+            isLoading = false
+            if (success) {
+                originalEmail = email
+                originalCellphone = cellphoneNumber
             }
             onResult(success, messageResId)
         }
