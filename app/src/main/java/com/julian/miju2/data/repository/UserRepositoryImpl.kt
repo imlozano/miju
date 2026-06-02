@@ -38,10 +38,8 @@ class UserRepositoryImpl(
             "password" to user.password
         )
 
-        // 1. Guardar el usuario
         dataSource.saveUser(user.documentId, userData)
             .addOnSuccessListener {
-                // 2. Si el usuario se crea con éxito, crear la cuenta bancaria
                 val accountData = mapOf(
                     "accountNumber" to ("03" + user.documentId),
                     "accountType" to "savings",
@@ -64,6 +62,16 @@ class UserRepositoryImpl(
 
     override fun updatePassword(documentId: String, newPassword: String, onResult: (Boolean, Int) -> Unit) {
         dataSource.updateField(documentId, "password", newPassword)
+            .addOnSuccessListener {
+                onResult(true, R.string.success_title)
+            }
+            .addOnFailureListener {
+                onResult(false, R.string.error_connection_failed)
+            }
+    }
+
+    override fun updateUserData(documentId: String, updates: Map<String, Any?>, onResult: (Boolean, Int) -> Unit) {
+        dataSource.updateFields(documentId, updates)
             .addOnSuccessListener {
                 onResult(true, R.string.success_title)
             }

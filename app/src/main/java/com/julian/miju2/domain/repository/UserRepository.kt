@@ -9,6 +9,8 @@ interface UserRepository {
 
     fun updatePassword(documentId: String, newPassword: String, onResult: (Boolean, Int) -> Unit)
 
+    fun updateUserData(documentId: String, updates: Map<String, Any?>, onResult: (Boolean, Int) -> Unit)
+
     fun login(documentId: String, password: String, onResult: (Boolean, Int, User?) -> Unit)
     fun isEmailRegistered(email: String, onResult: (Boolean) -> Unit)
 
