@@ -114,8 +114,13 @@
     <!-- Profile Screen -->
     <string name="profile_title_personal_data">Datos Personales</string>
     <string name="profile_label_email">CORREO ELECTRÓNICO</string>
+    <string name="profile_btn_edit_info">Editar información</string>
+    <string name="profile_edit_data_title">Editar Datos Personales</string>
+    <string name="profile_edit_data_instruction">Actualiza tu correo o número de celular.</string>
     <string name="profile_title_security">Seguridad y Acceso</string>
     <string name="profile_btn_change_password">Cambio de Clave</string>
+    <string name="profile_no_data_change">Sin cambios</string>
+    <string name="profile_data_update_success">Tus datos se han actualizado correctamente.</string>
     <string name="profile_change_password_instruction">Ingresa tu nueva contraseña (mín. 6 caracteres)</string>
     <string name="profile_label_new_password">Nueva contraseña</string>
     <string name="profile_password_update_success">Tu contraseña ha sido actualizada correctamente.</string>
