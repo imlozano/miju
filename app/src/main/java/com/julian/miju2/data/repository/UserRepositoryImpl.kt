@@ -4,8 +4,9 @@ import com.julian.miju2.R
 import com.julian.miju2.data.datasource.FirebaseUserDataSource
 import com.julian.miju2.domain.model.User
 import com.julian.miju2.domain.repository.UserRepository
+import javax.inject.Inject
 
-class UserRepositoryImpl(
+class UserRepositoryImpl @Inject constructor(
     private val dataSource: FirebaseUserDataSource = FirebaseUserDataSource()
 ) : UserRepository {
 
