@@ -1,6 +1,8 @@
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.compose)
+    alias(libs.plugins.hilt)
+    alias(libs.plugins.ksp)
     id("com.google.gms.google-services")
 }
 
@@ -67,6 +69,14 @@ dependencies {
 
     // ML Kit Text Recognition v2 (OCR on-device)
     implementation(libs.mlkit.text.recognition)
+
+    // Hilt (Inyección de dependencias)
+    implementation(libs.hilt.android)
+    ksp(libs.hilt.compiler)
+    implementation(libs.hilt.navigation.compose)
+
+    // DataStore Preferences
+    implementation(libs.androidx.datastore.preferences)
 
     // Testing
     testImplementation(libs.junit)

@@ -14,7 +14,9 @@ import androidx.core.content.edit
 import com.julian.miju2.presentation.navigation.AppNavigation
 import com.julian.miju2.ui.theme.Miju2Theme
 import com.julian.miju2.ui.theme.ThemeMode
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
