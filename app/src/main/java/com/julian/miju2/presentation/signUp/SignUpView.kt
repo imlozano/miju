@@ -165,7 +165,7 @@ fun SignUpScreen(
                                 Icon(
                                     imageVector = if (viewModel.passwordVisible) Icons.Default.VisibilityOff else Icons.Default.Visibility,
                                     contentDescription = null,
-                                    tint = OnSurfaceVariant
+                                    tint = MaterialTheme.colorScheme.onSurfaceVariant
                                 )
                             }
                         },
@@ -185,7 +185,7 @@ fun SignUpScreen(
                                 Icon(
                                     imageVector = if (viewModel.confirmPasswordVisible) Icons.Default.VisibilityOff else Icons.Default.Visibility,
                                     contentDescription = null,
-                                    tint = OnSurfaceVariant
+                                    tint = MaterialTheme.colorScheme.onSurfaceVariant
                                 )
                             }
                         },
