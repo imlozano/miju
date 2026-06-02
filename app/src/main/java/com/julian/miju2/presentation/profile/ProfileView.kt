@@ -23,7 +23,7 @@ import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.julian.miju2.R
 import com.julian.miju2.presentation.components.BottomTab
@@ -115,7 +115,7 @@ fun ProfileScreen(
     documentId: String,
     themeMode: ThemeMode,
     onThemeModeChange: (ThemeMode) -> Unit,
-    viewModel: ProfileViewModel = viewModel()
+    viewModel: ProfileViewModel = hiltViewModel()
 ) {
     var showDialog by remember { mutableStateOf(false) }
     var showResultDialog by remember { mutableStateOf(false) }

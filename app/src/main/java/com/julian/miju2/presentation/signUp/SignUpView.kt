@@ -23,7 +23,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.julian.miju2.R
 import com.julian.miju2.presentation.components.ShowLoadingAlertDialog
@@ -40,7 +40,7 @@ import com.julian.miju2.presentation.components.MijuTextField
 @Composable
 fun SignUpScreen(
     navController: NavController,
-    viewModel: SignUpViewModel = viewModel()
+    viewModel: SignUpViewModel = hiltViewModel()
 ) {
     var showResultDialog by remember { mutableStateOf(false) }
     var dialogTitle by remember { mutableIntStateOf(R.string.error_title) }

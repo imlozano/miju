@@ -5,22 +5,18 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import com.julian.miju2.R
-import com.julian.miju2.data.repository.AccountRepositoryImpl
-import com.julian.miju2.data.repository.TransactionRepositoryImpl
-import com.julian.miju2.data.repository.UserRepositoryImpl
 import com.julian.miju2.domain.usecase.GetAccountUseCase
 import com.julian.miju2.domain.usecase.GetUserDataUseCase
 import com.julian.miju2.domain.usecase.SendMoneyUseCase
+import dagger.hilt.android.lifecycle.HiltViewModel
+import javax.inject.Inject
 
-class SendMoneyViewModel : ViewModel() {
-
-    private val accountRepository = AccountRepositoryImpl()
-    private val userRepository = UserRepositoryImpl()
-    private val transactionRepository = TransactionRepositoryImpl()
-
-    private val getAccountUseCase = GetAccountUseCase(accountRepository)
-    private val getUserDataUseCase = GetUserDataUseCase(userRepository)
-    private val sendMoneyUseCase = SendMoneyUseCase(accountRepository, transactionRepository)
+@HiltViewModel
+class SendMoneyViewModel @Inject constructor(
+    private val getAccountUseCase: GetAccountUseCase,
+    private val getUserDataUseCase: GetUserDataUseCase,
+    private val sendMoneyUseCase: SendMoneyUseCase
+) : ViewModel() {
 
     private val currencyFormat = java.text.NumberFormat.getCurrencyInstance(java.util.Locale("es", "CO"))
 

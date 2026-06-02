@@ -25,7 +25,7 @@ import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.julian.miju2.R
 import com.julian.miju2.presentation.components.MijuTextField
@@ -35,7 +35,7 @@ import com.julian.miju2.ui.theme.*
 @Composable
 fun LoginScreen(
     navController: NavController,
-    viewModel: LoginViewModel = viewModel()
+    viewModel: LoginViewModel = hiltViewModel()
 ) {
     LaunchedEffect(viewModel.loginSuccess) {
         if (viewModel.loginSuccess) {

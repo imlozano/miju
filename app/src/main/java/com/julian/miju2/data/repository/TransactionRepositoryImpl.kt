@@ -6,7 +6,7 @@ import com.julian.miju2.domain.repository.TransactionRepository
 import javax.inject.Inject
 
 class TransactionRepositoryImpl @Inject constructor(
-    private val dataSource: FirebaseTransactionDataSource = FirebaseTransactionDataSource()
+    private val dataSource: FirebaseTransactionDataSource
 ) : TransactionRepository {
 
     override fun getAllTransactions(onResult: (List<Transaction>) -> Unit) {

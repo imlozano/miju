@@ -5,17 +5,18 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import com.julian.miju2.R
-import com.julian.miju2.data.repository.UserRepositoryImpl
 import com.julian.miju2.domain.usecase.GetUserDataUseCase
 import com.julian.miju2.domain.usecase.UpdatePasswordUseCase
 import com.julian.miju2.domain.usecase.ValidatePasswordUseCase
+import dagger.hilt.android.lifecycle.HiltViewModel
+import javax.inject.Inject
 
-class ProfileViewModel : ViewModel() {
-    
-    private val repository = UserRepositoryImpl()
-    private val getUserDataUseCase = GetUserDataUseCase(repository)
-    private val updatePasswordUseCase = UpdatePasswordUseCase(repository)
-    private val validatePasswordUseCase = ValidatePasswordUseCase()
+@HiltViewModel
+class ProfileViewModel @Inject constructor(
+    private val getUserDataUseCase: GetUserDataUseCase,
+    private val updatePasswordUseCase: UpdatePasswordUseCase,
+    private val validatePasswordUseCase: ValidatePasswordUseCase
+) : ViewModel() {
 
     private var currentDocumentId: String = ""
 

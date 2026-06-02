@@ -6,7 +6,7 @@ import com.julian.miju2.domain.repository.AccountRepository
 import javax.inject.Inject
 
 class AccountRepositoryImpl @Inject constructor(
-    private val dataSource: FirebaseAccountDataSource = FirebaseAccountDataSource()
+    private val dataSource: FirebaseAccountDataSource
 ) : AccountRepository {
 
     override fun getAccount(documentId: String, onResult: (Account?) -> Unit) {

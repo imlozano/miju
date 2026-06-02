@@ -17,7 +17,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.julian.miju2.R
 import com.julian.miju2.presentation.components.MijuTextField
@@ -27,7 +27,7 @@ import com.julian.miju2.presentation.components.ShowMessageAlertDialog
 fun SendMoneyScreen(
     navController: NavController,
     documentId: String,
-    viewModel: SendMoneyViewModel = viewModel()
+    viewModel: SendMoneyViewModel = hiltViewModel()
 ) {
     LaunchedEffect(documentId) {
         viewModel.loadSenderBalance(documentId)

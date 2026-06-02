@@ -1,13 +1,14 @@
 package com.julian.miju2.domain.usecase
 
 import java.text.Normalizer
+import javax.inject.Inject
 
 data class ParsedDocument(
     val documentId: String = "",
     val fullName: String = ""
 )
 
-class ParseDocumentTextUseCase {
+class ParseDocumentTextUseCase @Inject constructor() {
 
     // Palabras que aparecen en la cédula pero que NO son parte del nombre.
     private val noiseWords = setOf(
