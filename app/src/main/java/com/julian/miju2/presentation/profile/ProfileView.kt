@@ -284,7 +284,6 @@ fun ProfileScreen(
                     .padding(24.dp),
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
-                // Header
                 Row(
                     modifier = Modifier.fillMaxWidth(),
                     horizontalArrangement = Arrangement.SpaceBetween,
@@ -296,7 +295,7 @@ fun ProfileScreen(
                         fontSize = 20.sp,
                         fontWeight = FontWeight.ExtraBold
                     )
-                    IconButton(onClick = { /* Notifications */ }) {
+                    IconButton(onClick = { /* TODO Notificaciones */ }) {
                         Icon(
                             imageVector = Icons.Outlined.Notifications,
                             contentDescription = null,

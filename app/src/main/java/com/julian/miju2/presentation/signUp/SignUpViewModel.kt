@@ -1,6 +1,5 @@
 package com.julian.miju2.presentation.signUp
 
-import android.util.Log
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
@@ -126,7 +125,6 @@ class SignUpViewModel @Inject constructor(
         if (parsed.documentId.isNotBlank()) {
             onDocumentIdChange(parsed.documentId.take(10))
         }
-        Log.d("OCR", rawText)
     }
 
     fun onSignUpClick(onResult: (Boolean, Int) -> Unit) {

@@ -39,10 +39,8 @@ class UserRepositoryImpl @Inject constructor(
             "password" to user.password
         )
 
-        // 1. Guardar el usuario
         dataSource.saveUser(user.documentId, userData)
             .addOnSuccessListener {
-                // 2. Si el usuario se crea con éxito, crear la cuenta bancaria
                 val accountData = mapOf(
                     "accountNumber" to ("03" + user.documentId),
                     "accountType" to "savings",
