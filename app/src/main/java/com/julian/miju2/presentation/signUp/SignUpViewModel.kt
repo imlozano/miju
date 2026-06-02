@@ -189,6 +189,8 @@ class SignUpViewModel @Inject constructor(
 
         if (cellphoneNumber.length < 10) {
             cellphoneNumberError = R.string.error_cellphone_short; isValid = false
+        } else if (!cellphoneNumber.startsWith("3")){
+            cellphoneNumberError = R.string.error_cellphone_invalid_start ; isValid = false
         }
 
         passwordError = validatePasswordUseCase(password, documentId, cellphoneNumber)
