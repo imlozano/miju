@@ -11,6 +11,9 @@ import com.julian.miju2.domain.usecase.CheckUserExistsUseCase
 import com.julian.miju2.domain.usecase.ParseDocumentTextUseCase
 import com.julian.miju2.domain.usecase.RegisterUserUseCase
 import com.julian.miju2.domain.usecase.SaveOcrScanUseCase
+import com.julian.miju2.domain.usecase.ValidateCellphoneUseCase
+import com.julian.miju2.domain.usecase.ValidateDocumentUseCase
+import com.julian.miju2.domain.usecase.ValidateEmailUseCase
 import com.julian.miju2.domain.usecase.ValidatePasswordUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
@@ -21,6 +24,9 @@ class SignUpViewModel @Inject constructor(
     private val checkEmailUseCase: CheckEmailUseCase,
     private val validatePasswordUseCase: ValidatePasswordUseCase,
     private val checkUserExistsUseCase: CheckUserExistsUseCase,
+    private val validateDocumentUseCase: ValidateDocumentUseCase,
+    private val validateEmailUseCase: ValidateEmailUseCase,
+    private val validateCellphoneUseCase: ValidateCellphoneUseCase,
     private val parseDocumentTextUseCase: ParseDocumentTextUseCase,
     private val saveOcrScanUseCase: SaveOcrScanUseCase
 ) : ViewModel() {
@@ -121,7 +127,6 @@ class SignUpViewModel @Inject constructor(
             fullName = parsed.fullName
             fullNameError = null
         }
-        // Reutiliza la validación de entrada existente (solo dígitos, máx. 10).
         if (parsed.documentId.isNotBlank()) {
             onDocumentIdChange(parsed.documentId.take(10))
         }
@@ -168,32 +173,19 @@ class SignUpViewModel @Inject constructor(
 
     private fun validateFields(): Boolean {
         var isValid = true
-        val emailPattern = "^[A-Za-z0-9+_.-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,6}$".toRegex()
-        
+
         if (fullName.isBlank()) {
             fullNameError = R.string.error_name_required; isValid = false
         }
 
-        if (!documentId.all { it.isDigit() }) {
-            documentIdError = R.string.error_document_numeric
-            isValid = false
-        } else if (documentId.length !in 6..10) {
-            documentIdError = R.string.error_document_length
-            isValid = false
-        }  else if (documentId.length == 10 && documentId.toLong() <= 1_000_000_000L) {
-            documentIdError = R.string.error_document_nuip_range
-            isValid = false
-        }
+        documentIdError = validateDocumentUseCase(documentId)
+        if (documentIdError != null) isValid = false
 
-        if (!email.matches(emailPattern)) {
-            emailError = R.string.error_invalid_email; isValid = false
-        }
+        emailError = validateEmailUseCase(email)
+        if (emailError != null) isValid = false
 
-        if (cellphoneNumber.length < 10) {
-            cellphoneNumberError = R.string.error_cellphone_short; isValid = false
-        } else if (!cellphoneNumber.startsWith("3")){
-            cellphoneNumberError = R.string.error_cellphone_invalid_start ; isValid = false
-        }
+        cellphoneNumberError = validateCellphoneUseCase(cellphoneNumber)
+        if (cellphoneNumberError != null) isValid = false
 
         passwordError = validatePasswordUseCase(password, documentId, cellphoneNumber)
         if (passwordError != null) isValid = false
