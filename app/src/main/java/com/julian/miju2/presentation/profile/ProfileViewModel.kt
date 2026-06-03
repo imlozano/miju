@@ -10,6 +10,8 @@ import com.julian.miju2.domain.usecase.ClearUserNameUseCase
 import com.julian.miju2.domain.usecase.GetUserDataUseCase
 import com.julian.miju2.domain.usecase.UpdatePasswordUseCase
 import com.julian.miju2.domain.usecase.UpdateUserDataUseCase
+import com.julian.miju2.domain.usecase.ValidateCellphoneUseCase
+import com.julian.miju2.domain.usecase.ValidateEmailUseCase
 import com.julian.miju2.domain.usecase.ValidatePasswordUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
@@ -21,7 +23,9 @@ class ProfileViewModel @Inject constructor(
     private val updatePasswordUseCase: UpdatePasswordUseCase,
     private val validatePasswordUseCase: ValidatePasswordUseCase,
     private val updateUserDataUseCase: UpdateUserDataUseCase,
-    private val clearUserNameUseCase: ClearUserNameUseCase
+    private val clearUserNameUseCase: ClearUserNameUseCase,
+    private val validateEmailUseCase: ValidateEmailUseCase,
+    private val validateCellphoneUseCase: ValidateCellphoneUseCase
 ) : ViewModel() {
 
     private var currentDocumentId: String = ""
@@ -139,12 +143,24 @@ class ProfileViewModel @Inject constructor(
 
         val updates = mutableMapOf<String, Any>()
 
-        if (email != originalEmail && email.isNotEmpty()) {
+        if (email != originalEmail) {
+            val emailErrorId = validateEmailUseCase(email)
+            if (emailErrorId != null) {
+                onResult(false, emailErrorId)
+                return
+            }
             updates["email"] = email
         }
-        if (cellphoneNumber != originalCellphone && cellphoneNumber.isNotEmpty()) {
+
+        if (cellphoneNumber != originalCellphone) {
+            val cellphoneNumberErrorId = validateCellphoneUseCase(cellphoneNumber)
+            if (cellphoneNumberErrorId != null) {
+                onResult(false, cellphoneNumberErrorId)
+                return
+            }
             updates["cellphoneNumber"] = cellphoneNumber
         }
+
 
         if (updates.isEmpty()) {
             onResult(false, R.string.profile_no_data_change)
