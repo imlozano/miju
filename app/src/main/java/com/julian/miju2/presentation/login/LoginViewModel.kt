@@ -86,7 +86,7 @@ class LoginViewModel @Inject constructor(
         if (!validateFormat()) return
 
         isLoading = true
-        loginUseCase(documentId, password) { success, _, user ->
+        loginUseCase(documentId, password) { success, errorRes, user ->
             isLoading = false
             if (success) {
                 viewModelScope.launch {
@@ -99,7 +99,7 @@ class LoginViewModel @Inject constructor(
                 }
                 loginSuccess = true
             } else {
-                loginErrorMessage = R.string.login_error_invalid_credentials
+                loginErrorMessage = errorRes
             }
         }
     }

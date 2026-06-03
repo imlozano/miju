@@ -85,7 +85,7 @@ class UserRepositoryImpl @Inject constructor(
         dataSource.getUser(documentId)
             .addOnSuccessListener { snapshot ->
                 if (!snapshot.exists()) {
-                    onResult(false, R.string.error_document_invalid, null)
+                    onResult(false, R.string.login_error_invalid_credentials, null)
                     return@addOnSuccessListener
                 }
 
@@ -99,7 +99,7 @@ class UserRepositoryImpl @Inject constructor(
                     )
                     onResult(true, R.string.success_title, user)
                 } else {
-                    onResult(false, R.string.error_passwords_not_match, null)
+                    onResult(false, R.string.login_error_invalid_credentials, null)
                 }
             }
             .addOnFailureListener {
