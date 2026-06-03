@@ -7,7 +7,7 @@ import androidx.lifecycle.ViewModel
 import com.julian.miju2.R
 import com.julian.miju2.domain.model.User
 import com.julian.miju2.domain.usecase.CheckEmailUseCase
-import com.julian.miju2.domain.usecase.GetUserDataUseCase
+import com.julian.miju2.domain.usecase.CheckUserExistsUseCase
 import com.julian.miju2.domain.usecase.ParseDocumentTextUseCase
 import com.julian.miju2.domain.usecase.RegisterUserUseCase
 import com.julian.miju2.domain.usecase.SaveOcrScanUseCase
@@ -20,7 +20,7 @@ class SignUpViewModel @Inject constructor(
     private val registerUserUseCase: RegisterUserUseCase,
     private val checkEmailUseCase: CheckEmailUseCase,
     private val validatePasswordUseCase: ValidatePasswordUseCase,
-    private val getUserDataUseCase: GetUserDataUseCase,
+    private val checkUserExistsUseCase: CheckUserExistsUseCase,
     private val parseDocumentTextUseCase: ParseDocumentTextUseCase,
     private val saveOcrScanUseCase: SaveOcrScanUseCase
 ) : ViewModel() {
@@ -130,18 +130,18 @@ class SignUpViewModel @Inject constructor(
     fun onSignUpClick(onResult: (Boolean, Int) -> Unit) {
         if (validateFields()) {
             isLoading = true
-            
-            getUserDataUseCase(documentId) { existingUser ->
-                if (existingUser != null) {
+
+            checkUserExistsUseCase(documentId) { exists, userErrorId ->
+                if (exists) {
                     isLoading = false
-                    documentIdError = R.string.error_document_invalid
-                    onResult(false, R.string.error_document_invalid)
+                    documentIdError = userErrorId
+                    onResult(false, userErrorId ?: 0)
                 } else {
-                    checkEmailUseCase(email) { exists ->
-                        if (exists) {
+                    checkEmailUseCase(email) { isValid, emailErrorId ->
+                        if (!isValid) {
                             isLoading = false
-                            emailError = R.string.error_email_exists
-                            onResult(false, R.string.error_email_exists)
+                            emailError = emailErrorId
+                            onResult(false, emailErrorId ?: 0)
                         } else {
                             val newUser = User(
                                 documentId = documentId,
@@ -152,7 +152,6 @@ class SignUpViewModel @Inject constructor(
                             )
                             registerUserUseCase(newUser) { success, messageId ->
                                 isLoading = false
-                                // Traza opcional del OCR tras un registro exitoso.
                                 if (success) {
                                     lastOcrRawText?.let { raw ->
                                         saveOcrScanUseCase(documentId, raw)
