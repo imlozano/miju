@@ -8,6 +8,9 @@ class ValidateCellphoneUseCase @Inject constructor() {
         if (cellphoneNumber.length < 10) {
             return R.string.error_cellphone_short
         }
+        if (cellphoneNumber.length > 10){
+            return R.string.error_cellphone_long
+        }
         if (!cellphoneNumber.startsWith("3")) {
             return R.string.error_cellphone_invalid_start
         }
